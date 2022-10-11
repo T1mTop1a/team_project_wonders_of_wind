@@ -98,6 +98,13 @@ If you have run out of energy or time for your project, put a note at the top of
 ### Cloning the repository
 `git clone https://stgit.dcs.gla.ac.uk/team-project-h/2022/sh06/sh06-main.git`
 
+### Creating your own branch
+`git checkout main` - to ensure you are on the main branch
+
+`git pull` - to ensure you get all the latest changes from the main branch
+
+`git checkout -b <branch-name>` - creates a specific branch
+
 ### See all modified files
 
 `git status`
@@ -105,6 +112,7 @@ If you have run out of energy or time for your project, put a note at the top of
 ### Adding files
 
 Specific file: `git add <filename>`
+
 All fiels: `git add *`
 
 ### Committing files
@@ -114,4 +122,12 @@ All fiels: `git add *`
 ### Pushing changes to a remote repository
 
 First time for the specific branch: `git push --set-upstream origin <brach-name>`
+
 Other times: `git push`
+
+### Merging a branch to the main branch
+`git checkout main`
+
+`git merge <branch-name>`
+
+`git push`
