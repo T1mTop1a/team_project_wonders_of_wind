@@ -92,3 +92,26 @@ For open source projects, say how it is licensed.
 
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+
+## Basic git commands
+
+### Cloning the repository
+`git clone https://stgit.dcs.gla.ac.uk/team-project-h/2022/sh06/sh06-main.git`
+
+### See all modified files
+
+`git status`
+
+### Adding files
+
+Specific file: `git add <filename>`
+All fiels: `git add *`
+
+### Committing files
+
+`git commit -m "Commit message"`
+
+### Pushing changes to a remote repository
+
+First time for the specific branch: `git push --set-upstream origin <brach-name>`
+Other times: `git push`
