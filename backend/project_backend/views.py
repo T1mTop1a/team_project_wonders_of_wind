@@ -6,6 +6,7 @@ import io
 import pandas as pd
 import os
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -15,6 +16,7 @@ def index(request):
     return HttpResponse('hello word')
 
 
+@csrf_exempt
 def example_response(request):
     enercon_e126 = {
         'turbine_type': 'E-126/4200',  # turbine type as in oedb turbine library
