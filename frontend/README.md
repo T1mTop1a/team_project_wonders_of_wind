@@ -1,3 +1,4 @@
+create a file called `.env` and put the entry `REACT_APP_BACKEND=http://localhost:8000` or whatever the backend url is
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
