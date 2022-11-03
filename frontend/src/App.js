@@ -49,9 +49,10 @@ function App() {
         datasets: [
           {
             label: "Power/MWe",
-            backgroundColor: "rgb(255, 99, 132)",
-            borderColor: "rgb(255, 99, 132)",
-            color: "#83a96c",
+            backgroundColor: 'rgb(75, 192, 192)',
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1,
             data: json.map(entry => entry.power),
           },
         ],
@@ -63,9 +64,7 @@ function App() {
   
   const LineChart = () => {
     return (
-      <div>
-        <Line data={chartData} width={"80%"} options={{ maintainAspectRatio: false }}/>
-      </div>
+        <Line data={chartData} height="480px" options={{ maintainAspectRatio: false }}/>
     );
   };
 
@@ -117,8 +116,7 @@ function App() {
           }}>Search</button>
         </div>
       </form>
-      <div id="chartContainer" style={{
-      }}>
+      <div id="chartContainer">
         <LineChart/>
       </div>
     </div>
