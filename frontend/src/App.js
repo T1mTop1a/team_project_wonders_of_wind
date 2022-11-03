@@ -31,8 +31,8 @@ function App() {
     datasets: [
       {
         label: "Power/MWe",
-        backgroundColor: "rgb(255, 99, 132)",
-        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: 'rgb(75, 192, 192)',
+        borderColor: 'rgb(75, 192, 192)',
         color: "#83a96c",
         data: [],
       },
