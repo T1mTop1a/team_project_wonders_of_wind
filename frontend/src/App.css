@@ -1,5 +1,10 @@
 .App {
-  text-align: center;
+  background-color: #6D835C;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 .App-logo {
@@ -14,7 +19,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #18294d;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -35,4 +40,23 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+#chartContainer {
+  background: #FBFCFF;
+  margin-left: 63px;
+  margin-right: 63px;
+  height: 480px;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.inputBox::placeholder {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  opacity: .5;
 }

@@ -32,7 +32,8 @@ def example_response(request):
     # initialize WindTurbine object
     e126 = ModelChain(WindTurbine(**enercon_e126)).run_model(weather_data)
 
-    print(e126.power_output.to_dict(), type(e126.power_output))
-    response = {str(date): data for date, data in e126.power_output.to_dict().items()}
+    response = []
+    for date, data in e126.power_output.to_dict().items():
+        response.append({"date": str(date), "power": data})
 
-    return JsonResponse(response)
+    return JsonResponse(response, safe=False)
