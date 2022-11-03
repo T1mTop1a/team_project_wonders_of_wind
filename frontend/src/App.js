@@ -1,5 +1,5 @@
 import './App.css';
-import React, { Component }  from 'react';
+import React, { Component, useState, useEffect }  from 'react';
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -10,14 +10,6 @@ import { Line } from "react-chartjs-2";
 function App() {
 
   let appName = "Wonders of Wind"
-
-
-  const getExampleData = async() =>{
-    console.log('getting data');
-    let response = await fetch(`${process.env.REACT_APP_BACKEND}/api/v1/example_response`);
-    let json = await response.json();
-    console.log(json);
-  }
   
   function Header() {
     return (
@@ -34,25 +26,45 @@ function App() {
     );
   }
 
-
-  const labels = ["January", "February", "March", "April", "May", "June"];
-  
-  const data = {
-    labels: labels,
+  const [chartData, setState] = useState({
+    labels: [],
     datasets: [
       {
-        label: "My First dataset",
+        label: "Power/MWe",
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgb(255, 99, 132)",
-        data: [0, 10, 5, 2, 20, 30, 45],
+        color: "#83a96c",
+        data: [],
       },
     ],
-  };
+  });
+ 
+  useEffect(() => {
+    const getExampleData = async() => {
+      console.log('getting data');
+      let response = await fetch(`${process.env.REACT_APP_BACKEND}/api/v1/example_response`);
+      let json = await response.json();
+      setState({
+        labels: json.map(entry => entry.date),
+        datasets: [
+          {
+            label: "Power/MWe",
+            backgroundColor: "rgb(255, 99, 132)",
+            borderColor: "rgb(255, 99, 132)",
+            color: "#83a96c",
+            data: json.map(entry => entry.power),
+          },
+        ],
+      });
+    }
+
+    getExampleData();
+  }, []);
   
   const LineChart = () => {
     return (
       <div>
-        <Line data={data} width={"80%"} options={{ maintainAspectRatio: false }}/>
+        <Line data={chartData} width={"80%"} options={{ maintainAspectRatio: false }}/>
       </div>
     );
   };
