@@ -1,11 +1,19 @@
 import './App.css';
-import React, { Component, useState, useEffect }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
+var moment = require('moment-timezone');
 
 function App() {
 
@@ -27,10 +35,11 @@ function App() {
   }
 
   const [chartData, setState] = useState({
+    rawData: [],
     labels: [],
     datasets: [
       {
-        label: "Power/MWe",
+        label: "Power/MWe (Time is in UTC)",
         backgroundColor: 'rgb(75, 192, 192)',
         borderColor: 'rgb(75, 192, 192)',
         color: "#83a96c",
@@ -38,6 +47,10 @@ function App() {
       },
     ],
   });
+
+  function formatDateTime(dateString) {
+    return moment(dateString).tz("UTC").format('llll');
+  }
  
   useEffect(() => {
     const getExampleData = async() => {
@@ -45,10 +58,11 @@ function App() {
       let response = await fetch(`${process.env.REACT_APP_BACKEND}/api/v1/example_response`);
       let json = await response.json();
       setState({
-        labels: json.map(entry => entry.date),
+        rawData: json,
+        labels: json.map(entry => formatDateTime(entry.date)),
         datasets: [
           {
-            label: "Power/MWe",
+            label: "Power/MWe (Time is in UTC)",
             backgroundColor: 'rgb(75, 192, 192)',
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
@@ -64,7 +78,46 @@ function App() {
   
   const LineChart = () => {
     return (
-        <Line data={chartData} height="480px" options={{ maintainAspectRatio: false }}/>
+      <div>
+        <div style={{
+          float: "left",
+          width: "60%",
+          height: "480px"
+        }}>
+          <Line data={chartData} height="480px" options={{ maintainAspectRatio: false }}/>
+        </div>
+        <div style={{
+          float: "right",
+          width: "40%",
+          height: "480px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+          <TableContainer>
+            <Table sx={{ minWidth: 50 }} size="small" aria-label="a dense table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Date</TableCell>
+                  <TableCell>Power</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {chartData.rawData.map((row) => (
+                  <TableRow
+                    key={row.date} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                    <TableCell component="th" scope="row">
+                      {formatDateTime(row.date)}
+                    </TableCell>
+                    <TableCell>{row.power}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </div>
     );
   };
 
