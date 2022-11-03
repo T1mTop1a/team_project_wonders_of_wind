@@ -1,5 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
+import React, { Component }  from 'react';
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 
 function App() {
 
@@ -12,10 +20,26 @@ function App() {
     let json = await response.json();
     console.log(json);
   }
+  // importing material UI components
+  
+  function Header() {
+    return (
+        <AppBar position="static" style={{ background: '#596a4b' }}>
+          <Toolbar>
+            <Typography variant="h6" align="left"
+              component="div" sx={{ mr: 2, flexGrow: 1 }}>
+              {appName}
+            </Typography>
+            <Button color="inherit">Login</Button>
+            <Button color="inherit">Sign up</Button>
+          </Toolbar>
+        </AppBar>
+    );
+  }
 
   return (
     <div className="App">
-      <h1>{appName}</h1>
+      <Header/>
       <button onClick={getExampleData}>Get Example Data</button>
     </div>
   );
