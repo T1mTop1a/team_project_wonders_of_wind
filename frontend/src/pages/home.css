@@ -1,0 +1,60 @@
+.base {
+    background-color: #6D835C;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+.NavBar{
+    position:static;
+    background: #596a4b;
+    background-color: rgba(0,0,0,0.29);
+}
+
+#chartContainer {
+    background: #FBFCFF;
+    margin-left: 63px;
+    margin-right: 63px;
+    height: 480px;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  
+.inputBox::placeholder {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    opacity: .5;
+  }
+
+  .link {
+    font-family:  monospace;
+    color: #FFF;
+    text-decoration: 'none';
+    cursor: auto;
+    margin-right: auto;
+    
+    
+
+  }
+  .link:hover {
+     color: #ADD0A4
+  }
+
+  .linkBoxes{
+    color: white;
+    border-radius: 15px;
+    text-align: centre;
+    font-size: medium;
+    background: transparent;
+    right: 0;
+    border: 1px solid white;
+    margin: 10px;
+    width: 130px;
+ 
+  }
