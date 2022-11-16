@@ -129,3 +129,22 @@ Other times: `git push`
 `git merge <branch-name>`
 
 `git push`
+
+
+
+
+
+# Project Setup
+## Backend Setup
+create a python3.9 virtual environment
+this can be done by installing virtualenv `pip install virtualenv`
+and then running `mkvirtualenv -p python3.9 backendenv` in the backend directory (sh06-main/backend) then run `source backendenv/bin/activate` on macos/linux `/backendenv/Scripts/activate` if on windows.
+then run `pip install -r requirements.txt`.
+To run the server use `python manage.py runserver`.
+
+
+## Frontend Setup 
+Install node version 16 from ![https://nodejs.org/dist/v16.13.1/](https://nodejs.org/dist/v16.13.1/) this will be the x64 .msi if you are on windows or the .pkg if you are on macos. 
+navigate the the frontend directory and run `npm install` 
+create a file named `.env` and add the line `REACT_APP_BACKEND=http://localhost:8000` or the hosted backend at `https://teamprojectbackend.lorneb.com`
+you can then start the server with `npm start` 
