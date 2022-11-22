@@ -19,7 +19,7 @@ class DataLoader:
         self.logger.debug(f'filename = {self.filename}')
         self.downloaded_files = []
 
-    def get_time(self, time: int, output_path=os.path.join(os.getcwd(), 'downloads'), overwrite=True):
+    def get_time(self, time: int, output_path=os.path.join(os.getcwd(), 'weather_downloads'), overwrite=True):
 
         download_filename = self.filename + str(time).rjust(3, '0')
         self.logger.info(f'download {download_filename} to {output_path}')
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     d, m, y = today.day, today.month, today.year
     start_of_day = datetime.datetime(y, m, d, 0, 0, 0)
 
-    with open(f'downloads/forecasts_{today}.csv', 'w') as forecast_file:
+    with open(f'weather_downloads/forecasts_{today}.csv', 'w') as forecast_file:
         forecast_file.write('time,type,yval,xval,value\n')
         for time in range(3, 25, 3):
             file = dl.get_time(time)
