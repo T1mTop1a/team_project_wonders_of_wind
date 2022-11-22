@@ -4,12 +4,13 @@ import logging
 import pygrib
 import requests
 import numpy as np
+from pathlib import Path
 
 
 class DataLoader:
 
     def __init__(self, date=datetime.date.today(), model_cycle='00', degree_resolution='1p00',
-                 logger=logging.getLogger(__name__)):
+                 logger=logging.getLogger(__name__), download_dir=None):
         self.logger = logger
         self.logger.debug(f'{date}, {model_cycle}, {degree_resolution}')
         self.noaa_backend = 'https://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod'
@@ -19,16 +20,21 @@ class DataLoader:
         self.logger.debug(f'filename = {self.filename}')
         self.downloaded_files = []
 
-    def get_time(self, time: int, output_path=os.path.join(os.getcwd(), 'weather_downloads'), overwrite=True):
+        self.default_download_dir = Path.cwd() / 'weather_downloads' if download_dir is None else download_dir
 
-        if not os.path.exists(output_path):
-            os.mkdir(output_path)
+    def get_time(self, time: int, output_path=None, overwrite=True):
+
+        output_path = self.default_download_dir if output_path is None else output_path
+
+        output_path.mkdir(exist_ok=True)
+
         download_filename = self.filename + str(time).rjust(3, '0')
         self.logger.info(f'download {download_filename} to {output_path}')
-        download_path = os.path.join(output_path, download_filename.split('/')[-1])
-        if os.path.exists(download_path):
+        download_path = output_path / download_filename.split('/')[-1]
+
+        if download_path.exists():
             if overwrite:
-                os.remove(download_path)
+                download_path.unlink()
             else:
                 raise FileExistsError("file exists and overwrite is not set")
 
@@ -46,7 +52,7 @@ class DataLoader:
     def cleanup(self):
         for filepath in self.downloaded_files:
             self.logger.info(f'Deleting {filepath}')
-            os.remove(filepath)
+            filepath.unlink()
 
         self.downloaded_files = []
 
@@ -61,15 +67,16 @@ if __name__ == '__main__':
     d, m, y = today.day, today.month, today.year
     start_of_day = datetime.datetime(y, m, d, 0, 0, 0)
 
-    if not os.path.exists('weather_downloads'):
-        os.mkdir('weather_downloads')
-    with open(f'weather_downloads/forecasts_{today}.csv', 'w') as forecast_file:
+    download_dir = Path.cwd() / 'weather_downloads'
+    download_dir.mkdir(exist_ok=True)
+
+    with (download_dir / f'forecasts_{today}.csv').open('w') as forecast_file:
         forecast_file.write('time,type,yval,xval,value\n')
         for time in range(3, 25, 3):
             file = dl.get_time(time)
             time_str = start_of_day + datetime.timedelta(hours=time)
 
-            gribfile = pygrib.open(file)
+            gribfile = pygrib.open(str(file))
 
             gribfile.seek(0)
             u_comp = gribfile[11].values
