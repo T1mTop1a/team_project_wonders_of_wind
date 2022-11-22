@@ -54,7 +54,7 @@ class DataLoader:
             self.logger.info(f'Deleting {filepath}')
             filepath.unlink()
 
-        self.downloaded_files = []
+        self.downloaded_files.clear()
 
 
 if __name__ == '__main__':
