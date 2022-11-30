@@ -1,3 +1,5 @@
+from __future__ import absolute_import, unicode_literals
+
 import datetime
 import os
 import logging
@@ -6,62 +8,28 @@ import requests
 import numpy as np
 from pathlib import Path
 import importlib
+from dataloader.dataloader import DataLoader
 
 
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
+import environ
+
+env = environ.Env()
+# reading .env file
+environ.Env.read_env()
 
 
-class DataLoader:
 
-    def __init__(self, date=datetime.date.today(), model_cycle='00', degree_resolution='1p00',
-                 logger=logging.getLogger(__name__), download_dir=None):
-        self.logger = logger
-        self.logger.debug(f'{date}, {model_cycle}, {degree_resolution}')
-        self.noaa_backend = 'https://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod'
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
+import django
 
-        day, month, year = date.day, date.month, date.year
-        self.filename = f"{self.noaa_backend}/gfs.{year}{month}{day}/{model_cycle}/atmos/gfs.t{model_cycle}z.pgrb2.{degree_resolution}.f"
-        self.logger.debug(f'filename = {self.filename}')
-        self.downloaded_files = []
+django.setup()
 
-        self.default_download_dir = Path.cwd() / 'weather_downloads' if download_dir is None else download_dir
+from project_backend.models import WeatherData
+from django.db.utils import IntegrityError
+from celery import shared_task
 
-    def get_time(self, time: int, output_path=None, overwrite=True):
-
-        output_path = self.default_download_dir if output_path is None else output_path
-
-        output_path.mkdir(exist_ok=True)
-
-        download_filename = self.filename + str(time).rjust(3, '0')
-        self.logger.info(f'download {download_filename} to {output_path}')
-        download_path = output_path / download_filename.split('/')[-1]
-
-        if download_path.exists():
-            if overwrite:
-                download_path.unlink()
-            else:
-                raise FileExistsError("file exists and overwrite is not set")
-
-        with requests.get(download_filename, stream=True) as r:
-            r.raise_for_status()
-            with open(download_path, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    f.write(chunk)
-
-        # This should only happen if the download was successful
-        self.downloaded_files.append(download_path)
-
-        return download_path
-
-    def cleanup(self):
-        for filepath in self.downloaded_files:
-            self.logger.info(f'Deleting {filepath}')
-            filepath.unlink()
-
-        self.downloaded_files.clear()
-
-
-if __name__ == '__main__':
+@shared_task(name = "daily_download")
+def download():
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     logging.basicConfig(filename=f'downloads_{datetime.date.today()}.log', filemode='w', level=logging.DEBUG)
@@ -98,19 +66,34 @@ if __name__ == '__main__':
                 rows, cols = value.shape
                 for row in range(rows):
                     for col in range(cols):
+                        # try:
+                        #     d , _= WeatherData.objects.get_or_create(height=0.0,
+                        #         value_type=key,
+                        #         time=time_str,
+                        #         source='NOAA',
+                        #         unit_of_measurement='NaN',
+                        #         location_x=col,
+                        #         location_y=row,
+                        #         value=value[row, col])
+                        #
+                        #     d.save()
+                        # except IntegrityError as e:
+                        #     print('encountered error at', key,
+                        #         time_str, e
+                        #         )
                         inserts.append(WeatherData(
                             height=0.0,
                             value_type=key,
                             time=time_str,
                             source='NOAA',
                             unit_of_measurement='NaN',
-                            location_x=cols,
-                            location_y=rows,
+                            location_x=col,
+                            location_y=row,
                             value=value[row, col]
                         ))
 
                 saved = WeatherData.objects.bulk_create(inserts)
-                saved.save()
+
             # for key, value in downloaded_data.items():
             #     rows, cols = value.shape
             #     outputStr = '\n'.join(
@@ -119,3 +102,5 @@ if __name__ == '__main__':
             dl.cleanup()
 
     dl.cleanup()
+if __name__ == '__main__':
+    download()

@@ -13,10 +13,11 @@ class WeatherData(models.Model):
     unit_of_measurement = models.TextField()
     location_x = models.IntegerField()
     location_y = models.IntegerField()
+    value = models.FloatField()
 
     # Made source,x,y,time unique
     class Meta:
-        unique_together = ('value_type', 'time', 'source', 'location_x', 'location_y', 'source')
+        unique_together = ('value_type', 'time', 'source', 'location_x', 'location_y')
 
 
 class WindmillType(models.Model):
