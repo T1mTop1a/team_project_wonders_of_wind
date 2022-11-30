@@ -1,19 +1,71 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
 from windpowerlib import ModelChain, WindTurbine, create_power_curve
 from windpowerlib import data as wt
 import io
 import pandas as pd
 import os
 import json
+from project_backend import forms
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth.models import User
+from urllib.parse import urlparse, urlencode
 
 # Create your views here.
 
 
 def index(request):
     return HttpResponse('hello word')
+
+@csrf_exempt
+def login(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest()
+    referer = request.META.get('HTTP_REFERER')
+    if not referer:
+        return HttpResponseBadRequest()
+    referer = urlparse(referer)._replace(path = '/login')
+    try:
+        form = forms.LoginForm(request.POST)
+        if not form.is_valid():
+            raise Exception()
+        try:
+            user = form.save()
+            if not user:
+                raise Exception()
+            # TODO: do something with user
+        except Exception as e:
+            referer = referer._replace(path = '/login', query = 'error=wrongCredentials').geturl()
+            return HttpResponseRedirect(referer)
+        referer = referer._replace(path = '/').geturl()
+        return HttpResponseRedirect(referer)
+    except:
+        referer = referer._replace(path = '/login', query = 'error=unknownError').geturl()
+        return HttpResponseRedirect(referer)
+
+
+@csrf_exempt
+def signup(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest()
+    referer = request.META.get('HTTP_REFERER')
+    if not referer:
+        return HttpResponseBadRequest()
+    referer = urlparse(referer)._replace(path = '/signup')
+    try:
+        form = forms.SignUpForm(request.POST)
+        if not form.is_valid():
+            raise Exception()
+        try:
+            form.save()
+        except Exception as e:
+            referer = referer._replace(path = '/signup', query = 'error=alreadyExists').geturl()
+            return HttpResponseRedirect(referer)
+        referer = referer._replace(path = '/').geturl()
+        return HttpResponseRedirect(referer)
+    except:
+        referer = referer._replace(path = '/signup', query = 'error=unknownError').geturl()
+        return HttpResponseRedirect(referer)
 
 
 @csrf_exempt

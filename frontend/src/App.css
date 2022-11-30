@@ -1,5 +1,5 @@
 .App {
-  background-color: #6D835C;
+  background-color: #6d835c;
   position: absolute;
   top: 0;
   right: 0;
@@ -43,7 +43,7 @@
 }
 
 #chartContainer {
-  background: #FBFCFF;
+  background: #fbfcff;
   margin-left: 63px;
   margin-right: 63px;
   height: 480px;
@@ -51,12 +51,12 @@
 }
 
 .inputBox::placeholder {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
   line-height: 30px;
   display: flex;
   align-items: center;
-  opacity: .5;
+  opacity: 0.5;
 }
