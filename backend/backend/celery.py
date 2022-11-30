@@ -2,7 +2,7 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 from celery import Celery
-from dataloader import tasks
+# from dataloader import tasks
 from celery.schedules import crontab
 
 from celery.schedules import crontab
@@ -30,28 +30,13 @@ def debug_task(self):
 
 app.conf.beat_schedule = {
     # Scheduler Name
-    'print-message-ten-seconds': {
+    'download every 1am': {
         # Task Name (Name Specified in Decorator)
-        'task': 'print_msg_main',
+        'task': 'daily_download',
         # Schedule
-        'schedule': 10.0,
+        'schedule': crontab(minute='0', hour='1'),
         # Function Arguments
-        'args': ("Hello",)
+
     },
-    # Scheduler Name
-    'print-time-twenty-seconds': {
-        # Task Name (Name Specified in Decorator)
-        'task': 'print_time',
-        # Schedule
-        'schedule': 20.0,
-    },
-    # Scheduler Name
-    'calculate-forty-seconds': {
-        # Task Name (Name Specified in Decorator)
-        'task': 'get_calculation',
-        # Schedule
-        'schedule': 40.0,
-        # Function Arguments
-        'args': (10, 20)
-    },
+
 }
