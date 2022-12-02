@@ -13,6 +13,7 @@ ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
 ENV DATABASE_HOST=${DATABASE_HOST}
 ENV DATABASE_PORT=${DATABASE_PORT}
 
-RUN   pip install -r requirements.txt
+RUN   pip install -r requirements.txt && \
+      python manage.py collectstatic --noinput
 EXPOSE 8000
 CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]

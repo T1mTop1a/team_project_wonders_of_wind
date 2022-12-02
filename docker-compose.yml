@@ -37,13 +37,13 @@ services:
     networks:
       - backend
       - gateway
-  frontend:
-    container_name: frontend
-    image: frontend
+  gateway:
+    container_name: wow-nginx
+    image: wow-nginx
     build:
-      context: ./frontend
+      context: .
     ports:
-      - 3000:3000
+      - 80:80
     depends_on:
       backend:
         condition: service_started
