@@ -1,7 +1,18 @@
 FROM python:3
 COPY . /backend
 WORKDIR /backend
-RUN   pip install -r requirements.txt && \
-      python manage.py testserver
+ARG DATABASE_NAME
+ARG DATABASE_USER
+ARG DATABASE_PASSWORD
+ARG DATABASE_HOST
+ARG DATABASE_PORT
+
+ENV DATABASE_NAME=${DATABASE_NAME}
+ENV DATABASE_USER=${DATABASE_USER}
+ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
+ENV DATABASE_HOST=${DATABASE_HOST}
+ENV DATABASE_PORT=${DATABASE_PORT}
+
+RUN   pip install -r requirements.txt
 EXPOSE 8000
 CMD [ "python", "manage.py", "runserver" ]
