@@ -23,12 +23,12 @@ services:
     image: backend
     build:
       context: ./backend
-      args:
-        DATABASE_NAME: wow
-        DATABASE_USER: postgres
-        DATABASE_PASSWORD: postgres
-        DATABASE_HOST: db
-        DATABASE_PORT: 5432
+    environment:
+      - DATABASE_NAME=wow
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
     ports:
       - 8000:8000
     depends_on:
