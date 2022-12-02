@@ -6,6 +6,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=wow
     ports:
       - 5432:5432
     volumes: 
@@ -35,6 +36,7 @@ services:
         condition: service_healthy
     networks:
       - backend
+      - gateway
   frontend:
     container_name: frontend
     image: frontend
@@ -45,8 +47,11 @@ services:
     depends_on:
       backend:
         condition: service_started
+    networks:
+      - gateway
 volumes:
   db:
     driver: local
 networks:
-  backend:
+  backend: {}
+  gateway: {}
