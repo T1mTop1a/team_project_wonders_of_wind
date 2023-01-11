@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=wow
+    volumes: 
+      - db:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  backend:
+    container_name: backend
+    image: backend
+    build:
+      context: ./backend
+    environment:
+      - DATABASE_NAME=wow
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+    ports:
+      - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend
+      - gateway
+  gateway:
+    container_name: wow-nginx
+    image: wow-nginx
+    build:
+      context: .
+    ports:
+      - 80:80
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - gateway
+volumes:
+  db:
+    driver: local
+networks:
+  backend: {}
+  gateway: {}
