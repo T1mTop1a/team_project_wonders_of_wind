@@ -1,5 +1,4 @@
 from __future__ import absolute_import, unicode_literals
-from celery import shared_task
 from datetime import datetime
 from dataloader.dataloader import DataLoader
 import pygrib
@@ -8,7 +7,6 @@ from pathlib import Path
 import logging
 import numpy as np
 
-@shared_task('download_update')
 def download_update():
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
@@ -48,6 +46,5 @@ def download_update():
             dl.cleanup()
     dl.cleanup()
 
-
-
-
+if __name__ == "__main__":
+    download_update()

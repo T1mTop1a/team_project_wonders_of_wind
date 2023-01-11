@@ -162,5 +162,4 @@ cython_debug/
 
 #Env
 /env
-project_backend/migrations/
 *forecasts*.csv

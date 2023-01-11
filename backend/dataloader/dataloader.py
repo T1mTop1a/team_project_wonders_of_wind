@@ -20,7 +20,7 @@ class DataLoader:
         self.noaa_backend = 'https://nomads.ncep.noaa.gov/pub/data/nccf/com/gfs/prod'
 
         day, month, year = date.day, date.month, date.year
-        self.filename = f"{self.noaa_backend}/gfs.{year}{month}{day}/{model_cycle}/atmos/gfs.t{model_cycle}z.pgrb2.{degree_resolution}.f"
+        self.filename = f"{self.noaa_backend}/gfs.{year}{month:02}{day:02}/{model_cycle}/atmos/gfs.t{model_cycle}z.pgrb2.{degree_resolution}.f"
         self.logger.debug(f'filename = {self.filename}')
         self.downloaded_files = []
 
