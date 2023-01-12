@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,700");
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+
 
 .box {
     position: relative;
@@ -12,6 +14,7 @@
 }
 
 .title{
+    font-family: 'Abril Fatface', cursive;
     margin-left: 2rem;
     color: #193c0d;
     text-align: left;
@@ -50,6 +53,7 @@
 }
 
 .smallBox2{
+    font-family: 'Abril Fatface', cursive;
     position: relative;
     margin: auto;
     color: white;

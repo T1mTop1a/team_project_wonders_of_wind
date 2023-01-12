@@ -24,17 +24,13 @@
     left: 433px;
     top: 295px;
     border: 0;
-    font-family: Roboto;
-    font-weight: 600;
+    font-family: Abril Fatface;
+    font-weight: lighter;
     font-size: 20px;
     color: #FFFFFF;
     margin-right: 10;
     margin-left: auto;
 }
-
-.chart1 {
-}
-
 
 .inputBox::placeholder {
     font-family: Arial, Helvetica, sans-serif;

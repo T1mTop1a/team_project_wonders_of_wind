@@ -20,7 +20,7 @@ const Header = () => {
               variant="h6"
               align="left"
               component="div"
-              sx={{ mr: 2, flexGrow: 1 }}
+              sx={{fontFamily: 'Abril Fatface', fontSize: '32px',textTransform: 'none', mr: 2, flexGrow: 1 }}
             >
               {appName}
             </Button>
