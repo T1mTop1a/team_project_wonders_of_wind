@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "./home.js";
 import "./css/signupLogin.css";
-import { Link } from "react-router-dom";
 
 const LogIn = () => {
   const InputBox = (props) => {

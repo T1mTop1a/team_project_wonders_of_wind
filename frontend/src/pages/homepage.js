@@ -1,12 +1,5 @@
-//import React from "react";
-//import './home.css';
 import Header from "./home.js";
-
 import React, { useState, useEffect } from "react";
-// import AppBar from "@mui/material/AppBar";
-// import Toolbar from "@mui/material/Toolbar";
-// import Typography from "@mui/material/Typography";
-// import Button from "@mui/material/Button";
 import Chart from "chart.js/auto";
 
 import { Line } from "react-chartjs-2";
