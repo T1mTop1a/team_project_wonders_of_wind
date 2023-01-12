@@ -1,7 +1,9 @@
 import Header from "./home.js";
-import React, { useState, useEffect } from "react";
-import Chart from "chart.js/auto";
+import "./css/homepage.css"
 
+import React, { useState, useEffect } from "react";
+
+import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -67,7 +69,7 @@ const Home = () => {
             options={{ maintainAspectRatio: false }}
           />
         </div>
-        <div
+        <div 
           style={{
             float: "right",
             width: "40%",
@@ -113,19 +115,11 @@ const Home = () => {
   const InputBox = (props) => {
     return (
       <div>
-        <input
-          class="inputBox"
-          style={{
-            width: "500px",
-            height: "50px",
-            marginLeft: "64px",
-            marginTop: "3px",
-            marginBottom: "3px",
-            textIndent: "10px",
-          }}
+        <input class="inputBox"
           placeholder={props.text}
           id={props.id}
-        ></input>
+        >
+        </input>
       </div>
     );
   };
@@ -133,40 +127,15 @@ const Home = () => {
   return (
     <div className="base">
       <Header />
-      <form
+      <form className= "top"
         style={{
           marginTop: "56px",
         }}
       >
         <InputBox text="input your turbine location" />
         <InputBox text="input your turbine model" />
-        <div
-          style={{
-            width: "500px",
-            height: "50px",
-            marginLeft: "70px",
-            marginTop: "9px",
-            marginBottom: "14px",
-            alignContent: "right",
-            display: "flex",
-          }}
-        >
-          <button
-            style={{
-              background: "#193C0D",
-              width: "128px",
-              height: "51px",
-              left: "433px",
-              top: "295px",
-              border: "0",
-              fontFamily: "Roboto",
-              fontWeight: "600",
-              fontSize: "20px",
-              color: "#FFFFFF",
-              marginRight: "0",
-              marginLeft: "auto",
-            }}
-          >
+        <div className="searchButtonPosition">
+          <button className="searchButton">
             Search
           </button>
         </div>
