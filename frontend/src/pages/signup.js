@@ -63,7 +63,7 @@ const SignUp = () => {
           <div className="labelSignup">Password</div>
           <InputBox2 name="password" type="password"></InputBox2>
 
-          <button className="smallBox2Signup" type="submit">
+          <button className="smallBox2Signup" type="submit" data-testid="signup button">
             SIGN UP
           </button>
           <p className="lSignup">

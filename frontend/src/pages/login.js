@@ -64,6 +64,7 @@ const LogIn = () => {
             type="submit"
             style={{ textDecoration: "none" }}
             className="smallBox2login"
+            data-testid="login button"
           >
             LOG IN
           </button>
