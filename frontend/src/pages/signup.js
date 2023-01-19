@@ -1,15 +1,13 @@
 import Header from "./home.js";
 import React from "react";
-import { Link } from "react-router-dom";
-import "./signup.css";
-import { useState } from "react";
+import "./css/signupLogin.css";
 
 const SignUp = () => {
   const InputBox2 = (props) => {
     return (
       <div>
         <input
-          className="smallBoxSignup"
+          className="smallBox smallBoxSignup"
           placeholder={props.text}
           name={props.name}
           type={props.type}
@@ -31,7 +29,7 @@ const SignUp = () => {
   return (
     <div className="base">
       <Header />
-      <div className="signupBox">
+      <div className="box">
         <form
           method="POST"
           action={`${process.env.REACT_APP_BACKEND}/api/v1/signup`}
@@ -52,21 +50,21 @@ const SignUp = () => {
             }
           })()}
 
-          <h1 className="titleSignup">Sign Up</h1>
+          <h1 className="title">Sign Up</h1>
 
-          <div className="labelSignup">Name </div>
+          <div className="label">Name </div>
           <InputBox2 name="name" type="text"></InputBox2>
 
-          <div className="labelSignup">Email</div>
+          <div className="label">Email</div>
           <InputBox2 name="email" type="email"></InputBox2>
 
-          <div className="labelSignup">Password</div>
+          <div className="label">Password</div>
           <InputBox2 name="password" type="password"></InputBox2>
 
-          <button className="smallBox2Signup" type="submit">
+          <button className="smallBox2" type="submit">
             SIGN UP
           </button>
-          <p className="lSignup">
+          <p className="labelLink">
             Already have an account? <br />
             <a href="/login">Log in</a>
           </p>

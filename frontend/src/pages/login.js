@@ -1,14 +1,13 @@
 import React from "react";
 import Header from "./home.js";
-import "./login.css";
-import { Link } from "react-router-dom";
+import "./css/signupLogin.css";
 
 const LogIn = () => {
   const InputBox = (props) => {
     return (
       <div>
         <input
-          className="smallBoxLogin"
+          className="smallBox smallBoxlogin"
           placeholder={props.text}
           name={props.name}
           type={props.type}
@@ -30,8 +29,8 @@ const LogIn = () => {
   return (
     <div className="base">
       <Header />
-      <h2 className="welcome">Welcome Back!</h2>
-      <div className="loginBox">
+      <h2 className="welcomeLogin">Welcome Back!</h2>
+      <div className="box">
         <form
           method="POST"
           action={`${process.env.REACT_APP_BACKEND}/api/v1/login`}
@@ -52,22 +51,22 @@ const LogIn = () => {
             }
           })()}
 
-          <h1 className="titleLogin">Log In</h1>
+          <h1 className="title">Log In</h1>
 
-          <div className="labelLogin">Email</div>
+          <div className="label">Email</div>
           <InputBox name="email" type="email"></InputBox>
 
-          <div className="labelLogin">Password</div>
+          <div className="label">Password</div>
           <InputBox name="password" type="password"></InputBox>
 
           <button
             type="submit"
             style={{ textDecoration: "none" }}
-            className="smallBox2login"
+            className="smallBox2"
           >
             LOG IN
           </button>
-          <p className="lLogin">
+          <p className="labelLink">
             Don't have an account? <br />
             <a href="/signup">SignUp</a>
           </p>

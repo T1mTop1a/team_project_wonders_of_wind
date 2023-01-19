@@ -1,0 +1,52 @@
+.inputBox {
+    width: 500px;
+    height: 50px;
+    margin-left: 64px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    text-indent: 10px;
+}
+
+.searchButtonPosition{
+    width: 500px;
+    height: 50px;
+    margin-left: 70px;
+    margin-top: 9px;
+    margin-bottom: 14px;
+    align-content: right;
+    display: flex;
+  }
+
+.searchButton {
+    background: #193C0D;
+    width: 128px;
+    height: 51px;
+    left: 433px;
+    top: 295px;
+    border: 0;
+    font-family: Abril Fatface;
+    font-weight: lighter;
+    font-size: 20px;
+    color: #FFFFFF;
+    margin-right: 10;
+    margin-left: auto;
+}
+
+.inputBox::placeholder {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+  }
+
+#chartContainer {
+    background: #fbfcff;
+    margin-left: 63px;
+    margin-right: 63px;
+    height: 480px;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
