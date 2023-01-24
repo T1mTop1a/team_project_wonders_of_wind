@@ -1,0 +1,24 @@
+.EditTurbine {
+  background-color: #6d835c;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mui-text-field {
+  width: 500px;
+  height: 50px;
+  margin-left: 64px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  text-indent: 10px;
+}
