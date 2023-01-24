@@ -11,14 +11,6 @@ import importlib
 from dataloader.dataloader import DataLoader
 
 
-import environ
-
-env = environ.Env()
-# reading .env file
-environ.Env.read_env()
-
-
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings")
 import django
 
@@ -26,9 +18,8 @@ django.setup()
 
 from project_backend.models import WeatherData
 from django.db.utils import IntegrityError
-from celery import shared_task
 
-@shared_task(name = "daily_download")
+
 def download():
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
@@ -66,21 +57,7 @@ def download():
                 rows, cols = value.shape
                 for row in range(rows):
                     for col in range(cols):
-                        # try:
-                        #     d , _= WeatherData.objects.get_or_create(height=0.0,
-                        #         value_type=key,
-                        #         time=time_str,
-                        #         source='NOAA',
-                        #         unit_of_measurement='NaN',
-                        #         location_x=col,
-                        #         location_y=row,
-                        #         value=value[row, col])
-                        #
-                        #     d.save()
-                        # except IntegrityError as e:
-                        #     print('encountered error at', key,
-                        #         time_str, e
-                        #         )
+
                         inserts.append(WeatherData(
                             height=0.0,
                             value_type=key,
