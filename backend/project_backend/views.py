@@ -10,12 +10,17 @@ from project_backend import forms
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from urllib.parse import urlparse, urlencode
+from project_backend.models import WindmillType
+from django.core import serializers
+
+
 
 # Create your views here.
 
 
 def index(request):
     return HttpResponse('hello word')
+
 
 @csrf_exempt
 def login(request):
@@ -24,7 +29,7 @@ def login(request):
     referer = request.META.get('HTTP_REFERER')
     if not referer:
         return HttpResponseBadRequest()
-    referer = urlparse(referer)._replace(path = '/login')
+    referer = urlparse(referer)._replace(path='/login')
     try:
         form = forms.LoginForm(request.POST)
         if not form.is_valid():
@@ -35,12 +40,12 @@ def login(request):
                 raise Exception()
             # TODO: do something with user
         except Exception as e:
-            referer = referer._replace(path = '/login', query = 'error=wrongCredentials').geturl()
+            referer = referer._replace(path='/login', query='error=wrongCredentials').geturl()
             return HttpResponseRedirect(referer)
-        referer = referer._replace(path = '/').geturl()
+        referer = referer._replace(path='/').geturl()
         return HttpResponseRedirect(referer)
     except:
-        referer = referer._replace(path = '/login', query = 'error=unknownError').geturl()
+        referer = referer._replace(path='/login', query='error=unknownError').geturl()
         return HttpResponseRedirect(referer)
 
 
@@ -51,7 +56,7 @@ def signup(request):
     referer = request.META.get('HTTP_REFERER')
     if not referer:
         return HttpResponseBadRequest()
-    referer = urlparse(referer)._replace(path = '/signup')
+    referer = urlparse(referer)._replace(path='/signup')
     try:
         form = forms.SignUpForm(request.POST)
         if not form.is_valid():
@@ -59,12 +64,12 @@ def signup(request):
         try:
             form.save()
         except Exception as e:
-            referer = referer._replace(path = '/signup', query = 'error=alreadyExists').geturl()
+            referer = referer._replace(path='/signup', query='error=alreadyExists').geturl()
             return HttpResponseRedirect(referer)
-        referer = referer._replace(path = '/').geturl()
+        referer = referer._replace(path='/').geturl()
         return HttpResponseRedirect(referer)
     except:
-        referer = referer._replace(path = '/signup', query = 'error=unknownError').geturl()
+        referer = referer._replace(path='/signup', query='error=unknownError').geturl()
         return HttpResponseRedirect(referer)
 
 
@@ -89,3 +94,9 @@ def example_response(request):
         response.append({"date": str(date), "power": data})
 
     return JsonResponse(response, safe=False)
+
+
+@csrf_exempt
+def turbines(request):
+    data = list(WindmillType.objects.values('model_name', 'modelId'))
+    return JsonResponse(data, safe=False)

@@ -32,7 +32,10 @@ SECRET_KEY = 'django-insecure-&wv6ot8o2a^s+lhdm*@0sdometl1)x#p=&g81o(9lweoi@5p#a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'backend' ]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'teamprojectbackend.lorneb.com', 'backend']
+
+
+
 
 
 # Application definition
@@ -148,6 +151,10 @@ STATIC_ROOT = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = ['https://teamprojectbackend.lorneb.com']
+
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 
