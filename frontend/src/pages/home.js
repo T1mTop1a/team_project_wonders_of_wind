@@ -25,6 +25,9 @@ const Header = () => {
               {appName}
             </Button>
           </Link>
+          <Link to="/viewTurbines">
+            <Button class="linkBoxes">my Turbines </Button>
+          </Link>
           <Link to="/login">
             <Button class="linkBoxes">Login </Button>
           </Link>
