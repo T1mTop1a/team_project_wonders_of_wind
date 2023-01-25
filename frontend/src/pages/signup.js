@@ -61,7 +61,7 @@ const SignUp = () => {
           <div className="label">Password</div>
           <InputBox2 name="password" type="password"></InputBox2>
 
-          <button className="smallBox2" type="submit">
+          <button className="smallBox2" type="submit" data-testid="signup button">
             SIGN UP
           </button>
           <p className="labelLink">

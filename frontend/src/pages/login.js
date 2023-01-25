@@ -63,7 +63,7 @@ const LogIn = () => {
             type="submit"
             style={{ textDecoration: "none" }}
             className="smallBox2"
-          >
+            data-testid="login button">
             LOG IN
           </button>
           <p className="labelLink">
