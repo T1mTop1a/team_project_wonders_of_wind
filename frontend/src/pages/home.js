@@ -1,16 +1,12 @@
 import React from "react";
-import "./home.css";
-//import Home from './homepage.js';
+import "./css/home.css";
 import { Link } from "react-router-dom";
 
-//import './App.css';
-//import React, { useState, useEffect }  from 'react';
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 //import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-//var moment = require('moment-timezone');
 
 const Header = () => {
   let appName = "Wonders of Wind";
@@ -25,7 +21,7 @@ const Header = () => {
               variant="h6"
               align="left"
               component="div"
-              sx={{ mr: 2, flexGrow: 1 }}
+              sx={{fontFamily: 'Abril Fatface', fontSize: '32px',textTransform: 'none', mr: 2, flexGrow: 1 }}
             >
               {appName}
             </Button>
