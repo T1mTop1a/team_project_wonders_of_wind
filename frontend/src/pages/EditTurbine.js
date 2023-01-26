@@ -1,14 +1,20 @@
 //This is the page that allows you to add or edit a turbine
 import React, { useState } from "react";
-import "./css/home.css"; 
-import Header from "./home.js"; 
+import "./css/home.css";
+import Header from "./home.js";
 import "./css/EditTurbine.css";
 import { TextField, Button } from "@mui/material";
+import { default as Select } from 'react-select';
+
 
 const EditTurbine = () => {
-    const [turbineName, setTurbineName] = useState('');
-    const [turbineId, setTurbineId] = useState('');
-    const [turbineCapacity, setTurbineCapacity] = useState('');
+    const [turbineName, setTurbineName] = useState('');//Turbine name
+    const [turbineLongitude, setTurbineLongitude] = useState('');//Turbine longitude
+    const [turbineLatitude, setTurbineLatitude] = useState('');//Turbine latitude
+    const [isLatitudeValid, setIsLatitudeValid] = useState(true);//is latitude valid
+    const [isLongitudeValid, setIsLongitudeValid] = useState(true);//is longitude valid
+    const [selectedTurbineModel, setSelectedTurbineModel] = useState(null);//selected turbine model
+    const [defaultTurbineModels, setDefaultTurbineModels] = useState([]);//default turbine models
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -16,7 +22,7 @@ const EditTurbine = () => {
             const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ turbineName, turbineId, turbineCapacity }),
+                body: JSON.stringify({ turbineName, turbineLongitude, turbineLatitude }),
             });
             if (!response.ok) {
                 throw new Error(response.statusText);
@@ -26,6 +32,21 @@ const EditTurbine = () => {
             console.error(error);
         }
     };
+
+    const loadDefaultTurbineModels = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`);
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            const data = await response.json();
+            setDefaultTurbineModels(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
 
     return (
         <div className="EditTurbine">
@@ -37,22 +58,39 @@ const EditTurbine = () => {
                     onChange={(event) => setTurbineName(event.target.value)}
                 />
                 <TextField
-                    label="Turbine ID"
-                    value={turbineId}
-                    onChange={(event) => setTurbineId(event.target.value)}
+                    label="Turbine Longitude"
+                    value={turbineLongitude}
+                    onChange={(event) => {
+                        if (!isNaN(event.target.value)) {
+                            setTurbineLongitude(event.target.value);
+                            setIsLongitudeValid(true);
+                        } else {
+                            setIsLongitudeValid(false);
+                        }
+                    }}
                 />
                 <TextField
-                    label="Turbine Capacity"
-                    value={turbineCapacity}
-                    onChange={(event) => setTurbineCapacity(event.target.value)}
+                    label="Turbine Latitude"
+                    value={turbineLatitude}
+                    onChange={(event) => {
+                        if (!isNaN(event.target.value)) {
+                            setTurbineLatitude(event.target.value);
+                            setIsLatitudeValid(true);
+                        } else {
+                            setIsLatitudeValid(false);
+                        }
+                    }}
                 />
-                <Button type="submit">Add Turbine</Button>
+                <Select
+                    options={defaultTurbineModels}
+                    value={selectedTurbineModel}
+                    onChange={(selectedOption) => setSelectedTurbineModel(selectedOption)}
+                    placeholder="Select a turbine model"
+                />
+                <Button type="submit" disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel}>Add Turbine</Button>
             </form>
         </div>
     );
 };
 
 export default EditTurbine;
-
-
-
