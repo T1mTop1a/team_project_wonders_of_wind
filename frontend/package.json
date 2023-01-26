@@ -12,6 +12,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "chart.js": "^3.9.1",
+    "enzyme": "^3.11.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.38",
     "react": "^18.2.0",
@@ -46,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.20.2",
     "prettier": "2.8.0"
   }
 }

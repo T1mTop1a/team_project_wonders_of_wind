@@ -17,6 +17,7 @@ const Header = () => {
         <Toolbar>
           <Link style={{ textDecoration: "none" }} to="/" className="link">
             <Button
+              data-testid="nav button"
               variant="h6"
               align="left"
               component="div"
