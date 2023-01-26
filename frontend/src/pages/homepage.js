@@ -11,6 +11,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import select from "react-select";
+import React, { useEffect, useState } from 'react';
 
 var moment = require("moment-timezone");
 
@@ -29,7 +31,7 @@ const Home = () => {
       },
     ],
   });
-
+  
   const [chartData, setChartData] = useState(createChartData([], [], []));
 
   function formatDateTime(dateString) {
@@ -124,6 +126,21 @@ const Home = () => {
     );
   };
 
+  const [modelList, setModelList] = useState([]);
+
+
+  useEffect(() => {
+    let mounted = true;
+    fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`)
+    .then(data => data.json())
+    .then(items => {
+      if (mounted){
+        setModelList(items)
+      }
+    });
+    return () => mounted = false;
+  }, []);
+
   return (
     <div className="base">
       <Header />
@@ -132,8 +149,11 @@ const Home = () => {
           marginTop: "56px",
         }}
       >
-        <InputBox text="input your turbine location" />
-        <InputBox text="input your turbine model" />
+        <InputBox type="number" text="input your turbine latitude" />
+        <InputBox type="number" text="input your turbine longitude" />
+        <select 
+          options={modelList.map(opt => ({ label: item.model_name, value: item.modelId }))}
+        />
         <div className="searchButtonPosition">
           <button className="searchButton">
             Search
