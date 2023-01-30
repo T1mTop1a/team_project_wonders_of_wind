@@ -6,7 +6,6 @@ import "./css/EditTurbine.css";
 import { TextField, Button } from "@mui/material";
 import { default as Select } from 'react-select';
 
-
 const EditTurbine = () => {
     const [turbineName, setTurbineName] = useState('');//Turbine name
     const [turbineLongitude, setTurbineLongitude] = useState('');//Turbine longitude
@@ -36,6 +35,7 @@ const EditTurbine = () => {
     const loadDefaultTurbineModels = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`);
+            console.log(response);
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
@@ -45,6 +45,7 @@ const EditTurbine = () => {
             console.error(error);
         }
     };
+
 
 
 
@@ -86,6 +87,13 @@ const EditTurbine = () => {
                     value={selectedTurbineModel}
                     onChange={(selectedOption) => setSelectedTurbineModel(selectedOption)}
                     placeholder="Select a turbine model"
+                    styles={{
+                        control: (base, state) => ({
+                            ...base,
+                            width: '200px',
+                            height: '50px',
+                        }),
+                    }}
                 />
                 <Button type="submit" disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel}>Add Turbine</Button>
             </form>
