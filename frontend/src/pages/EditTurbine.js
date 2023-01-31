@@ -17,7 +17,10 @@ const EditTurbine = () => {
 
     useEffect(() => {
         loadDefaultTurbineModels();
+        
     }, []);
+
+    console.log(defaultTurbineModels); 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -44,11 +47,13 @@ const EditTurbine = () => {
                 throw new Error(response.statusText);
             }
             const data = await response.json();
+            console.log(data); 
             setDefaultTurbineModels(
                 data.map((turbine) => ({
-                    value: turbine.id,
-                    label: turbine.name,
+                    value: turbine["modelId"],
+                    label: turbine["model_name"],
                 })));
+            
         } catch (error) {
             console.error(error);
         }
