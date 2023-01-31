@@ -1,5 +1,5 @@
 //This is the page that allows you to add or edit a turbine
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import "./css/home.css";
 import Header from "./home.js";
 import "./css/EditTurbine.css";
@@ -14,6 +14,10 @@ const EditTurbine = () => {
     const [isLongitudeValid, setIsLongitudeValid] = useState(true);//is longitude valid
     const [selectedTurbineModel, setSelectedTurbineModel] = useState(null);//selected turbine model
     const [defaultTurbineModels, setDefaultTurbineModels] = useState([]);//default turbine models
+
+    useEffect(() => {
+        loadDefaultTurbineModels();
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -40,14 +44,15 @@ const EditTurbine = () => {
                 throw new Error(response.statusText);
             }
             const data = await response.json();
-            setDefaultTurbineModels(data);
+            setDefaultTurbineModels(
+                data.map((turbine) => ({
+                    value: turbine.id,
+                    label: turbine.name,
+                })));
         } catch (error) {
             console.error(error);
         }
     };
-
-
-
 
     return (
         <div className="EditTurbine">
@@ -86,6 +91,7 @@ const EditTurbine = () => {
                     options={defaultTurbineModels}
                     value={selectedTurbineModel}
                     onChange={(selectedOption) => setSelectedTurbineModel(selectedOption)}
+                    isSearchable
                     placeholder="Select a turbine model"
                     styles={{
                         control: (base, state) => ({
