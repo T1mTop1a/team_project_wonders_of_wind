@@ -12,7 +12,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import select from "react-select";
-import React, { useEffect, useState } from 'react';
 
 var moment = require("moment-timezone");
 
@@ -152,7 +151,9 @@ const Home = () => {
         <InputBox type="number" text="input your turbine latitude" />
         <InputBox type="number" text="input your turbine longitude" />
         <select 
-          options={modelList.map(opt => ({ label: item.model_name, value: item.modelId }))}
+            className="modelDropDown"
+            options={modelList.map(opt => ({ label: opt.model_name, value: opt.modelId }))}
+            onChange={opt => console.log(opt.label, opt.value)}
         />
         <div className="searchButtonPosition">
           <button className="searchButton">
