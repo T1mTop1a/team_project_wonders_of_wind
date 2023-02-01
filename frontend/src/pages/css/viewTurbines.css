@@ -9,25 +9,49 @@
 
 .addTurbineButton{
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     color: #596a4b;
     border-radius: 10px;
     text-align: centre;
     font-size: large;
     background: white;
     border: 1px solid #596a4b;
+    
 }
 
 .addTurbineButton:hover{
     color: white;
     background: #596a4b;
+}
 
+.turbineLabel{
+    margin-left: 2rem;
+    margin-top: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-size: large;
+    color: #193c0d;
 }
 
 .turbinebox{
     margin-top: 10px;
     height: 50%;
     width: 500px;
+    overflow-y: scroll;
+}
+.turbinebox::-webkit-scrollbar{
+    width: 12px;
+}
+
+.turbinebox::-webkit-scrollbar-track{
+    background: #6d835c;
+    width: 7px;
+}
+
+.turbinebox::-webkit-scrollbar-thumb {
+    background-color: white;   
+    border-radius: 20px;      
+    border: 3.5px solid #6d835c;
 }
 
 .deleteBox {
@@ -42,7 +66,6 @@
     margin: 10px;
     width: 80px;
   }
-
 
 .turbineDetails{
     margin-left: 3rem;
