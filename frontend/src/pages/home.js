@@ -27,7 +27,7 @@ const Header = () => {
             </Button>
           </Link>
           <Link to="/viewTurbines">
-            <Button class="linkBoxes">my Turbines </Button>
+            <Button class="linkBoxes">My turbines </Button>
           </Link>
           <Link to="/login">
             <Button class="linkBoxes">Login </Button>
