@@ -126,6 +126,7 @@ const Home = () => {
   };
 
   const [modelList, setModelList] = useState([]);
+  const [modelList2, setModelList2] = useState([]);
 
 
   useEffect(() => {
@@ -140,16 +141,29 @@ const Home = () => {
     return () => mounted = false;
   }, []);
 
+  useEffect(() => {
+    let mounted = true;
+    fetch(`${process.env.REACT_APP_BACKEND}/api/v1/get_user_turbines`)
+    .then(data => data.json())
+    .then(items => {
+      if (mounted){
+        setModelList2(items)
+      }
+    });
+    return () => mounted = false;
+  }, []);
+
   return (
     <div className="base">
       <Header />
-      <form className= "top"
+      <form className= "newTurbine"
         style={{
-          marginTop: "56px",
+          float: "left",
         }}
       >
-        <InputBox type="number" text="input your turbine latitude" />
-        <InputBox type="number" text="input your turbine longitude" />
+        <h3 className="searchTitle">Input New turbine</h3>
+        <InputBox type="number" text="Input your turbine latitude" />
+        <InputBox type="number" text="Input your turbine longitude" />
         <select 
             className="modelDropDown"
             options={modelList.map(opt => ({ label: opt.model_name, value: opt.modelId }))}
@@ -161,6 +175,25 @@ const Home = () => {
           </button>
         </div>
       </form>
+
+      <form className= "userTurbine"
+        style={{
+          float: "left",
+        }}
+      >
+        <h3 className="searchTitle">Select saved turbine</h3>
+        <select 
+            className="modelDropDown"
+            options={modelList2.map(opt => ({ label: opt.model_name, value: opt.modelId }))}
+            onChange={opt => console.log(opt.label, opt.value)}
+        />
+        <div className="searchButtonPosition">
+          <button className="searchButton">
+            Search
+          </button>
+        </div>
+      </form>
+
       <div id="chartContainer">
         <LineChart />
       </div>

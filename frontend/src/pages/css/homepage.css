@@ -32,6 +32,10 @@
     margin-left: auto;
 }
 
+.searchButton:hover {
+  color: #add0a4;
+}
+
 .inputBox::placeholder {
     font-family: Arial, Helvetica, sans-serif;
     font-style: normal;
@@ -45,6 +49,7 @@
 
 #chartContainer {
     background: #fbfcff;
+    margin-top: 350px;
     margin-left: 63px;
     margin-right: 63px;
     height: 480px;
@@ -52,10 +57,18 @@
   }
 
 .modelDropDown {
-  width: 500px;
+  width: 508px;
   height: 50px;
   margin-left: 64px;
   margin-top: 3px;
   margin-bottom: 3px;
   text-indent: 10px;
+}
+
+.searchTitle{
+  font-family: 'Arial', cursive;
+  margin-left: 70px;
+  color: #FFFFFF;
+  text-align: left;
+  margin-bottom: 14px;
 }
