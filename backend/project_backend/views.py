@@ -52,27 +52,34 @@ def login(request):
 
 
 @csrf_exempt
+@api_view(['POST'])
 def signup(request):
-    if request.method != "POST":
-        return HttpResponseBadRequest()
-    referer = request.META.get('HTTP_REFERER')
-    if not referer:
-        return HttpResponseBadRequest()
-    referer = urlparse(referer)._replace(path='/signup')
-    try:
-        form = forms.SignUpForm(request.POST)
-        if not form.is_valid():
-            raise Exception()
+
+    def bad_request():
+        return Response({
+            'error': 'BAD_REQUEST'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    form = forms.SignUpForm(request.POST)
+    if not form.is_valid():
+        return bad_request()
+    else:
         try:
-            form.save()
+            user = form.save()
+            refresh = RefreshToken.for_user(user)
+
+            return Response({
+                'token': str(refresh.access_token),
+                'refresh': str(refresh)
+            }, status=status.HTTP_200_OK)
         except Exception as e:
-            referer = referer._replace(path='/signup', query='error=alreadyExists').geturl()
-            return HttpResponseRedirect(referer)
-        referer = referer._replace(path='/').geturl()
-        return HttpResponseRedirect(referer)
-    except:
-        referer = referer._replace(path='/signup', query='error=unknownError').geturl()
-        return HttpResponseRedirect(referer)
+            return bad_request()
+
+
+
+
+
+
 
 
 @csrf_exempt

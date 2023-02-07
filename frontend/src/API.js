@@ -2,7 +2,7 @@ import jwt_decode from "jwt-decode";
 
 
 const API = {
-    login: async (email, password, err) => {
+    login: async (email, password) => {
         let formData = new FormData();
         formData.append('email', email);
         formData.append('password', password);
@@ -12,6 +12,17 @@ const API = {
         });
 
     },
+    signUp: async (name, email, password) => {
+        let formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('password', password);
+        return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/signup`, {
+            method: "POST",
+            body: formData,
+        });
+    }
+    ,
 
     isLoggedIn: async () => {
         let token = window.localStorage.getItem('accessToken');

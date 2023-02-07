@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import Header from "./home.js";
 import "./css/signupLogin.css";
 import API from "../API";
-import {Redirect, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 const LogIn = () => {
