@@ -14,6 +14,7 @@ from pathlib import Path
 
 import os
 import environ
+from datetime import timedelta
 
 env = environ.Env()
 # reading .env file
@@ -155,6 +156,9 @@ REST_FRAMEWORK = {
     ],
 }
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
+}
 CORS_ORIGIN_ALLOW_ALL = True
 
 CELERY_BROKER_URL = 'redis://localhost:6379'
