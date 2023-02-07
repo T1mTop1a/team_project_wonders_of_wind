@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
+from rest_framework.decorators import permission_classes, api_view
 from windpowerlib import ModelChain, WindTurbine, create_power_curve
 from windpowerlib import data as wt
 import io
@@ -12,8 +13,10 @@ from django.contrib.auth.models import User
 from urllib.parse import urlparse, urlencode
 from project_backend.models import WindmillType
 from django.core import serializers
-
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
+from rest_framework.response import Response
 
 # Create your views here.
 
@@ -23,30 +26,29 @@ def index(request):
 
 
 @csrf_exempt
+@api_view(['POST'])
 def login(request):
-    if request.method != "POST":
-        return HttpResponseBadRequest()
-    referer = request.META.get('HTTP_REFERER')
-    if not referer:
-        return HttpResponseBadRequest()
-    referer = urlparse(referer)._replace(path='/login')
-    try:
-        form = forms.LoginForm(request.POST)
-        if not form.is_valid():
-            raise Exception()
-        try:
-            user = form.save()
-            if not user:
-                raise Exception()
-            # TODO: do something with user
-        except Exception as e:
-            referer = referer._replace(path='/login', query='error=wrongCredentials').geturl()
-            return HttpResponseRedirect(referer)
-        referer = referer._replace(path='/').geturl()
-        return HttpResponseRedirect(referer)
-    except:
-        referer = referer._replace(path='/login', query='error=unknownError').geturl()
-        return HttpResponseRedirect(referer)
+    def unauthorised():
+        return Response({
+            'error': 'NOT_AUTHORISED'
+        }, status=status.HTTP_401_UNAUTHORIZED)
+    print('trying to log in for user with', request)
+    form = forms.LoginForm(request.POST)
+    if not form.is_valid():
+        return unauthorised()
+    else:
+        user = form.save()
+        if not user:
+            return unauthorised()
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            'token': str(refresh.access_token),
+            'refresh': str(refresh)
+        }, status=status.HTTP_200_OK)
+
+
 
 
 @csrf_exempt
@@ -100,3 +102,9 @@ def example_response(request):
 def turbines(request):
     data = list(WindmillType.objects.values('model_name', 'modelId'))
     return JsonResponse(data, safe=False)
+
+
+@api_view(['GET'])
+def must_be_logged_in(request):
+    print(request.user.is_authenticated)
+    return HttpResponse('works')
