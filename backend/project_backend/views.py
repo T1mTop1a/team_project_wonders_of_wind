@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseRedirect
+from rest_framework.decorators import permission_classes, api_view
 from windpowerlib import ModelChain, WindTurbine, create_power_curve
 from windpowerlib import data as wt
 import io
@@ -10,9 +11,13 @@ from project_backend import forms
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from urllib.parse import urlparse, urlencode
-from project_backend.models import WindmillType
+from project_backend.models import WindmillType, UserTurbines
 from django.core import serializers
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import status
+from rest_framework.response import Response
+from django.db.utils import IntegrityError
 
 
 # Create your views here.
@@ -23,54 +28,52 @@ def index(request):
 
 
 @csrf_exempt
+@api_view(['POST'])
 def login(request):
-    if request.method != "POST":
-        return HttpResponseBadRequest()
-    referer = request.META.get('HTTP_REFERER')
-    if not referer:
-        return HttpResponseBadRequest()
-    referer = urlparse(referer)._replace(path='/login')
-    try:
-        form = forms.LoginForm(request.POST)
-        if not form.is_valid():
-            raise Exception()
-        try:
-            user = form.save()
-            if not user:
-                raise Exception()
-            # TODO: do something with user
-        except Exception as e:
-            referer = referer._replace(path='/login', query='error=wrongCredentials').geturl()
-            return HttpResponseRedirect(referer)
-        referer = referer._replace(path='/').geturl()
-        return HttpResponseRedirect(referer)
-    except:
-        referer = referer._replace(path='/login', query='error=unknownError').geturl()
-        return HttpResponseRedirect(referer)
+    def unauthorised():
+        return Response({
+            'error': 'NOT_AUTHORISED'
+        }, status=status.HTTP_401_UNAUTHORIZED)
+
+    print('trying to log in for user with', request)
+    form = forms.LoginForm(request.POST)
+    if not form.is_valid():
+        return unauthorised()
+    else:
+        user = form.save()
+        if not user:
+            return unauthorised()
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            'token': str(refresh.access_token),
+            'refresh': str(refresh)
+        }, status=status.HTTP_200_OK)
 
 
 @csrf_exempt
+@api_view(['POST'])
 def signup(request):
-    if request.method != "POST":
-        return HttpResponseBadRequest()
-    referer = request.META.get('HTTP_REFERER')
-    if not referer:
-        return HttpResponseBadRequest()
-    referer = urlparse(referer)._replace(path='/signup')
-    try:
-        form = forms.SignUpForm(request.POST)
-        if not form.is_valid():
-            raise Exception()
+    def bad_request():
+        return Response({
+            'error': 'BAD_REQUEST'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    form = forms.SignUpForm(request.POST)
+    if not form.is_valid():
+        return bad_request()
+    else:
         try:
-            form.save()
+            user = form.save()
+            refresh = RefreshToken.for_user(user)
+
+            return Response({
+                'token': str(refresh.access_token),
+                'refresh': str(refresh)
+            }, status=status.HTTP_200_OK)
         except Exception as e:
-            referer = referer._replace(path='/signup', query='error=alreadyExists').geturl()
-            return HttpResponseRedirect(referer)
-        referer = referer._replace(path='/').geturl()
-        return HttpResponseRedirect(referer)
-    except:
-        referer = referer._replace(path='/signup', query='error=unknownError').geturl()
-        return HttpResponseRedirect(referer)
+            return bad_request()
 
 
 @csrf_exempt
@@ -100,3 +103,43 @@ def example_response(request):
 def turbines(request):
     data = list(WindmillType.objects.values('model_name', 'modelId'))
     return JsonResponse(data, safe=False)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_turbine_to_profile(request):
+
+    try:
+        turbineModel = WindmillType.objects.get(pk=request.POST['turbineModel'])
+
+        try:
+            turbine = UserTurbines(
+                userId=request.user,
+                modelId=turbineModel,
+                latitude=request.POST['turbineLatitude'],
+                longitude=request.POST['turbineLongitude'],
+                height=request.POST['turbineHeight']
+            )
+
+            turbine.save()
+
+        except IntegrityError as ie:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    except WindmillType.DoesNotExist as dne:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_turbines(request):
+    user_turbines = list(UserTurbines.objects.filter(userId=request.user).values('turbineId', 'height', 'latitude', 'longitude', 'name'))
+    return JsonResponse(user_turbines, safe=False)
+
+
+@api_view(['GET'])
+def must_be_logged_in(request):
+    print(request.user.is_authenticated)
+    return HttpResponse('works')

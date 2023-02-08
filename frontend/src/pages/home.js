@@ -10,6 +10,41 @@ import Button from "@mui/material/Button";
 
 const Header = () => {
   let appName = "Wonders of Wind";
+  const [buttons, setButtons] = useState(<></>);
+
+  function logOutAndRefresh() {
+    API.logOut();
+    window.location.reload();
+  }
+
+  useEffect(() => {
+    API.isLoggedIn().then(loggedIn => {
+      if (loggedIn) {
+        // TODO: wait for Yuan's PR
+        setButtons(
+          <div>
+            <Link to="/">
+              <Button class="linkBoxes">Edit turbines</Button>
+            </Link>
+            <Link to="/">
+              <Button class="linkBoxes" onClick={logOutAndRefresh}>Log out</Button>
+            </Link>
+          </div>
+        );
+      } else {
+        setButtons(
+          <div>
+            <Link to="/login">
+              <Button class="linkBoxes">Login</Button>
+            </Link>
+            <Link to="/signup">
+              <Button class="linkBoxes">Sign up</Button>
+            </Link>
+          </div>
+        );
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -29,12 +64,8 @@ const Header = () => {
           <Link to="/viewTurbines">
             <Button class="linkBoxes">My turbines </Button>
           </Link>
-          <Link to="/login">
-            <Button class="linkBoxes">Login </Button>
-          </Link>
-          <Link to="/signup">
-            <Button class="linkBoxes">Sign up</Button>
-          </Link>
+
+          {buttons}
         </Toolbar>
       </AppBar>
     </>
