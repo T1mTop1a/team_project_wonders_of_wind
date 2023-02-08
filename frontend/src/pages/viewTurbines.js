@@ -4,7 +4,6 @@ import "./css/viewTurbines.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
-//import { getAccordionDetailsUtilityClass } from "@mui/material";
 
 const ViewTurbines = () => {
 
@@ -25,8 +24,8 @@ const ViewTurbines = () => {
         
 
     const turbines=turbineList.map((turbine)=>{
-       return <div key={turbine}>
-        <div className="label">{turbine.turbineName}Turbine 1
+       return <div className="turbineBox" key={turbine}>
+        <div className="label turbineLabel">{turbine.turbineName}
              {/* <Button onClick={()=>this.deleteTurbine(this.props.id)} class="deleteBox">Delete</Button> */}
         </div>
         < table className="turbineDetails">
@@ -45,8 +44,9 @@ const ViewTurbines = () => {
         </div>
     })
 
+    //code for testing without populating
     // useEffect(() => {
-    //     setTurbineList([{turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'}])
+    //     setTurbineList([{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'},{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'},{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5',turbineName: 'Turbine1', turbineLongitude: '4'},{turbineName: "Turbine1",turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'}])
     // })
 
     function emptyTurbineList() {
@@ -69,6 +69,8 @@ const ViewTurbines = () => {
         }
     }
 
+
+    //code draft for delete button
     // function loadTurbines(){
     //     fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`) 
     //     .then((response) => response.json())
@@ -90,7 +92,6 @@ const ViewTurbines = () => {
             <h2 className="myTurbines">My Turbines</h2>
             <div className="box turbinebox">
             {emptyTurbineList()}
-
             {turbines}
                 
             </div>

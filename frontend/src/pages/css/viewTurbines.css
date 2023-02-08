@@ -8,13 +8,17 @@
 }
 
 .addTurbineButton{
+    font-family: 'Abril Fatface', cursive;
+    width: 220px;
+    height: 35px;
+    display: block;
     position: relative;
     margin-bottom: 30px;
-    color: #596a4b;
+    color: white;
     border-radius: 10px;
     text-align: centre;
     font-size: large;
-    background: white;
+    background: #193c0d;
     border: 1px solid #596a4b;
 }
 
@@ -25,7 +29,6 @@
 
 .turbineLabel{
     margin-left: 2rem;
-    margin-top: 1rem;
     font-family: Arial, Helvetica, sans-serif;
     font-style: normal;
     font-size: large;
@@ -35,7 +38,7 @@
 .turbinebox{
     margin-top: 10px;
     height: 50%;
-    width: 500px;
+    width: 50%;
     overflow-y: scroll;
 }
 .turbinebox::-webkit-scrollbar{
@@ -66,6 +69,19 @@
     width: 80px;
 }
 
+.turbineBox{
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 5%);
+    background-color: white;
+    padding: 10px;
+    border: 2px solid #596a4b;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    border-bottom: none;
+    border-top: none;
+}
+
 .turbineDetails{
     margin-left: 2rem;
     margin-top: 5px;
@@ -90,4 +106,9 @@
 
 .value{
     padding-left: 2rem;
+    color: #193c0d;
+}
+
+.turbineLabel{
+    font-family: 'Abril Fatface', cursive;
 }
