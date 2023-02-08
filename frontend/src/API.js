@@ -46,7 +46,7 @@ const API = {
         let token = window.localStorage.getItem('accessToken');
         let headers = new Headers();
         headers.append("Authorization", `Bearer ${token}`)
-        return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/signup`, {headers, method:'GET'})
+        return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/userTurbines`, {headers, method:'GET'})
     }
 
 }
