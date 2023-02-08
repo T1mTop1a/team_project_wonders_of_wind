@@ -44,7 +44,7 @@ const API = {
 
     getUserTurbines: async () => {
         let token = window.localStorage.getItem('accessToken');
-        let headers = Headers();
+        let headers = new Headers();
         headers.append("Authorization", `Bearer ${token}`)
         return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/signup`, {headers, method:'GET'})
     }
