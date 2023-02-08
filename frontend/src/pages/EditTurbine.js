@@ -5,6 +5,7 @@ import Header from "./home.js";
 import "./css/EditTurbine.css";
 import { TextField, Button } from "@mui/material";
 import { default as Select } from 'react-select';
+import API from '../API';
 
 const EditTurbine = () => {
     const [turbineName, setTurbineName] = useState('');//Turbine name
@@ -14,6 +15,7 @@ const EditTurbine = () => {
     const [isLongitudeValid, setIsLongitudeValid] = useState(true);//is longitude valid
     const [selectedTurbineModel, setSelectedTurbineModel] = useState(null);//selected turbine model
     const [defaultTurbineModels, setDefaultTurbineModels] = useState([]);//default turbine models
+    const [turbineHeight, setTurbineHeight] = useState(null);
 
     useEffect(() => {
         loadDefaultTurbineModels();
@@ -25,11 +27,8 @@ const EditTurbine = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ turbineName, turbineLongitude, turbineLatitude }),
-            });
+            const response = await API.addTurbine(turbineName, turbineLatitude, turbineLongitude, turbineHeight, selectedTurbineModel.value);
+
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
@@ -64,11 +63,13 @@ const EditTurbine = () => {
             <Header />
             <form onSubmit={handleSubmit}>
                 <TextField
+                    required
                     label="Turbine Name"
                     value={turbineName}
                     onChange={(event) => setTurbineName(event.target.value)}
                 />
                 <TextField
+                    required
                     label="Turbine Longitude"
                     value={turbineLongitude}
                     onChange={(event) => {
@@ -81,6 +82,7 @@ const EditTurbine = () => {
                     }}
                 />
                 <TextField
+                    required
                     label="Turbine Latitude"
                     value={turbineLatitude}
                     onChange={(event) => {
@@ -92,7 +94,18 @@ const EditTurbine = () => {
                         }
                     }}
                 />
+                <TextField
+                    required
+                    label="Turbine Height"
+                    value={turbineHeight}
+                    onChange={(event) => {
+                        if (!isNaN(event.target.value)) {
+                            setTurbineHeight(event.target.value);
+                        }
+                    }}
+                />
                 <Select
+                    required
                     options={defaultTurbineModels}
                     value={selectedTurbineModel}
                     onChange={(selectedOption) => setSelectedTurbineModel(selectedOption)}
@@ -106,7 +119,7 @@ const EditTurbine = () => {
                         }),
                     }}
                 />
-                <Button type="submit" disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel}>Add Turbine</Button>
+                <Button type="submit" disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel || !turbineHeight}>Add Turbine</Button>
             </form>
         </div>
     );
