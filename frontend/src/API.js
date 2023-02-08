@@ -21,8 +21,7 @@ const API = {
             method: "POST",
             body: formData,
         });
-    }
-    ,
+    },
 
     isLoggedIn: async () => {
         let token = window.localStorage.getItem('accessToken');
@@ -37,6 +36,10 @@ const API = {
             return false;
         }
 
+    },
+
+    logOut: () => {
+      window.localStorage.removeItem("accessToken");
     }
 
 
