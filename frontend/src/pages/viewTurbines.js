@@ -29,12 +29,45 @@ const ViewTurbines = () => {
         <div className="label">{turbine.turbineName}Turbine 1
              {/* <Button onClick={()=>this.deleteTurbine(this.props.id)} class="deleteBox">Delete</Button> */}
         </div>
-
-        <div className="turbineDetails">Turbine Longitude:{turbine.turbineLongitude}  </div>
-        <div className="turbineDetails">Turbine Latitude:{turbine.turbineLatitude}  </div>
-                
+        < table className="turbineDetails">
+            <thread>
+            <tr>Turbine Model:  
+                <td className="value">{turbine.turbineModel}  </td>
+            </tr>
+            <tr>Turbine Longitude:  
+                <td className="value"> {turbine.turbineLongitude}  </td>
+            </tr>
+            <tr>Turbine Latitude:   
+                <td className="value"> {turbine.turbineLatitude} </td> 
+            </tr>     
+        </thread>
+        </table>
         </div>
     })
+
+    // useEffect(() => {
+    //     setTurbineList([{turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'}])
+    // })
+
+    function emptyTurbineList() {
+        if (turbineList.length === 0){
+            return (
+                <>
+                <div className = "noTurbines">You have not added any turbines yet.</div>
+                <Link style={{ textDecoration: "none"}} to="/EditTurbine">
+                    <Button class="addTurbineButton addTurbineButtonEmpty"> Add your first turbine</Button>
+                </Link>
+                </>
+            )
+         }
+         else{
+           return( 
+                <Link style={{ textDecoration: "none"}} to="/EditTurbine">
+                    <Button class="addTurbineButton"> Add another turbine </Button>
+                </Link>
+            )
+        }
+    }
 
     // function loadTurbines(){
     //     fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`) 
@@ -55,13 +88,11 @@ const ViewTurbines = () => {
         <div className="base">
             <Header />
             <h2 className="myTurbines">My Turbines</h2>
-
             <div className="box turbinebox">
+            {emptyTurbineList()}
+
+            {turbines}
                 
-                <Link style={{ textDecoration: "none"}} to="/EditTurbine">
-                    <Button class="addTurbineButton"> Add another turbine </Button>
-                </Link>
-                {turbines}
             </div>
         </div>
     )
