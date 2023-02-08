@@ -7,11 +7,21 @@
     text-indent: 10px;
 }
 
-.searchButtonPosition{
+.searchButtonPositionLeft{
     width: 500px;
     height: 50px;
     margin-left: 70px;
     margin-top: 9px;
+    margin-bottom: 14px;
+    align-content: right;
+    display: flex;
+  }
+
+  .searchButtonPositionRight{
+    width: 500px;
+    height: 50px;
+    margin-left: 70px;
+    margin-top: 130px;
     margin-bottom: 14px;
     align-content: right;
     display: flex;
@@ -63,6 +73,14 @@
   margin-top: 3px;
   margin-bottom: 3px;
   text-indent: 10px;
+}
+
+.datePicker {
+  width: 200px;
+  height: 40px;
+  margin-left: 64px;
+  margin-top: 3px;
+
 }
 
 .searchTitle{
