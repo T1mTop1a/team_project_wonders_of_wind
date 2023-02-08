@@ -9,14 +9,13 @@
 
 .addTurbineButton{
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     color: #596a4b;
     border-radius: 10px;
     text-align: centre;
     font-size: large;
     background: white;
     border: 1px solid #596a4b;
-    
 }
 
 .addTurbineButton:hover{
@@ -65,11 +64,30 @@
     border: 1px solid black;
     margin: 10px;
     width: 80px;
-  }
+}
 
 .turbineDetails{
-    margin-left: 3rem;
+    margin-left: 2rem;
     margin-top: 5px;
     font-family: Arial, Helvetica, sans-serif;
+}
 
+.noTurbines{
+    position: relative;
+    font-family: 'Abril Fatface', cursive;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: x-large;
+    color:  #193C0D;
+}
+
+.addTurbineButtonEmpty{
+    position: relative;
+    margin: 0 auto;
+    display: block;
+}
+
+.value{
+    padding-left: 2rem;
 }
