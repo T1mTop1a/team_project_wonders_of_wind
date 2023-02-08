@@ -40,8 +40,14 @@ const API = {
 
     logOut: () => {
       window.localStorage.removeItem("accessToken");
-    }
+    },
 
+    getUserTurbines: async () => {
+        let token = window.localStorage.getItem('accessToken');
+        let headers = Headers();
+        headers.append("Authorization", `Bearer ${token}`)
+        return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/signup`, {headers, method:'GET'})
+    }
 
 }
 
