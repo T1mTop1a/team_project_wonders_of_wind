@@ -40,22 +40,22 @@ const Home = () => {
     return moment(dateString).tz("UTC").format("llll");
   }
 
-  useEffect(() => {
-    (async () => {
-      console.log("getting data");
-      let response = await fetch(
-        `${process.env.REACT_APP_BACKEND}/api/v1/example_response`
-      );
-      let powerData = await response.json();
-      setChartData(
-        createChartData(
-          powerData,
-          powerData.map(({ date }) => formatDateTime(date)),
-          powerData.map(({ power }) => power)
-        )
-      );
-    })();
-  }, []);
+  async function updateData() {
+    console.log("getting data");
+    let response = await fetch(
+      `${process.env.REACT_APP_BACKEND}/api/v1/example_response`
+    );
+    let powerData = await response.json();
+    setChartData(
+      createChartData(
+        powerData,
+        powerData.map(({ date }) => formatDateTime(date)),
+        powerData.map(({ power }) => power)
+      )
+    );
+  }
+
+  useEffect(() => updateData, []);
 
   const LineChart = () => {
     return (
@@ -185,7 +185,7 @@ const Home = () => {
     <div className="base">
       <Header />
       <div className="inputBase">
-      <form className= "newTurbine"
+      <div className= "newTurbine"
         style={{
           float: "left",
         }}
@@ -200,11 +200,11 @@ const Home = () => {
         />
         <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
         <div className="searchButtonPositionLeft">
-          <button className="searchButton">
+          <button className="searchButton" onClick={updateData}>
             Search
           </button>
         </div>
-      </form>
+      </div>
       {turbineForm}
       </div>
       <div id="chartContainer">
