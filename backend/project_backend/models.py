@@ -34,3 +34,7 @@ class UserTurbines(models.Model):
     height = models.FloatField()
     latitude = models.FloatField()
     longitude = models.FloatField()
+    name = models.CharField(max_length=64)
+
+    class Meta:
+        unique_together = ('userId', 'name')
