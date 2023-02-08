@@ -17,6 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.response import Response
+from django.db.utils import IntegrityError
 
 
 # Create your views here.
@@ -108,17 +109,25 @@ def turbines(request):
 @permission_classes([IsAuthenticated])
 def add_turbine_to_profile(request):
 
-    turbineModel = WindmillType.objects.get(pk=request.POST['turbineModel'])
+    try:
+        turbineModel = WindmillType.objects.get(pk=request.POST['turbineModel'])
 
-    turbine = UserTurbines(
-        userId=request.user,
-        modelId=turbineModel,
-        latitude=request.POST['turbineLatitude'],
-        longitude=request.POST['turbineLongitude'],
-        height=request.POST['turbineHeight']
-    )
+        try:
+            turbine = UserTurbines(
+                userId=request.user,
+                modelId=turbineModel,
+                latitude=request.POST['turbineLatitude'],
+                longitude=request.POST['turbineLongitude'],
+                height=request.POST['turbineHeight']
+            )
 
-    turbine.save()
+            turbine.save()
+
+        except IntegrityError as ie:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+    except WindmillType.DoesNotExist as dne:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
     return Response(status=status.HTTP_200_OK)
 
