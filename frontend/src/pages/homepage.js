@@ -11,7 +11,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import select from "react-select";
+import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../API.js";
@@ -138,27 +138,21 @@ const Home = () => {
   const [turbineForm, setTurbineForm] = useState(<></>);
 
   useEffect(() => {
-    let mounted = true;
     fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`)
     .then(data => data.json())
     .then(items => {
-      if (mounted){
-        setModelList(items)
-      }
+      let formatted = items.map(opt => ({ label: opt.model_name, value: opt.modelId }));
+      console.log(formatted);
+      setModelList(formatted);
     });
-    return () => mounted = false;
   }, []);
 
   useEffect(() => {
-    let mounted = true;
     fetch(`${process.env.REACT_APP_BACKEND}/api/v1/get_user_turbines`)
     .then(data => data.json())
     .then(items => {
-      if (mounted){
-        setTurbineList(items)
-      }
+      setTurbineList(items);
     });
-    return () => mounted = false;
   }, []);
 
   useEffect(() => {
@@ -170,9 +164,9 @@ const Home = () => {
               float: "right",
             }}>
             <h3 className="searchTitle">Select saved turbine</h3>
-            <select 
+            <Select 
                 className="modelDropDown"
-                options={turbineList.map(opt => ({ label: opt.turbine_name, value: opt.turbineId }))}
+                options={turbineList.map(opt => ({ label: opt["model_name"], value: opt["modelId"] }))}
                 onChange={opt => console.log(opt.label, opt.value)}
             />
             <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
@@ -199,9 +193,9 @@ const Home = () => {
         <h3 className="searchTitle">Input New turbine</h3>
         <InputBox type="number" text="Input your turbine latitude" />
         <InputBox type="number" text="Input your turbine longitude" />
-        <select 
+        <Select 
             className="modelDropDown"
-            options={modelList.map(opt => ({ label: opt.model_name, value: opt.modelId }))}
+            options={modelList}
             onChange={opt => console.log(opt.label, opt.value)}
         />
         <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
