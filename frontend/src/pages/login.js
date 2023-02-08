@@ -1,8 +1,28 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Header from "./home.js";
 import "./css/signupLogin.css";
+import API from "../API";
+import {useNavigate} from "react-router-dom";
+
 
 const LogIn = () => {
+
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorType, setErrorType] = useState(null);
+  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    API.isLoggedIn().then(setLoggedIn)
+    console.log('logged in', loggedIn);
+  })
+
+  if (loggedIn){
+    navigate('/');
+  }
+
   const InputBox = (props) => {
     return (
       <div>
@@ -11,6 +31,7 @@ const LogIn = () => {
           placeholder={props.text}
           name={props.name}
           type={props.type}
+          {...props}
         ></input>
       </div>
     );
@@ -24,7 +45,36 @@ const LogIn = () => {
       return new URLSearchParams(search).get("error");
     }
   };
-  const errorType = messageDisplay();
+
+
+  const handleLogin = async (formSubmissionEvent) => {
+    formSubmissionEvent.preventDefault();
+    try {
+      let response = await API.login(email, password)
+      console.log(response, response.status);
+      if (response.status === 200){
+        let tokens = await response.json();
+        console.log(tokens);
+
+        window.localStorage.setItem('authExpected', true);
+        window.localStorage.setItem('accessToken', tokens['token']);
+
+        navigate("/");
+      }
+      else{
+        console.info('login failed');
+        setErrorType('wrongCredentials');
+      }
+
+    }
+    catch (e) {
+      console.error(e);
+      setErrorType('unknownError')
+    }
+  }
+
+
+
 
   return (
     <div className="base">
@@ -32,10 +82,10 @@ const LogIn = () => {
       <h2 className="welcomeLogin">Welcome Back!</h2>
       <div className="box">
         <form
-          method="POST"
-          action={`${process.env.REACT_APP_BACKEND}/api/v1/login`}
+          onSubmit={handleLogin}
+
         >
-          {(() => {
+          {errorType && (() => {
             if (errorType === "wrongCredentials") {
               return (
                 <div className="errorDisplay">
@@ -54,10 +104,10 @@ const LogIn = () => {
           <h1 className="title">Log In</h1>
 
           <div className="label">Email</div>
-          <InputBox name="email" type="email"></InputBox>
+          {InputBox({name:'email', type:'text',value:email, onChange:(e) => setEmail(e.target.value)})}
 
           <div className="label">Password</div>
-          <InputBox name="password" type="password"></InputBox>
+          {InputBox({name:'password', type:'password', value:password, onChange:(e) => setPassword(e.target.value)})}
 
           <button
             type="submit"
