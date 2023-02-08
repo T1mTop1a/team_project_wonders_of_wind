@@ -1,5 +1,6 @@
 import Header from "./home.js";
 import React from "react";
+import API from "../API";
 import "./css/viewTurbines.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -9,17 +10,13 @@ const ViewTurbines = () => {
 
     const [turbineList, setTurbineList] =  useState([]);
 
-
     useEffect(() => {
-        let mounted = true;
-        fetch(`${process.env.REACT_APP_BACKEND}/api/v1/userTurbines`)
-        .then(data => data.json())
-        .then(items => {
-            if (mounted){
+        let response = async () => {await API.getUserTurbines()
+            .then(data => data.json())
+            .then(items => {
                 setTurbineList(items)
-            }
-        })
-        return () => mounted = false;
+            })
+        }
     } , [])
         
 
