@@ -11,12 +11,13 @@ from project_backend import forms
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from urllib.parse import urlparse, urlencode
-from project_backend.models import WindmillType
+from project_backend.models import WindmillType, UserTurbines
 from django.core import serializers
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.response import Response
+
 
 # Create your views here.
 
@@ -32,6 +33,7 @@ def login(request):
         return Response({
             'error': 'NOT_AUTHORISED'
         }, status=status.HTTP_401_UNAUTHORIZED)
+
     print('trying to log in for user with', request)
     form = forms.LoginForm(request.POST)
     if not form.is_valid():
@@ -49,12 +51,9 @@ def login(request):
         }, status=status.HTTP_200_OK)
 
 
-
-
 @csrf_exempt
 @api_view(['POST'])
 def signup(request):
-
     def bad_request():
         return Response({
             'error': 'BAD_REQUEST'
@@ -74,12 +73,6 @@ def signup(request):
             }, status=status.HTTP_200_OK)
         except Exception as e:
             return bad_request()
-
-
-
-
-
-
 
 
 @csrf_exempt
@@ -109,6 +102,32 @@ def example_response(request):
 def turbines(request):
     data = list(WindmillType.objects.values('model_name', 'modelId'))
     return JsonResponse(data, safe=False)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_turbine_to_profile(request):
+
+    turbineModel = WindmillType.objects.get(pk=request.POST['turbineModel'])
+
+    turbine = UserTurbines(
+        userId=request.user,
+        modelId=turbineModel,
+        latitude=request.POST['turbineLatitude'],
+        longitude=request.POST['turbineLongitude'],
+        height=request.POST['turbineHeight']
+    )
+
+    turbine.save()
+
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_turbines(request):
+    user_turbines = list(UserTurbines.objects.filter(userId=request.user).values('turbineId', 'height', 'latitude', 'longitude', 'name'))
+    return JsonResponse(user_turbines, safe=False)
 
 
 @api_view(['GET'])
