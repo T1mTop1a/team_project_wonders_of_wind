@@ -3,14 +3,22 @@
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 0;
   left: 0;
+}
+
+.inputBase {
+  background-color: #6d835c;
+  position: absolute;
+  right: 0;
+  left: 0;
+  display: flex;
 }
 
 .NavBar {
   position: static;
   background: #596a4b;
   background-color: rgba(0, 0, 0, 0.29);
+  float: top;
 }
 
 .link {

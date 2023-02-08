@@ -7,11 +7,21 @@
     text-indent: 10px;
 }
 
-.searchButtonPosition{
+.searchButtonPositionLeft{
     width: 500px;
     height: 50px;
     margin-left: 70px;
     margin-top: 9px;
+    margin-bottom: 14px;
+    align-content: right;
+    display: flex;
+  }
+
+  .searchButtonPositionRight{
+    width: 500px;
+    height: 50px;
+    margin-left: 70px;
+    margin-top: 130px;
     margin-bottom: 14px;
     align-content: right;
     display: flex;
@@ -32,6 +42,10 @@
     margin-left: auto;
 }
 
+.searchButton:hover {
+  color: #add0a4;
+}
+
 .inputBox::placeholder {
     font-family: Arial, Helvetica, sans-serif;
     font-style: normal;
@@ -45,8 +59,34 @@
 
 #chartContainer {
     background: #fbfcff;
+    margin-top: 350px;
     margin-left: 63px;
     margin-right: 63px;
     height: 480px;
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
+
+.modelDropDown {
+  width: 508px;
+  height: 50px;
+  margin-left: 64px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  text-indent: 10px;
+}
+
+.datePicker {
+  width: 200px;
+  height: 40px;
+  margin-left: 64px;
+  margin-top: 3px;
+
+}
+
+.searchTitle{
+  font-family: 'Arial', cursive;
+  margin-left: 70px;
+  color: #FFFFFF;
+  text-align: left;
+  margin-bottom: 14px;
+}
