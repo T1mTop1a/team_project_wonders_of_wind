@@ -20,9 +20,9 @@ const Header = () => {
   useEffect(() => {
     API.isLoggedIn().then(loggedIn => {
       if (loggedIn) {
+        // TODO: wait for Yuan's PR
         setButtons(
           <div>
-            // TODO: wait for Yuan's PR
             <Link to="/">
               <Button class="linkBoxes">Edit turbines</Button>
             </Link>
