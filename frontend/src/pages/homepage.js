@@ -14,6 +14,7 @@ import TableRow from "@mui/material/TableRow";
 import select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import API from "../API.js";
 
 var moment = require("moment-timezone");
 
@@ -133,7 +134,8 @@ const Home = () => {
   const [turbineList, setTurbineList] = useState([]);
   // date Selector
   const [startDate, setStartDate] = useState(new Date());
-
+  // User turbine form
+  const [turbineForm, setTurbineForm] = useState(<></>);
 
   useEffect(() => {
     let mounted = true;
@@ -157,6 +159,32 @@ const Home = () => {
       }
     });
     return () => mounted = false;
+  }, []);
+
+  useEffect(() => {
+    API.isLoggedIn().then(loggedIn => {
+      if (loggedIn) {
+        setTurbineForm(
+          <form className= "userTurbine"
+            style={{
+              float: "right",
+            }}>
+            <h3 className="searchTitle">Select saved turbine</h3>
+            <select 
+                className="modelDropDown"
+                options={turbineList.map(opt => ({ label: opt.turbine_name, value: opt.turbineId }))}
+                onChange={opt => console.log(opt.label, opt.value)}
+            />
+            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
+            <div className="searchButtonPositionRight">
+              <button className="searchButton">
+                Search
+              </button>
+            </div>
+          </form>
+        );
+      }
+    });
   }, []);
 
   return (
@@ -183,27 +211,8 @@ const Home = () => {
           </button>
         </div>
       </form>
-
-      <form className= "userTurbine"
-        style={{
-          float: "right",
-        }}
-      >
-        <h3 className="searchTitle">Select saved turbine</h3>
-        <select 
-            className="modelDropDown"
-            options={turbineList.map(opt => ({ label: opt.turbine_name, value: opt.turbineId }))}
-            onChange={opt => console.log(opt.label, opt.value)}
-        />
-        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
-        <div className="searchButtonPositionRight">
-          <button className="searchButton">
-            Search
-          </button>
-        </div>
-      </form>
+      {turbineForm}
       </div>
-
       <div id="chartContainer">
         <LineChart />
       </div>
