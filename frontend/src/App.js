@@ -7,18 +7,19 @@ import Home from "./pages/homepage";
 import SignUp from "./pages/signup";
 import LogIn from "./pages/login";
 import EditTurbine from "./pages/EditTurbine";
+import ViewTurbines from "./pages/viewTurbines";
 
-//var moment = require('moment-timezone');
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/header" element={<Header />} />
-        <Route exact path="/signup" element={<SignUp />} />
-        <Route exact path="/login" element={<LogIn />} />
-        <Route exact path="/editTurbine" element={<EditTurbine />} />
+          <Route exact path="/" exact element={<Home />} />
+          <Route exact path="/header" exact element={<Header />} />
+          <Route exact path="/signup" exact element={<SignUp />} />
+          <Route exact path="/login" exact element={<LogIn />} />
+          <Route exact path="/editTurbine" exact element={<EditTurbine />} />
+          <Route exact path="/viewTurbines" exact element={<ViewTurbines />} />
       </Routes>
     </Router>
   );
