@@ -40,8 +40,20 @@ const Home = () => {
     return moment(dateString).tz("UTC").format("llll");
   }
 
-  async function updateData() {
-    console.log("getting data");
+  async function updateData(e) {
+    console.log(e);
+    let formData = new FormData(document.getElementById("turbineModelForm"));
+    let lat = Number(formData.get("lat"));
+    let lon = Number(formData.get("lon"));
+    // validate
+    if (isNaN(lat) || !(lat >= -90 && lat <= 90)) {
+      alert("Please enter a valid latitude");
+      return;
+    }
+    if (isNaN(lon) || !(lon >= -180 && lat <= 180)) {
+      alert("Please enter a valid longitude");
+      return;
+    }
     let response = await fetch(
       `${process.env.REACT_APP_BACKEND}/api/v1/example_response`
     );
@@ -55,7 +67,7 @@ const Home = () => {
     );
   }
 
-  useEffect(() => updateData, []);
+  // useEffect(() => updateData, []);
 
   const LineChart = () => {
     return (
@@ -122,6 +134,7 @@ const Home = () => {
         <input class="inputBox"
           placeholder={props.text}
           id={props.id}
+          name={props.name}
         >
         </input>
       </div>
@@ -185,26 +198,30 @@ const Home = () => {
     <div className="base">
       <Header />
       <div className="inputBase">
-      <div className= "newTurbine"
+      <form className= "newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm"
         style={{
           float: "left",
         }}
       >
         <h3 className="searchTitle">Input New turbine</h3>
-        <InputBox type="number" text="Input your turbine latitude" />
-        <InputBox type="number" text="Input your turbine longitude" />
+        <div>
+          <input class="inputBox" name="lat" placeholder="Input your turbine latitude" />
+        </div>
+        <div>
+          <input class="inputBox" name="lon" placeholder="Input your turbine longitude" />
+        </div>
         <Select 
             className="modelDropDown"
             options={modelList}
-            onChange={opt => console.log(opt.label, opt.value)}
+            name="modelName"
         />
-        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
+        <DatePicker name="date" selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
         <div className="searchButtonPositionLeft">
           <button className="searchButton" onClick={updateData}>
             Search
           </button>
         </div>
-      </div>
+      </form>
       {turbineForm}
       </div>
       <div id="chartContainer">
