@@ -58,7 +58,7 @@ const API = {
         return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/add_turbine_to_profile`, {headers, method:'POST', body:formData})
 
 
-    }
+    },
 
     getUserTurbines: async () => {
         let token = window.localStorage.getItem('accessToken');
