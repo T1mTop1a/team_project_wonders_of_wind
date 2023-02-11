@@ -1,9 +1,11 @@
 .base {
   background-color: #6d835c;
+  background-attachment: scroll;
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
+  height: 120%
 }
 
 .inputBase {
@@ -19,6 +21,7 @@
   background: #596a4b;
   background-color: rgba(0, 0, 0, 0.29);
   float: top;
+  
 }
 
 .link {
