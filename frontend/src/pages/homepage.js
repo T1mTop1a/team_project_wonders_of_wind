@@ -54,9 +54,14 @@ const Home = () => {
       alert("Please enter a valid longitude");
       return;
     }
-    let response = await fetch(
-      `${process.env.REACT_APP_BACKEND}/api/v1/example_response`
-    );
+    let response = await fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbine_prediction`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(Object.fromEntries(formData))
+    });
     let powerData = await response.json();
     setChartData(
       createChartData(
@@ -154,7 +159,7 @@ const Home = () => {
     fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`)
     .then(data => data.json())
     .then(items => {
-      let formatted = items.map(opt => ({ label: opt.model_name, value: opt.modelId }));
+      let formatted = items.map(opt => ({ label: opt.display_name, value: opt.modelId }));
       console.log(formatted);
       setModelList(formatted);
     });
@@ -179,7 +184,7 @@ const Home = () => {
             <h3 className="searchTitle">Select saved turbine</h3>
             <Select 
                 className="modelDropDown"
-                options={turbineList.map(opt => ({ label: opt["model_name"], value: opt["modelId"] }))}
+                options={turbineList.map(opt => ({ label: opt["display_name"], value: opt["modelId"] }))}
                 onChange={opt => console.log(opt.label, opt.value)}
             />
             <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />

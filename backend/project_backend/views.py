@@ -77,9 +77,12 @@ def signup(request):
 
 
 @csrf_exempt
-def example_response(request):
+def turbine_prediction(request):
+    requestBody = json.loads(request.body)
+    model = WindmillType.objects.get(modelId=int(requestBody["modelName"]))
+    print("Model name", model)
     enercon_e126 = {
-        'turbine_type': 'E-126/4200',  # turbine type as in oedb turbine library
+        'turbine_type': model.model_name,  # turbine type as in oedb turbine library
         'hub_height': 135  # in m
     }
 
@@ -101,7 +104,7 @@ def example_response(request):
 
 @csrf_exempt
 def turbines(request):
-    data = list(WindmillType.objects.values('model_name', 'modelId'))
+    data = list(WindmillType.objects.values('display_name', 'modelId'))
     return JsonResponse(data, safe=False)
 
 
