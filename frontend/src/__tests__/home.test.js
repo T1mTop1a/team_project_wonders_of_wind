@@ -1,12 +1,31 @@
 import React from "react";
-import {render, screen } from "@testing-library/react";
+import { render, unmountComponentAtNode } from "react-dom";
+import { act } from "react-dom/test-utils";
+import { MemoryRouter } from "react-router-dom";
+
 import Header from '../pages/home.js';
-import { BrowserRouter as Router } from "react-router-dom";
+
+let container = null;
+beforeEach(() => {
+  // setup a DOM element as a render target
+  container = document.createElement("div");
+  document.body.appendChild(container);
+});
+
+afterEach(() => {
+  // cleanup on exiting
+  unmountComponentAtNode(container);
+  container.remove();
+  container = null;
+});
 
 describe("Header component", () => {
-    it("should register component correctly", () => {
-        render(<React.StrictMode><Router><Header /></Router></React.StrictMode>);
-        const element = screen.getByTestId("nav button");
-        expect(element).toBeInTheDocument();
-    });
+    it("Renders", () => {
+        act(() => {
+          render(<MemoryRouter><Header /></MemoryRouter>, container);
+        });
+        expect(
+            container.querySelector("[data-testid='home button']")
+            ).toBeInTheDocument();
+});
 });

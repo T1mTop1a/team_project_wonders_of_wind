@@ -27,7 +27,7 @@ const Header = () => {
               <Button class="linkBoxes">Edit turbines</Button>
             </Link>
             <Link to="/">
-              <Button class="linkBoxes" onClick={logOutAndRefresh}>Log out</Button>
+              <Button class="linkBoxes" data-testid="log out button" onClick={logOutAndRefresh}>Log out</Button>
             </Link>
           </div>
         );
@@ -35,7 +35,7 @@ const Header = () => {
         setButtons(
           <div>
             <Link to="/login">
-              <Button class="linkBoxes">Login</Button>
+              <Button class="linkBoxes" data-testid="log in button">Login</Button>
             </Link>
             <Link to="/signup">
               <Button class="linkBoxes">Sign up</Button>
@@ -52,7 +52,7 @@ const Header = () => {
         <Toolbar>
           <Link style={{ textDecoration: "none" }} to="/" className="link">
             <Button
-              data-testid="nav button"
+              data-testid="home button"
               variant="h6"
               align="left"
               component="div"
