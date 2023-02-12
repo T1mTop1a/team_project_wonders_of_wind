@@ -108,24 +108,28 @@ def turbines(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_turbine_to_profile(request):
+    print(request.POST)
 
     try:
         turbineModel = WindmillType.objects.get(pk=request.POST['turbineModel'])
-
+        print(turbineModel)
         try:
             turbine = UserTurbines(
                 userId=request.user,
                 modelId=turbineModel,
                 latitude=request.POST['turbineLatitude'],
                 longitude=request.POST['turbineLongitude'],
-                height=request.POST['turbineHeight']
+                height=request.POST['turbineHeight'],
+                name=request.POST['turbineName']
             )
 
             turbine.save()
 
         except IntegrityError as ie:
+            print(ie)
             return Response(status=status.HTTP_400_BAD_REQUEST)
     except WindmillType.DoesNotExist as dne:
+        print(dne)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
