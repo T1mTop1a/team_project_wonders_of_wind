@@ -1,5 +1,6 @@
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
+import { fireEvent } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 
@@ -20,12 +21,39 @@ afterEach(() => {
 });
 
 describe("Login component", () => {
-    it("Renders", () => {
+    it("Renders a login button", () => {
         act(() => {
           render(<MemoryRouter><LogIn /></MemoryRouter>, container);
         });
         expect(
             container.querySelector("[data-testid='login button']")
             ).toBeInTheDocument();
-});
+    });
+    
+    it("Renders a email input", () => {
+      act(() => {
+        render(<MemoryRouter><LogIn /></MemoryRouter>, container);
+      });
+      expect(
+          container.querySelector("[data-testid='email input']")
+          ).toBeInTheDocument();
+    });
+
+    it("Renders a password input", () => {
+      act(() => {
+        render(<MemoryRouter><LogIn /></MemoryRouter>, container);
+      });
+      expect(
+          container.querySelector("[data-testid='password input']")
+          ).toBeInTheDocument();
+    });
+
+    it("Renders a sign up link", () => {
+      act(() => {
+        render(<MemoryRouter><LogIn /></MemoryRouter>, container);
+      });
+      expect(
+          container.querySelector("[data-testid='signup link']")
+          ).toBeInTheDocument();
+    });
 });

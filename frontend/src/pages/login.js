@@ -103,10 +103,10 @@ const LogIn = () => {
 
           <h1 className="title">Log In</h1>
 
-          <div className="label">Email</div>
-          {InputBox({name:'email', type:'text',value:email, onChange:(e) => setEmail(e.target.value)})}
+          <div className="label" data-testid="email input">Email</div>
+          {InputBox({name:'email', type:'text', value:email, onChange:(e) => setEmail(e.target.value)})}
 
-          <div className="label">Password</div>
+          <div className="label" data-testid="password input">Password</div>
           {InputBox({name:'password', type:'password', value:password, onChange:(e) => setPassword(e.target.value)})}
 
           <button
@@ -118,7 +118,7 @@ const LogIn = () => {
           </button>
           <p className="labelLink">
             Don't have an account? <br />
-            <a href="/signup">SignUp</a>
+            <a href="/signup" data-testid="signup link">SignUp</a>
           </p>
         </form>
       </div>

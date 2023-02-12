@@ -20,12 +20,57 @@ afterEach(() => {
 });
 
 describe("Sign up component", () => {
-    it("Renders", () => {
-        act(() => {
-          render(<MemoryRouter><SignUp /></MemoryRouter>, container);
-        });
-        expect(
-            container.querySelector("[data-testid='signup button']")
-            ).toBeInTheDocument();
-});
+    it("Renders input box", () => {
+      act(() => {
+        render(<MemoryRouter><SignUp /></MemoryRouter>, container);
+      });
+      expect(
+          container.querySelector("[data-testid='input box']")
+          ).toBeInTheDocument();
+    });
+
+    it("Renders name input", () => {
+      act(() => {
+        render(<MemoryRouter><SignUp /></MemoryRouter>, container);
+      });
+      expect(
+          container.querySelector("[data-testid='name input']")
+          ).toBeInTheDocument();
+    });
+
+    it("Renders email input", () => {
+      act(() => {
+        render(<MemoryRouter><SignUp /></MemoryRouter>, container);
+      });
+      expect(
+          container.querySelector("[data-testid='email input']")
+          ).toBeInTheDocument();
+    });
+
+    it("Renders password input", () => {
+      act(() => {
+        render(<MemoryRouter><SignUp /></MemoryRouter>, container);
+      });
+      expect(
+          container.querySelector("[data-testid='password input']")
+          ).toBeInTheDocument();
+    });
+
+    it("Renders sign up button", () => {
+      act(() => {
+        render(<MemoryRouter><SignUp /></MemoryRouter>, container);
+      });
+      expect(
+          container.querySelector("[data-testid='signup button']")
+          ).toBeInTheDocument();
+    });
+
+    it("Renders log in link", () => {
+      act(() => {
+        render(<MemoryRouter><SignUp /></MemoryRouter>, container);
+      });
+      expect(
+          container.querySelector("[data-testid='login link']")
+          ).toBeInTheDocument();
+    });
 });
