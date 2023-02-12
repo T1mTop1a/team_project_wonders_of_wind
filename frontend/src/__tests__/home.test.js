@@ -20,12 +20,21 @@ afterEach(() => {
 });
 
 describe("Header component", () => {
-    it("Renders", () => {
+    it("Renders home button", () => {
         act(() => {
           render(<MemoryRouter><Header /></MemoryRouter>, container);
         });
         expect(
             container.querySelector("[data-testid='home button']")
             ).toBeInTheDocument();
-});
+    });
+
+    it("Renders nav bar", () => {
+      act(() => {
+        render(<MemoryRouter><Header /></MemoryRouter>, container);
+      });
+      expect(
+          container.querySelector("[data-testid='nav bar']")
+          ).toBeInTheDocument();
+  });
 });
