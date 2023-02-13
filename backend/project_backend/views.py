@@ -11,14 +11,14 @@ from project_backend import forms
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from urllib.parse import urlparse, urlencode
-from project_backend.models import WindmillType, UserTurbines
+from project_backend.models import WindmillType, UserTurbines, WeatherData
 from django.core import serializers
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.response import Response
 from django.db.utils import IntegrityError
-
+import datetime
 
 # Create your views here.
 
@@ -76,24 +76,52 @@ def signup(request):
             return bad_request()
 
 
+def fetch_weather_data(lat, lon, date):
+    def fetch_subdata(value_type):
+        result = WeatherData.objects.filter( \
+            time__gte=date, \
+            time__lte=(date + datetime.timedelta(days=1)), \
+            location_x=int(lon) + 180, \
+            location_y=int(lat) + 90, \
+            value_type=value_type
+        ).values("time", "value")
+        return dict(map(lambda x: (str(x["time"]), x["value"]), result))
+    pressure = fetch_subdata("surface_pressure")
+    temp = fetch_subdata("temp")
+    wind_speed = fetch_subdata("wind_speed")
+    file = io.BytesIO()
+    file.write(b"variable_name,pressure,temperature,wind_speed,roughness_length\n")
+    file.write(b"height,1,1,1,10\n")
+    for k in pressure:
+        file.write(f"{k},98000,{temp[k]},{wind_speed[k]},0.15\n".encode())
+    file.seek(0)
+    return pd.read_csv(file, \
+        index_col=0, \
+        header=[0, 1], \
+        date_parser=lambda idx: pd.to_datetime(idx, utc=True))
+
 @csrf_exempt
 def turbine_prediction(request):
     requestBody = json.loads(request.body)
     model = WindmillType.objects.get(modelId=int(requestBody["modelName"]))
-    print("Model name", model)
-    enercon_e126 = {
+    date = pd.to_datetime(requestBody["date"], format='%m/%d/%Y')
+    lat = float(requestBody["lat"])
+    lon = float(requestBody["lon"])
+    weather_data = fetch_weather_data(lat, lon, date)
+    wind_turbine = {
         'turbine_type': model.model_name,  # turbine type as in oedb turbine library
         'hub_height': 135  # in m
     }
 
-    weather_data = pd.read_csv(os.path.join(os.getcwd(), 'project_backend', 'example_weather.csv'),
-                               index_col=0,
-                               header=[0, 1],
-                               date_parser=lambda idx: pd.to_datetime(idx, utc=True)
-                               )
+    # weather_data = pd.read_csv(os.path.join(os.getcwd(), 'project_backend', 'example_weather.csv'),
+    #                            index_col=0,
+    #                            header=[0, 1],
+    #                            date_parser=lambda idx: pd.to_datetime(idx, utc=True)
+    #                          )
+    print(weather_data)
 
     # initialize WindTurbine object
-    e126 = ModelChain(WindTurbine(**enercon_e126)).run_model(weather_data)
+    e126 = ModelChain(WindTurbine(**wind_turbine), wind_speed_model='hellman').run_model(weather_data)
 
     response = []
     for date, data in e126.power_output.to_dict().items():
