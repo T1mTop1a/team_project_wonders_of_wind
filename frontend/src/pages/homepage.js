@@ -11,9 +11,10 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import select from "react-select";
+import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import API from "../API.js";
 
 var moment = require("moment-timezone");
 
@@ -39,22 +40,42 @@ const Home = () => {
     return moment(dateString).tz("UTC").format("llll");
   }
 
-  useEffect(() => {
-    (async () => {
-      console.log("getting data");
-      let response = await fetch(
-        `${process.env.REACT_APP_BACKEND}/api/v1/example_response`
-      );
-      let powerData = await response.json();
-      setChartData(
-        createChartData(
-          powerData,
-          powerData.map(({ date }) => formatDateTime(date)),
-          powerData.map(({ power }) => power)
-        )
-      );
-    })();
-  }, []);
+  async function updateDataFromCustomTurbine(e) {
+    console.log(e);
+    let formData = new FormData(document.getElementById("turbineModelForm"));
+    let lat = Number(formData.get("lat"));
+    let lon = Number(formData.get("lon"));
+    // validate
+    if (isNaN(lat) || !(lat >= -90 && lat <= 90)) {
+      alert("Please enter a valid latitude");
+      return;
+    }
+    if (isNaN(lon) || !(lon >= -180 && lat <= 180)) {
+      alert("Please enter a valid longitude");
+      return;
+    }
+    let powerData = await API.predictCustomTurbine(formData).then(r => r.json());
+    setChartData(
+      createChartData(
+        powerData,
+        powerData.map(({ date }) => formatDateTime(date)),
+        powerData.map(({ power }) => power)
+      )
+    );
+  }
+
+  async function updateDataFromSavedTurbine(e) {
+    console.log(e);
+    let formData = new FormData(document.getElementById("savedTurbineForm"));
+    let powerData = await API.predictSavedTurbine(formData).then(r => r.json());
+    setChartData(
+      createChartData(
+        powerData,
+        powerData.map(({ date }) => formatDateTime(date)),
+        powerData.map(({ power }) => power)
+      )
+    );
+  }
 
   const LineChart = () => {
     return (
@@ -121,6 +142,7 @@ const Home = () => {
         <input class="inputBox"
           placeholder={props.text}
           id={props.id}
+          name={props.name}
         >
         </input>
       </div>
@@ -129,81 +151,77 @@ const Home = () => {
 
   // Turbine models 
   const [modelList, setModelList] = useState([]);
-  // User turbines
-  const [turbineList, setTurbineList] = useState([]);
   // date Selector
-  const [startDate, setStartDate] = useState(new Date());
-
-
-  useEffect(() => {
-    let mounted = true;
-    fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`)
-    .then(data => data.json())
-    .then(items => {
-      if (mounted){
-        setModelList(items)
-      }
-    });
-    return () => mounted = false;
-  }, []);
+  const startDate = new Date();
+  // User turbine form
+  const [turbineForm, setTurbineForm] = useState(<></>);
 
   useEffect(() => {
-    let mounted = true;
-    fetch(`${process.env.REACT_APP_BACKEND}/api/v1/get_user_turbines`)
-    .then(data => data.json())
-    .then(items => {
-      if (mounted){
-        setTurbineList(items)
+    API.getTurbineModels().then(setModelList);
+
+    API.isLoggedIn().then(loggedIn => {
+      if (loggedIn) {
+        API.getUserTurbines()
+        .then(data => data.json())
+        .then(items => items.map(opt => ({ label: opt.name, value: opt.turbineId })))
+        .then(turbineList => {
+          console.log("reall=====")
+          console.log(turbineList)
+          console.log("reall=====")
+          setTurbineForm(
+            <form className= "userTurbine" onSubmit={e => e.preventDefault()} id="savedTurbineForm"
+              style={{
+                float: "right",
+              }}>
+              <h3 className="searchTitle">Select saved turbine</h3>
+              <Select 
+                  className="modelDropDown"
+                  options={turbineList}
+                  name="turbineId"
+              />
+              <DatePicker name="date" selected={startDate} className="datePicker" />
+              <div className="searchButtonPositionRight">
+                <button className="searchButton" onClick={updateDataFromSavedTurbine}>
+                  Search
+                </button>
+              </div>
+            </form>
+          );
+        })
       }
     });
-    return () => mounted = false;
   }, []);
 
   return (
     <div className="base">
       <Header />
       <div className="inputBase">
-      <form className= "newTurbine"
+      <form className= "newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm"
         style={{
           float: "left",
         }}
       >
         <h3 className="searchTitle">Input New turbine</h3>
-        <InputBox type="number" text="Input your turbine latitude" />
-        <InputBox type="number" text="Input your turbine longitude" />
-        <select 
+        <div>
+          <input class="inputBox" name="lat" placeholder="Input your turbine latitude" />
+        </div>
+        <div>
+          <input class="inputBox" name="lon" placeholder="Input your turbine longitude" />
+        </div>
+        <Select 
             className="modelDropDown"
-            options={modelList.map(opt => ({ label: opt.model_name, value: opt.modelId }))}
-            onChange={opt => console.log(opt.label, opt.value)}
+            options={modelList}
+            name="modelName"
         />
-        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
+        <DatePicker name="date" selected={startDate} className="datePicker" />
         <div className="searchButtonPositionLeft">
-          <button className="searchButton">
+          <button className="searchButton" onClick={updateDataFromCustomTurbine}>
             Search
           </button>
         </div>
       </form>
-
-      <form className= "userTurbine"
-        style={{
-          float: "right",
-        }}
-      >
-        <h3 className="searchTitle">Select saved turbine</h3>
-        <select 
-            className="modelDropDown"
-            options={turbineList.map(opt => ({ label: opt.turbine_name, value: opt.turbineId }))}
-            onChange={opt => console.log(opt.label, opt.value)}
-        />
-        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
-        <div className="searchButtonPositionRight">
-          <button className="searchButton">
-            Search
-          </button>
-        </div>
-      </form>
+      {turbineForm}
       </div>
-
       <div id="chartContainer">
         <LineChart />
       </div>

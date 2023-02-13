@@ -1,6 +1,8 @@
-.base {
+body {
   background-color: #6d835c;
-  background-attachment: scroll;
+}
+
+.base {
   position: absolute;
   top: 0;
   right: 0;

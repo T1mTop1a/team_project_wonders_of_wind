@@ -64,9 +64,38 @@ const API = {
         let token = window.localStorage.getItem('accessToken');
         let headers = new Headers();
         headers.append("Authorization", `Bearer ${token}`)
-        return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/userTurbines`, {headers, method:'GET'})
-    }
+        return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/get_user_turbines`, {headers, method:'GET'})
+    },
 
+    getTurbineModels: async () => {
+      return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`)
+        .then(data => data.json())
+        .then(items => items.map(opt => ({ label: opt.display_name, value: opt.modelId })));
+    },
+
+    predictCustomTurbine: async (formData) => {
+      return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbine_prediction`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(Object.fromEntries(formData))
+      });
+    },
+
+    predictSavedTurbine: async (formData) => {
+      let token = window.localStorage.getItem('accessToken');
+      return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/saved_turbine_prediction`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(Object.fromEntries(formData))
+      });
+    },
 }
 
 export default API;

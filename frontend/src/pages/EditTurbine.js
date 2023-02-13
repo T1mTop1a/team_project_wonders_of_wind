@@ -50,7 +50,7 @@ const EditTurbine = () => {
             setDefaultTurbineModels(
                 data.map((turbine) => ({
                     value: turbine["modelId"],
-                    label: turbine["model_name"],
+                    label: turbine["display_name"],
                 })));
             
         } catch (error) {

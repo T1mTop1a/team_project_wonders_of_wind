@@ -21,11 +21,10 @@ const Header = () => {
   useEffect(() => {
     API.isLoggedIn().then(loggedIn => {
       if (loggedIn) {
-        // TODO: wait for Yuan's PR
         setButtons(
           <div>
-            <Link to="/">
-              <Button class="linkBoxes">Edit turbines</Button>
+            <Link to="/viewTurbines">
+              <Button class="linkBoxes">My turbines </Button>
             </Link>
             <Link to="/">
               <Button class="linkBoxes" onClick={logOutAndRefresh}>Log out</Button>
@@ -61,9 +60,6 @@ const Header = () => {
             >
               {appName}
             </Button>
-          </Link>
-          <Link to="/viewTurbines">
-            <Button class="linkBoxes">My turbines </Button>
           </Link>
 
           {buttons}
