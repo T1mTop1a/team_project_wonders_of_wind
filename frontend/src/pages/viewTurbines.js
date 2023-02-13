@@ -11,18 +11,17 @@ const ViewTurbines = () => {
     const [turbineList, setTurbineList] =  useState([]);
 
     useEffect(() => {
-        let response = async () => {await API.getUserTurbines()
+        API.getUserTurbines()
             .then(data => data.json())
             .then(items => {
                 setTurbineList(items)
             })
-        }
     } , [])
         
 
     const turbines=turbineList.map((turbine)=>{
        return <div className="turbineBox" key={turbine}>
-        <div className="label turbineLabel">{turbine.turbineName}
+        <div className="label turbineLabel">{turbine.name}
              {/* <Button onClick={()=>this.deleteTurbine(this.props.id)} class="deleteBox">Delete</Button> */}
         </div>
         < table className="turbineDetails">
@@ -31,10 +30,10 @@ const ViewTurbines = () => {
                 <td className="value">{turbine.turbineModel}  </td>
             </tr>
             <tr>Turbine Longitude:  
-                <td className="value"> {turbine.turbineLongitude}  </td>
+                <td className="value"> {turbine.longitude}  </td>
             </tr>
             <tr>Turbine Latitude:   
-                <td className="value"> {turbine.turbineLatitude} </td> 
+                <td className="value"> {turbine.latitude} </td> 
             </tr>     
         </thread>
         </table>
@@ -68,15 +67,6 @@ const ViewTurbines = () => {
 
 
     //code draft for delete button
-    // function loadTurbines(){
-    //     fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`) 
-    //     .then((response) => response.json())
-    //     .then((data) => setTurbineList(data.turbineList));
-
-    // }
-
-    // useEffect(() => {loadTurbines()})
-
     //  deleteTurbine() = id =>{
     //       fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines` + id, 
     //       {method: 'DELETE', mode: 'CORS'})
