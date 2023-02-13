@@ -18,13 +18,16 @@ def get_turbines():
 
 
 def save_turbines(turbines):
+    WindmillType.objects.all().delete()
     for turbine in turbines:
 
         if turbine['has_power_curve']:
             print(turbine)
             WindmillType.objects.update_or_create(
                 modelId=turbine['turbine_id'],
-                model_name=turbine['manufacturer'] + " " + turbine['turbine_type'],
+                manufacturer=turbine['manufacturer'],
+                model_name=turbine['turbine_type'],
+                display_name=turbine['manufacturer'] + " " + turbine['turbine_type'],
                 power_curve_input=turbine['power_curve_wind_speeds'],
                 power_curve_output=turbine['power_curve_values']
             )

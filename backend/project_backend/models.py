@@ -22,7 +22,9 @@ class WeatherData(models.Model):
 
 class WindmillType(models.Model):
     modelId = models.AutoField(primary_key=True)
+    manufacturer = models.TextField()
     model_name = models.TextField()
+    display_name = models.TextField()
     power_curve_input = models.JSONField()
     power_curve_output = models.JSONField()
 
