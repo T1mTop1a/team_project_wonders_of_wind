@@ -100,24 +100,8 @@ def fetch_weather_data(lat, lon, date):
         header=[0, 1], \
         date_parser=lambda idx: pd.to_datetime(idx, utc=True))
 
-@csrf_exempt
-def turbine_prediction(request):
-    requestBody = json.loads(request.body)
-    model = WindmillType.objects.get(modelId=int(requestBody["modelName"]))
-    date = pd.to_datetime(requestBody["date"], format='%m/%d/%Y')
-    lat = float(requestBody["lat"])
-    lon = float(requestBody["lon"])
+def predict_turbine_output(lat, lon, date, wind_turbine):
     weather_data = fetch_weather_data(lat, lon, date)
-    wind_turbine = {
-        'turbine_type': model.model_name,  # turbine type as in oedb turbine library
-        'hub_height': 135  # in m
-    }
-
-    # weather_data = pd.read_csv(os.path.join(os.getcwd(), 'project_backend', 'example_weather.csv'),
-    #                            index_col=0,
-    #                            header=[0, 1],
-    #                            date_parser=lambda idx: pd.to_datetime(idx, utc=True)
-    #                          )
     print(weather_data)
 
     # initialize WindTurbine object
@@ -129,6 +113,32 @@ def turbine_prediction(request):
 
     return JsonResponse(response, safe=False)
 
+@csrf_exempt
+def turbine_prediction(request):
+    requestBody = json.loads(request.body)
+    model = WindmillType.objects.get(modelId=int(requestBody["modelName"]))
+    date = pd.to_datetime(requestBody["date"], format='%m/%d/%Y')
+    lat = float(requestBody["lat"])
+    lon = float(requestBody["lon"])
+    wind_turbine = {
+        'turbine_type': model.model_name,  # turbine type as in oedb turbine library
+        'hub_height': 135  # in m
+    }
+    return predict_turbine_output(lat, lon, date, wind_turbine)
+
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def saved_turbine_prediction(request):
+    requestBody = json.loads(request.body)
+    date = pd.to_datetime(requestBody["date"], format='%m/%d/%Y')
+    turbineId = int(requestBody["turbineId"])
+    turbine = UserTurbines.objects.get(turbineId=turbineId)
+    model = turbine.modelId
+    wind_turbine = {
+        'turbine_type': model.model_name,  # turbine type as in oedb turbine library
+        'hub_height': turbine.height  # in m
+    }
+    return predict_turbine_output(turbine.latitude, turbine.longitude, date, wind_turbine)
 
 @csrf_exempt
 def turbines(request):
@@ -170,11 +180,10 @@ def add_turbine_to_profile(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_turbines(request):
-    user_turbines = list(UserTurbines.objects.filter(userId=request.user).values('turbineId', 'height', 'latitude', 'longitude', 'name'))
+    user_turbines = list(UserTurbines.objects.filter(userId=request.user.id).values('turbineId', 'height', 'latitude', 'longitude', 'name'))
     return JsonResponse(user_turbines, safe=False)
 
 
 @api_view(['GET'])
 def must_be_logged_in(request):
-    print(request.user.is_authenticated)
-    return HttpResponse('works')
+    return HttpResponse(f'works, is logged in: {request.user.is_authenticated}')

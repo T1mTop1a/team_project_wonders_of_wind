@@ -17,5 +17,6 @@ urlpatterns = [
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('must_be_logged_in', views.must_be_logged_in, name='must_be_logged_in'),
     path('add_turbine_to_profile', views.add_turbine_to_profile, name='add_turbine_to_profile'),
-    path('userTurbines', views.get_user_turbines, name='get_user_turbines')
+    path('get_user_turbines', views.get_user_turbines, name='get_user_turbines'),
+    path('saved_turbine_prediction', views.saved_turbine_prediction, name='saved_turbine_prediction'),
 ]

@@ -40,7 +40,7 @@ const Home = () => {
     return moment(dateString).tz("UTC").format("llll");
   }
 
-  async function updateData(e) {
+  async function updateDataFromCustomTurbine(e) {
     console.log(e);
     let formData = new FormData(document.getElementById("turbineModelForm"));
     let lat = Number(formData.get("lat"));
@@ -54,15 +54,7 @@ const Home = () => {
       alert("Please enter a valid longitude");
       return;
     }
-    let response = await fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbine_prediction`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(Object.fromEntries(formData))
-    });
-    let powerData = await response.json();
+    let powerData = await API.predictCustomTurbine(formData).then(r => r.json());
     setChartData(
       createChartData(
         powerData,
@@ -72,7 +64,18 @@ const Home = () => {
     );
   }
 
-  // useEffect(() => updateData, []);
+  async function updateDataFromSavedTurbine(e) {
+    console.log(e);
+    let formData = new FormData(document.getElementById("savedTurbineForm"));
+    let powerData = await API.predictSavedTurbine(formData).then(r => r.json());
+    setChartData(
+      createChartData(
+        powerData,
+        powerData.map(({ date }) => formatDateTime(date)),
+        powerData.map(({ power }) => power)
+      )
+    );
+  }
 
   const LineChart = () => {
     return (
@@ -148,53 +151,43 @@ const Home = () => {
 
   // Turbine models 
   const [modelList, setModelList] = useState([]);
-  // User turbines
-  const [turbineList, setTurbineList] = useState([]);
   // date Selector
-  const [startDate, setStartDate] = useState(new Date());
+  const startDate = new Date();
   // User turbine form
   const [turbineForm, setTurbineForm] = useState(<></>);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines`)
-    .then(data => data.json())
-    .then(items => {
-      let formatted = items.map(opt => ({ label: opt.display_name, value: opt.modelId }));
-      console.log(formatted);
-      setModelList(formatted);
-    });
-  }, []);
+    API.getTurbineModels().then(setModelList);
 
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND}/api/v1/get_user_turbines`)
-    .then(data => data.json())
-    .then(items => {
-      setTurbineList(items);
-    });
-  }, []);
-
-  useEffect(() => {
     API.isLoggedIn().then(loggedIn => {
       if (loggedIn) {
-        setTurbineForm(
-          <form className= "userTurbine"
-            style={{
-              float: "right",
-            }}>
-            <h3 className="searchTitle">Select saved turbine</h3>
-            <Select 
-                className="modelDropDown"
-                options={turbineList.map(opt => ({ label: opt["display_name"], value: opt["modelId"] }))}
-                onChange={opt => console.log(opt.label, opt.value)}
-            />
-            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
-            <div className="searchButtonPositionRight">
-              <button className="searchButton">
-                Search
-              </button>
-            </div>
-          </form>
-        );
+        API.getUserTurbines()
+        .then(data => data.json())
+        .then(items => items.map(opt => ({ label: opt.name, value: opt.turbineId })))
+        .then(turbineList => {
+          console.log("reall=====")
+          console.log(turbineList)
+          console.log("reall=====")
+          setTurbineForm(
+            <form className= "userTurbine" onSubmit={e => e.preventDefault()} id="savedTurbineForm"
+              style={{
+                float: "right",
+              }}>
+              <h3 className="searchTitle">Select saved turbine</h3>
+              <Select 
+                  className="modelDropDown"
+                  options={turbineList}
+                  name="turbineId"
+              />
+              <DatePicker name="date" selected={startDate} className="datePicker" />
+              <div className="searchButtonPositionRight">
+                <button className="searchButton" onClick={updateDataFromSavedTurbine}>
+                  Search
+                </button>
+              </div>
+            </form>
+          );
+        })
       }
     });
   }, []);
@@ -220,9 +213,9 @@ const Home = () => {
             options={modelList}
             name="modelName"
         />
-        <DatePicker name="date" selected={startDate} onChange={(date) => setStartDate(date)} className="datePicker" />
+        <DatePicker name="date" selected={startDate} className="datePicker" />
         <div className="searchButtonPositionLeft">
-          <button className="searchButton" onClick={updateData}>
+          <button className="searchButton" onClick={updateDataFromCustomTurbine}>
             Search
           </button>
         </div>
