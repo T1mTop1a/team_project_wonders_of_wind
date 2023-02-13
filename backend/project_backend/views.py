@@ -18,7 +18,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.response import Response
 from django.db.utils import IntegrityError
-
+from django.db.models import F
 
 # Create your views here.
 
@@ -139,7 +139,9 @@ def add_turbine_to_profile(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_turbines(request):
-    user_turbines = list(UserTurbines.objects.filter(userId=request.user).values('turbineId', 'height', 'latitude', 'longitude', 'name'))
+    user_turbines = list(UserTurbines.objects.filter(userId=request.user).values('turbineId', 'height', 'latitude', 'longitude', 'name').annotate(
+        turbineModel=F('modelId__model_name')
+    ))
     return JsonResponse(user_turbines, safe=False)
 
 
