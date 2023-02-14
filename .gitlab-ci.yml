@@ -15,10 +15,10 @@ test-frontend:
     - npm test -- --coverage
 
 build-frontend:
-  environment:
-    - REACT_APP_BACKEND=https://teamproject.lorneb.com
+
   stage: build
   script:
+    - export REACT_APP_BACKEND="https://teamproject.lorneb.com"
     - cd frontend
     - npm install
     - npm run build
