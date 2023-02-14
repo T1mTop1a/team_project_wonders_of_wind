@@ -76,12 +76,10 @@ const EditTurbine = () => {
                     data-testid="turbine longitude"
                     value={turbineLongitude}
                     onChange={(event) => {
-                        if (!isNaN(event.target.value)) {
-                            setTurbineLongitude(event.target.value);
-                            setIsLongitudeValid(true);
-                        } else {
-                            setIsLongitudeValid(false);
-                        }
+
+                        setTurbineLongitude(event.target.value);
+                        setIsLongitudeValid(true);
+      
                     }}
                 />
                 <TextField
@@ -90,12 +88,10 @@ const EditTurbine = () => {
                     data-testid="turbine latitude"
                     value={turbineLatitude}
                     onChange={(event) => {
-                        if (!isNaN(event.target.value)) {
-                            setTurbineLatitude(event.target.value);
-                            setIsLatitudeValid(true);
-                        } else {
-                            setIsLatitudeValid(false);
-                        }
+        
+                        setTurbineLatitude(event.target.value);
+                        setIsLatitudeValid(true);
+                    
                     }}
                 />
                 <TextField
