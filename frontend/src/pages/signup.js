@@ -15,7 +15,7 @@ const SignUp = () => {
 
   const InputBox2 = (props) => {
     return (
-      <div>
+      <div data-testid="input box">
         <input
           required
           className="smallBox smallBoxSignup"
@@ -91,13 +91,13 @@ const SignUp = () => {
 
           <h1 className="title">Sign Up</h1>
 
-          <div className="label">Name </div>
+          <div className="label" data-testid="name input">Name </div>
           {InputBox2({'value': name, 'name':'name', 'type': 'text', onChange:(e) => setName(e.target.value)})}
 
-          <div className="label">Email</div>
+          <div className="label" data-testid="email input">Email</div>
           {InputBox2({'value': email, 'name':'email', 'type': 'email', onChange:(e) => setEmail(e.target.value)})}
 
-          <div className="label">Password</div>
+          <div className="label" data-testid="password input">Password</div>
           {InputBox2({'value': password, 'name':'password', 'type': 'password', onChange:(e) => setPassword(e.target.value)})}
 
           <button className="smallBox2" type="submit" data-testid="signup button">
@@ -105,7 +105,7 @@ const SignUp = () => {
           </button>
           <p className="labelLink">
             Already have an account? <br />
-            <a href="/login">Log in</a>
+            <a href="/login" data-testid="login link">Log in</a>
           </p>
         </form>
       </div>

@@ -48,11 +48,11 @@ const Header = () => {
 
   return (
     <>
-      <AppBar class="NavBar">
+      <AppBar class="NavBar" data-testid="nav bar">
         <Toolbar>
           <Link style={{ textDecoration: "none" }} to="/" className="link">
             <Button
-              data-testid="nav button"
+              data-testid="home button"
               variant="h6"
               align="left"
               component="div"
