@@ -59,9 +59,10 @@ const EditTurbine = () => {
     };
 
     return (
-        <div className="EditTurbine">
+        <div className="base">
             <Header />
-            <form onSubmit={handleSubmit}>
+            <div className="box addTurbinebox">
+            <form className ="form" onSubmit={handleSubmit}>
                 <TextField
                     required
                     label="Turbine Name"
@@ -121,6 +122,7 @@ const EditTurbine = () => {
                 />
                 <Button type="submit" disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel || !turbineHeight}>Add Turbine</Button>
             </form>
+            </div>
         </div>
     );
 };

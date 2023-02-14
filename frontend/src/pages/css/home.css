@@ -7,6 +7,7 @@ body {
   top: 0;
   right: 0;
   left: 0;
+  height: 120%
 }
 
 .inputBase {
@@ -22,6 +23,7 @@ body {
   background: #596a4b;
   background-color: rgba(0, 0, 0, 0.29);
   float: top;
+  
 }
 
 .link {
