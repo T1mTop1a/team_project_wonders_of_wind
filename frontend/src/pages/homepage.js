@@ -158,12 +158,6 @@ const Home = () => {
   const [turbineList, setTurbineList] = useState([]);
   const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
 
-  function goofy(date) {
-    console.log(date);
-    setSavedStartDate(_ => date);
-    console.log(savedStartDate);
-  }
-
   useEffect(() => {
     API.getTurbineModels().then(setModelList);
 
@@ -217,7 +211,7 @@ const Home = () => {
             options={turbineList}
             name="turbineId"
         />
-        <DatePicker name="date" className="datePicker" selected={savedStartDate} onChange={goofy}/>
+        <DatePicker name="date" className="datePicker" selected={savedStartDate} onChange={setSavedStartDate}/>
         <div className="searchButtonPositionRight">
           <button className="searchButton" onClick={updateDataFromSavedTurbine}>
             Search
