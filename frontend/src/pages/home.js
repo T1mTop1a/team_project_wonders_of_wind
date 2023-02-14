@@ -15,7 +15,7 @@ const Header = () => {
 
   function logOutAndRefresh() {
     API.logOut();
-    window.location.reload();
+    window.location.assign("/");
   }
 
   useEffect(() => {
