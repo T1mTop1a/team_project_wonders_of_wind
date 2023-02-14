@@ -13,3 +13,10 @@ test-frontend:
     - cd frontend
     - npm install
     - npm test -- --coverage
+
+build-frontend:
+  stage: build
+  script:
+    - cd frontend
+    - npm install
+    - npm run build
