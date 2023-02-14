@@ -1,8 +1,10 @@
 from django.test import TestCase
 from datetime import datetime
-from project_backend import WeatherData, WindmillType, UserTurbines
-from populate_database import populate_test
+from project_backend.models import WeatherData, WindmillType, UserTurbines
+
 from django.contrib.auth.models import User
+import json
+
 
 class WeatherDataTestCase(TestCase):
     def setUp(self):
@@ -47,17 +49,17 @@ class WindmillTypeTestCase(TestCase):
     def setUp(self):
         WindmillType.objects.create(
             model_name = "test name",
-            power_curve_input = json.dumps{"input_1" : 1, "input_2" : 10},
-            power_curve_output = json.dumps{"output_1" : 2, "output_2" = 20}
+            power_curve_input = json.dumps({"input_1" : 1, "input_2" : 10}),
+            power_curve_output = json.dumps({"output_1" : 2, "output_2" : 20})
         )
 
     def test_model_created(self):
-        windmill_type = WindmillType.objects.get(model_name="test_name")
-        self.assertEqual(windmill_type.model_name, "test_name")
-        self.assertEqual(windmill_type.power_curve_input, {"input_1": 1, "input_2": 10})
-        self.assertEqual(windmill_type.power_curve_output, {"output_1": 2, "output_2": 20})
+        self.windmill_type = WindmillType.objects.get(model_name="test_name")
+        self.assertEqual(self.windmill_type.model_name, "test_name")
+        self.assertEqual(self.windmill_type.power_curve_input, {"input_1": 1, "input_2": 10})
+        self.assertEqual(self.windmill_type.power_curve_output, {"output_1": 2, "output_2": 20})
 
-     def test_windmill_type_str(self):
+    def test_windmill_type_str(self):
         # check the string representation of the windmill type
         self.assertEqual(str(self.windmill_type), "WindmillType 1")
 
