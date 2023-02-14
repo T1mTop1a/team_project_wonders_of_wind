@@ -152,9 +152,17 @@ const Home = () => {
   // Turbine models 
   const [modelList, setModelList] = useState([]);
   // date Selector
-  const startDate = new Date();
+  const [customStartDate, setCustomStartDate] = useState(new Date());
+  const [savedStartDate, setSavedStartDate] = useState(new Date());
   // User turbine form
-  const [turbineForm, setTurbineForm] = useState(<></>);
+  const [turbineList, setTurbineList] = useState([]);
+  const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
+
+  function goofy(date) {
+    console.log(date);
+    setSavedStartDate(_ => date);
+    console.log(savedStartDate);
+  }
 
   useEffect(() => {
     API.getTurbineModels().then(setModelList);
@@ -164,30 +172,8 @@ const Home = () => {
         API.getUserTurbines()
         .then(data => data.json())
         .then(items => items.map(opt => ({ label: opt.name, value: opt.turbineId })))
-        .then(turbineList => {
-          console.log("reall=====")
-          console.log(turbineList)
-          console.log("reall=====")
-          setTurbineForm(
-            <form className= "userTurbine" onSubmit={e => e.preventDefault()} id="savedTurbineForm"
-              style={{
-                float: "right",
-              }}>
-              <h3 className="searchTitle">Select saved turbine</h3>
-              <Select 
-                  className="modelDropDown"
-                  options={turbineList}
-                  name="turbineId"
-              />
-              <DatePicker name="date" selected={startDate} className="datePicker" />
-              <div className="searchButtonPositionRight">
-                <button className="searchButton" onClick={updateDataFromSavedTurbine}>
-                  Search
-                </button>
-              </div>
-            </form>
-          );
-        })
+        .then(setTurbineList);
+        setTurbineFormVisibility("");
       }
     });
   }, []);
@@ -213,14 +199,31 @@ const Home = () => {
             options={modelList}
             name="modelName"
         />
-        <DatePicker name="date" selected={startDate} className="datePicker" />
+        <DatePicker name="date" className="datePicker" selected={customStartDate} onChange={setCustomStartDate}/>
         <div className="searchButtonPositionLeft">
           <button className="searchButton" onClick={updateDataFromCustomTurbine}>
             Search
           </button>
         </div>
       </form>
-      {turbineForm}
+      <form className= "userTurbine" onSubmit={e => e.preventDefault()} id="savedTurbineForm"
+        style={{
+          float: "right",
+          visibility: turbineFormVisibility,
+        }}>
+        <h3 className="searchTitle">Select saved turbine</h3>
+        <Select 
+            className="modelDropDown"
+            options={turbineList}
+            name="turbineId"
+        />
+        <DatePicker name="date" className="datePicker" selected={savedStartDate} onChange={goofy}/>
+        <div className="searchButtonPositionRight">
+          <button className="searchButton" onClick={updateDataFromSavedTurbine}>
+            Search
+          </button>
+        </div>
+      </form>
       </div>
       <div id="chartContainer">
         <LineChart />
