@@ -66,6 +66,14 @@
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 
+.table{
+  position: relative;
+  margin-top: 30px;
+  margin-left: 63px;
+  margin-right: 63px;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
 .modelDropDown {
   width: 508px;
   height: 50px;
