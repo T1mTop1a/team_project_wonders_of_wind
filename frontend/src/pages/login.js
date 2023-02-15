@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Header from "./home.js";
+import Header from "./navBar.js";
 import "./css/signupLogin.css";
 import API from "../API";
 import {useNavigate} from "react-router-dom";

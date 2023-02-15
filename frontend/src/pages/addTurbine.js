@@ -1,6 +1,5 @@
 //This is the page that allows you to add a turbine
 import React, { useState, useEffect } from 'react';
-import "./css/home.css";
 import Header from "./navBar.js";
 import "./css/addTurbine.css";
 import { TextField, Button } from "@mui/material";

@@ -1,4 +1,4 @@
-import Header from "./home.js";
+import Header from "./navBar.js";
 import "./css/homepage.css"
 
 import React, { useState, useEffect } from "react";
