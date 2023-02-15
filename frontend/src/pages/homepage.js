@@ -90,7 +90,20 @@ const Home = () => {
           <Line
             data={chartData}
             height="480px"
-            options={{ maintainAspectRatio: false }}
+            options={{ maintainAspectRatio: false,
+              scales: {
+                y: {
+                  text: "Power (MWe)",
+                  display: true,
+                  align: "end",
+                },
+                x: {
+                  text: "Date and time (UTC)",
+                  display: true,
+                  align: "end",
+                },
+              }, 
+            }}
           />
         </div>
         <div 
