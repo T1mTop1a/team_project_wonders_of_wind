@@ -2,11 +2,11 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from "react";
 
-import Header from "./pages/home";
+import Header from "./pages/navBar";
 import Home from "./pages/homepage";
 import SignUp from "./pages/signup";
 import LogIn from "./pages/login";
-import EditTurbine from "./pages/EditTurbine";
+import AddTurbine from "./pages/addTurbine";
 import ViewTurbines from "./pages/viewTurbines";
 
 
@@ -18,7 +18,7 @@ function App() {
           <Route exact path="/header" exact element={<Header />} />
           <Route exact path="/signup" exact element={<SignUp />} />
           <Route exact path="/login" exact element={<LogIn />} />
-          <Route exact path="/editTurbine" exact element={<EditTurbine />} />
+          <Route exact path="/addTurbine" exact element={<AddTurbine />} />
           <Route exact path="/viewTurbines" exact element={<ViewTurbines />} />
       </Routes>
     </Router>

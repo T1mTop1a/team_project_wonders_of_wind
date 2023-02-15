@@ -1,4 +1,4 @@
-import Header from "./home.js";
+import Header from "./navBar.js";
 import React, {useState} from "react";
 import "./css/signupLogin.css";
 import API from "../API";

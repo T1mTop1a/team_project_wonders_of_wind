@@ -1,4 +1,4 @@
-import Header from "./home.js";
+import Header from "./navBar.js";
 import React from "react";
 import API from "../API";
 import "./css/viewTurbines.css";
@@ -50,7 +50,7 @@ const ViewTurbines = () => {
             return (
                 <>
                 <div className = "noTurbines">You have not added any turbines yet.</div>
-                <Link style={{ textDecoration: "none"}} to="/EditTurbine">
+                <Link style={{ textDecoration: "none"}} to="/addTurbine">
                     <Button class="addTurbineButton addTurbineButtonEmpty"> Add your first turbine</Button>
                 </Link>
                 </>
@@ -58,7 +58,7 @@ const ViewTurbines = () => {
          }
          else{
            return( 
-                <Link style={{ textDecoration: "none"}} to="/EditTurbine">
+                <Link style={{ textDecoration: "none"}} to="/addTurbine">
                     <Button class="addTurbineButton"> Add another turbine </Button>
                 </Link>
             )

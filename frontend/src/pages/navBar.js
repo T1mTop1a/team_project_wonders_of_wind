@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import API from '../API';
-import "./css/home.css";
+import "./css/navBar.css";
 import { Link } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";

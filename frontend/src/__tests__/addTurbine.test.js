@@ -4,7 +4,7 @@ import { fireEvent } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 
-import EditTurbine from '../pages/EditTurbine.js';
+import AddTurbine from '../pages/addTurbine.js';
 
 let container = null;
 beforeEach(() => {
@@ -20,10 +20,10 @@ afterEach(() => {
   container = null;
 });
 
-describe("Edit Turbine component", () => {
+describe("Add Turbine component", () => {
     it("Renders a submit button", () => {
         act(() => {
-          render(<MemoryRouter><EditTurbine /></MemoryRouter>, container);
+          render(<MemoryRouter><AddTurbine /></MemoryRouter>, container);
         });
         expect(
             container.querySelector("[data-testid='submit button']")
@@ -32,7 +32,7 @@ describe("Edit Turbine component", () => {
     
     it("Renders a turbine name input", () => {
         act(() => {
-          render(<MemoryRouter><EditTurbine /></MemoryRouter>, container);
+          render(<MemoryRouter><AddTurbine /></MemoryRouter>, container);
         });
         expect(
             container.querySelector("[data-testid='turbine name']")
@@ -41,7 +41,7 @@ describe("Edit Turbine component", () => {
 
     it("Renders a turbine longitude input", () => {
         act(() => {
-          render(<MemoryRouter><EditTurbine /></MemoryRouter>, container);
+          render(<MemoryRouter><AddTurbine /></MemoryRouter>, container);
         });
         expect(
             container.querySelector("[data-testid='turbine longitude']")
@@ -50,7 +50,7 @@ describe("Edit Turbine component", () => {
 
     it("Renders a turbine latitude input", () => {
         act(() => {
-          render(<MemoryRouter><EditTurbine /></MemoryRouter>, container);
+          render(<MemoryRouter><AddTurbine /></MemoryRouter>, container);
         });
         expect(
             container.querySelector("[data-testid='turbine latitude']")
@@ -59,7 +59,7 @@ describe("Edit Turbine component", () => {
 
     it("Renders a turbine height input", () => {
         act(() => {
-          render(<MemoryRouter><EditTurbine /></MemoryRouter>, container);
+          render(<MemoryRouter><AddTurbine /></MemoryRouter>, container);
         });
         expect(
             container.querySelector("[data-testid='turbine height']")

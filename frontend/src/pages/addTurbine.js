@@ -1,13 +1,12 @@
-//This is the page that allows you to add or edit a turbine
+//This is the page that allows you to add a turbine
 import React, { useState, useEffect } from 'react';
-import "./css/home.css";
-import Header from "./home.js";
-import "./css/EditTurbine.css";
+import Header from "./navBar.js";
+import "./css/addTurbine.css";
 import { TextField, Button } from "@mui/material";
 import { default as Select } from 'react-select';
 import API from '../API';
 
-const EditTurbine = () => {
+const addTurbine = () => {
     const [turbineName, setTurbineName] = useState('');//Turbine name
     const [turbineLongitude, setTurbineLongitude] = useState('');//Turbine longitude
     const [turbineLatitude, setTurbineLatitude] = useState('');//Turbine latitude
@@ -127,4 +126,4 @@ const EditTurbine = () => {
     );
 };
 
-export default EditTurbine;
+export default addTurbine;
