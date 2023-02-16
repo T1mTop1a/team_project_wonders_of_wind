@@ -178,7 +178,7 @@ const Home = () => {
   return (
     <div className="base">
       <Header />
-      <div className="inputBase">
+      <div className="inputBase2">
       <form className= "newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm"
         style={{
           float: "left",
@@ -186,10 +186,10 @@ const Home = () => {
       >
         <h3 className="searchTitle">Input New turbine</h3>
         <div>
-          <input class="inputBox" name="lat" placeholder="Input your turbine latitude" />
+          <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude" />
         </div>
         <div>
-          <input class="inputBox" name="lon" placeholder="Input your turbine longitude" />
+          <input type="text" class="inputBox" name="lon" placeholder="Input your turbine longitude" />
         </div>
         <Select 
             className="modelDropDown"

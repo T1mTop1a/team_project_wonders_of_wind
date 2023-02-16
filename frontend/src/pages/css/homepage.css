@@ -5,6 +5,19 @@
     margin-top: 3px;
     margin-bottom: 3px;
     text-indent: 10px;
+    border: 1px solid #202A44;
+    background: transparent;
+    color: white;
+    border-radius: 10px;
+}
+.inputBase2 {
+  position: absolute;
+  right: 0;
+  left: 0;
+  display: flex;
+}
+input[type="text"]{
+  font-size: large;
 }
 
 .searchButtonPositionLeft{
@@ -28,7 +41,7 @@
   }
 
 .searchButton {
-    background: #193C0D;
+    background: #202A44;
     width: 128px;
     height: 51px;
     left: 433px;
@@ -40,10 +53,12 @@
     color: #FFFFFF;
     margin-right: 10;
     margin-left: auto;
+    border-radius: 15px;
 }
 
 .searchButton:hover {
-  color: #add0a4;
+  background: transparent;
+  border: 1px solid white;
 }
 
 .inputBox::placeholder {
@@ -54,7 +69,8 @@
     line-height: 30px;
     display: flex;
     align-items: center;
-    opacity: 0.5;
+    opacity: 1;
+    color: #202A44;
   }
 
 #chartContainer {
@@ -89,13 +105,17 @@
   height: 40px;
   margin-left: 64px;
   margin-top: 3px;
-
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid #202A44;
+  font-size: medium;
+  text-indent: 10px;
 }
 
 .searchTitle{
   font-family: 'Arial', cursive;
   margin-left: 70px;
-  color: #FFFFFF;
+  color: #202A44;
   text-align: left;
   margin-bottom: 14px;
 }
