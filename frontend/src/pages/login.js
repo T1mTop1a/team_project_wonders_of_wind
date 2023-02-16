@@ -89,7 +89,7 @@ const LogIn = () => {
             if (errorType === "wrongCredentials") {
               return (
                 <div className="errorDisplay">
-                  Incorrect Password or Email! Please try again or sign up!
+                  Incorrect Password or Email!<br/>Please try again or sign up!
                 </div>
               );
             } else if (errorType === "unknownError") {
