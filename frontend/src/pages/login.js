@@ -26,7 +26,7 @@ const LogIn = () => {
   const InputBox = (props) => {
     return (
       <div>
-        <input
+        <input type="text" style={{fontSize: 'larger', textIndent: '10px'}}
           className="smallBox smallBoxlogin"
           placeholder={props.text}
           name={props.name}
