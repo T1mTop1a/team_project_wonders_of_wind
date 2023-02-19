@@ -1,19 +1,29 @@
+/* .overallBox {
+  display: flex;
+  width: 500px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
+} */
+
 .inputBox {
-    width: 500px;
-    height: 50px;
-    margin-left: 64px;
+    width: 450px;
+    height: 40px;
+    /* margin-left: 64px; */
     margin-top: 3px;
     margin-bottom: 3px;
     text-indent: 10px;
-    border: 1px solid #202A44;
-    background: transparent;
+    border: 1.5px solid #202A44;
+    /* background: transparent; */
+    background: rgba(255, 255, 255, 0.3);
     color: white;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 .inputBase2 {
-  position: absolute;
-  right: 0;
-  left: 0;
+  position: relative;
+  width: 450px;
+  top: 0px;
+  left: 63px;
   display: flex;
 }
 input[type="text"]{
@@ -34,7 +44,7 @@ input[type="text"]{
     width: 500px;
     height: 50px;
     margin-left: 70px;
-    margin-top: 130px;
+    margin-top: 115px;
     margin-bottom: 14px;
     align-content: right;
     display: flex;
@@ -42,18 +52,19 @@ input[type="text"]{
 
 .searchButton {
     background: #202A44;
-    width: 128px;
-    height: 51px;
+    width: 120px;
+    height: 40px;
     left: 433px;
     top: 295px;
     border: 0;
     font-family: Abril Fatface;
     font-weight: lighter;
-    font-size: 20px;
+    font-size: large;
     color: #FFFFFF;
     margin-right: 10;
-    margin-left: auto;
-    border-radius: 15px;
+    margin-bottom: 15px;
+    margin-left: 265px;
+    border-radius: 10px;
 }
 
 .searchButton:hover {
@@ -74,12 +85,13 @@ input[type="text"]{
   }
 
 #chartContainer {
-    background: #fbfcff;
-    margin-top: 350px;
-    margin-left: 63px;
-    margin-right: 63px;
-    height: 480px;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background: #fbfcff;
+  margin-top: 100px;
+  margin-left: 63px;
+  margin-right: 63px;
+  height: 480px;
+  /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
   }
 
 .table{
@@ -92,30 +104,33 @@ input[type="text"]{
 }
 
 .modelDropDown {
-  width: 508px;
-  height: 50px;
-  margin-left: 64px;
+  width: 455px;
+  height: 40px;
+  /* margin-left: 64px; */
   margin-top: 3px;
   margin-bottom: 3px;
   text-indent: 10px;
 }
 
 .datePicker {
-  width: 200px;
-  height: 40px;
-  margin-left: 64px;
+  width: 115px;
+  height: 35px;
+  /* margin-left: 64px; */
   margin-top: 3px;
-  border-radius: 10px;
+  border-radius: 5px;
   background: transparent;
-  border: 1px solid #202A44;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1.5px solid #202A44;
+  color:#202A44;
   font-size: medium;
   text-indent: 10px;
 }
 
 .searchTitle{
-  font-family: 'Arial', cursive;
-  margin-left: 70px;
-  color: #202A44;
+  font-family: 'Abril Fatface', cursive;
+  font-weight: 200;
+  font-size: x-large;
+  color: #fff;
   text-align: left;
   margin-bottom: 14px;
 }
