@@ -14,5 +14,8 @@ RUN pip3 install eccodes
 RUN   pip install -r requirements.txt && \
       apt update && apt install cron --assume-yes && \
       python manage.py collectstatic --noinput
+
+RUN apt -y install dos2unix
+RUN dos2unix docker-runserver.sh
 EXPOSE 8000
 CMD [ "/bin/sh", "docker-runserver.sh" ]
