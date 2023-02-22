@@ -17,6 +17,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import API from "../API.js";
 
 var moment = require("moment-timezone");
+Chart.defaults.font.size = 16;
 
 const Home = () => {
   const createChartData = (rawData, labels, data) => ({
