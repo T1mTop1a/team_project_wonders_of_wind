@@ -57,31 +57,64 @@ const addTurbine = () => {
         }
     };
 
+
+
     return (
         <div className="base">
             <Header />
+            <h2 className="myTurbines">Add a new Turbine</h2>
             <div className="box addTurbinebox">
             <form className ="form" onSubmit={handleSubmit}>
                 <TextField
+                InputProps={{
+                    style:{
+                        color: "#202A44",
+                    },
+                }}
+                sx={{
+                    "& .MuiInputLabel-root": {color: '#202A44'},
+                    "& .MuiOutlinedInput-root": {
+                        "& > fieldset": { borderColor: "#202A44" },
+                    },
+                    
+                    "& .MuiFormLabel-root": {
+                        color: '#202A44',
+                        borderColor: '#202A44'
+                    },
+                    "& .MuiFormLabel-root.Mui-focused": {
+                        color: '#202A44'
+                    }
+                }}
+                    margin="dense"
                     required
                     label="Turbine Name"
                     data-testid="turbine name"
                     value={turbineName}
                     onChange={(event) => setTurbineName(event.target.value)}
                 />
+                
                 <TextField
-                    required
-                    label="Turbine Longitude"
-                    data-testid="turbine longitude"
-                    value={turbineLongitude}
-                    onChange={(event) => {
-
-                        setTurbineLongitude(event.target.value);
-                        setIsLongitudeValid(true);
-      
+                    InputProps={{
+                        style:{
+                            color: "#202A44",
+                        },
                     }}
-                />
-                <TextField
+                    sx={{
+                        "& .MuiInputLabel-root": {color: '#202A44'},
+                        "& .MuiOutlinedInput-root": {
+                            "& > fieldset": { borderColor: "#202A44" },
+                        },
+                        
+                        "& .MuiFormLabel-root": {
+                            color: '#202A44',
+                            borderColor: '#202A44'
+                        },
+                        "& .MuiFormLabel-root.Mui-focused": {
+                            color: '#202A44'
+                        }
+                    }}
+
+                    margin="dense"
                     required
                     label="Turbine Latitude"
                     data-testid="turbine latitude"
@@ -93,7 +126,62 @@ const addTurbine = () => {
                     
                     }}
                 />
+
                 <TextField
+                    InputProps={{
+                        style:{
+                            color: "#202A44",
+                        },
+                    }}
+                    sx={{
+                        "& .MuiInputLabel-root": {color: '#202A44'},
+                        "& .MuiOutlinedInput-root": {
+                            "& > fieldset": { borderColor: "#202A44" },
+                        },
+                        
+                        "& .MuiFormLabel-root": {
+                            color: '#202A44',
+                            borderColor: '#202A44'
+                        },
+                        "& .MuiFormLabel-root.Mui-focused": {
+                            color: '#202A44'
+                        }
+                    }}
+                    margin="dense"
+                    required
+                    label="Turbine Longitude"
+                    data-testid="turbine longitude"
+                    value={turbineLongitude}
+                    onChange={(event) => {
+
+                        setTurbineLongitude(event.target.value);
+                        setIsLongitudeValid(true);
+      
+                    }}
+                />
+
+                <TextField
+                    InputProps={{
+                        style:{
+                            color: "#202A44",
+                        },
+                    }}
+                    sx={{
+                        "& .MuiInputLabel-root": {color: '#202A44'},
+                        "& .MuiOutlinedInput-root": {
+                            "& > fieldset": { borderColor: "#202A44" },
+                        },
+                        
+                        "& .MuiFormLabel-root": {
+                            color: '#202A44',
+                            borderColor: '#202A44'
+                        },
+                        "& .MuiFormLabel-root.Mui-focused": {
+                            color: '#202A44'
+                        }
+                    }}
+
+                    margin="dense"
                     required
                     label="Turbine Hub Height"
                     data-testid="turbine height"
@@ -104,7 +192,12 @@ const addTurbine = () => {
                         }
                     }}
                 />
-                <Select
+                <Select className="modelDropdown"
+                    InputProps={{
+                        style:{
+                            color: "#202A44",
+                        },
+                    }}
                     required
                     options={defaultTurbineModels}
                     value={selectedTurbineModel}
@@ -114,12 +207,47 @@ const addTurbine = () => {
                     styles={{
                         control: (base, state) => ({
                             ...base,
-                            width: '200px',
-                            height: '50px',
+                            background: "transparent",
+                            borderColor: "#202A44",
+                            borderWidth: "1px",
+                            width: '255px',
+                            height: '60px',
+                            fontFamily: "Arial",
+                            marginTop: "10px",
+                            marginBottom: "20px",
+                            fontColor: "#202A44",
                         }),
+                        menu: base => ({
+                            ...base,
+                            fontFamily: "Arial",
+                            background: "#4686AE",
+                            color: "#4686AE",
+                            
+                        }),  
                     }}
+                    
+                    theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                          ...theme.colors,
+                          primary25: '#8DB38B',
+                          primary: '#8DB38B',
+                        },
+                      })}
                 />
-                <Button type="submit" data-testid="submit button" disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel || !turbineHeight}>Add Turbine</Button>
+                <Button 
+                    className="addButton"
+                    style={{
+                        fontFamily: "Abril Fatface",
+                        color: "#202A44",
+                        border: "2px solid #202A44",
+                        boxShadow: "0 0 20px 2px rgba(0, 0, 0, 0.2)",
+                        width: "150px",
+                        marginTop: "10px",
+                        cursor: "pointer",
+                    }}
+                    
+                    type="submit" data-testid="submit button"  disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel || !turbineHeight}>Add Turbine</Button>
             </form>
             </div>
         </div>
