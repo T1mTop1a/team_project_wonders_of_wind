@@ -26,7 +26,7 @@ const LogIn = () => {
   const InputBox = (props) => {
     return (
       <div>
-        <input
+        <input type="text" style={{fontSize: 'larger', textIndent: '10px'}}
           className="smallBox smallBoxlogin"
           placeholder={props.text}
           name={props.name}
@@ -89,7 +89,7 @@ const LogIn = () => {
             if (errorType === "wrongCredentials") {
               return (
                 <div className="errorDisplay">
-                  Incorrect Password or Email! Please try again or sign up!
+                  Incorrect Password or Email!<br/>Please try again or sign up!
                 </div>
               );
             } else if (errorType === "unknownError") {

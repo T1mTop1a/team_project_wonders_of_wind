@@ -1,5 +1,5 @@
 body {
-  background-color: #6d835c;
+  background-image: linear-gradient(.25turn, #4686AE, #8DB38B);
 }
 
 .base {
@@ -19,8 +19,8 @@ body {
 
 .NavBar {
   position: static;
-  background: #596a4b;
-  background-color: rgba(0, 0, 0, 0.29);
+  /* background: #202A44; */
+  /* background-color: rgba(0, 0, 0, 0.29); */
   float: top;
   
 }
@@ -34,17 +34,22 @@ body {
 }
 
 .link:hover {
-  color: #add0a4;
+  color: #202A44;
 }
 
 .linkBoxes {
+  cursor: auto;
   color: white;
   border-radius: 15px;
   text-align: centre;
   font-size: medium;
-  background: transparent;
+  background: #202A44;
   right: 0;
   border: 1px solid white;
   margin: 10px;
   width: 130px;
+}
+
+.linkBoxes:hover{
+  background: transparent;
 }

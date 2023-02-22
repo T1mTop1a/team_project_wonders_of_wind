@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import "./css/signupLogin.css";
 import API from "../API";
 import {useNavigate} from "react-router-dom";
+import { fontSize } from "@mui/system";
 
 const SignUp = () => {
 
@@ -16,7 +17,7 @@ const SignUp = () => {
   const InputBox2 = (props) => {
     return (
       <div data-testid="input box">
-        <input
+        <input type="text" style={{fontSize: 'larger', textIndent: '10px'}}
           required
           className="smallBox smallBoxSignup"
           placeholder={props.text}

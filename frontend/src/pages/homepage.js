@@ -175,10 +175,28 @@ const Home = () => {
     });
   }, []);
 
+  const dropdownStyles = {
+    control: base => ({
+      ...base,
+      fontFamily: "Arial",
+      background: "rgba(255, 255, 255, 0.3);",
+      borderColor: "#202A44",
+      borderWidth: "1.5px",
+      text: "red"
+    }),
+    menu: base => ({
+      ...base,
+      fontFamily: "Arial",
+      background: "#4686AE",
+      // : "#202A44"
+
+    })
+  };
+
   return (
     <div className="base">
       <Header />
-      <div className="inputBase">
+      <div className="inputBase2 overallBox">
       <form className= "newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm"
         style={{
           float: "left",
@@ -186,16 +204,25 @@ const Home = () => {
       >
         <h3 className="searchTitle">Input New turbine</h3>
         <div>
-          <input class="inputBox" name="lat" placeholder="Input your turbine latitude" />
+          <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude" />
         </div>
         <div>
-          <input class="inputBox" name="lon" placeholder="Input your turbine longitude" />
+          <input type="text" class="inputBox" name="lon" placeholder="Input your turbine longitude" />
         </div>
         <Select 
-            className="modelDropDown"
+            className="modelDropDown" styles ={dropdownStyles}
             options={modelList}
             name="modelName"
-        />
+            theme={(theme) => ({
+              ...theme,
+              colors: {
+                ...theme.colors,
+                text: 'orangered',
+                primary25: '#8DB38B',
+                primary: '#8DB38B',
+              },
+            })}
+          />
         <DatePicker name="date" className="datePicker" selected={customStartDate} onChange={setCustomStartDate}/>
         <div className="searchButtonPositionLeft">
           <button className="searchButton" onClick={updateDataFromCustomTurbine}>
@@ -209,10 +236,19 @@ const Home = () => {
           visibility: turbineFormVisibility,
         }}>
         <h3 className="searchTitle">Select saved turbine</h3>
-        <Select 
-            className="modelDropDown"
+        <Select
+            className="modelDropDown" styles={dropdownStyles}
             options={turbineList}
             name="turbineId"
+            theme={(theme) => ({
+              ...theme,
+              colors: {
+                ...theme.colors,
+                text: 'red',
+                primary25: '#8DB38B',
+                primary: '#8DB38B',
+              },
+            })}
         />
         <DatePicker name="date" className="datePicker" selected={savedStartDate} onChange={setSavedStartDate}/>
         <div className="searchButtonPositionRight">
