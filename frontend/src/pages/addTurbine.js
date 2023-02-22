@@ -95,7 +95,7 @@ const addTurbine = () => {
                 />
                 <TextField
                     required
-                    label="Turbine Height"
+                    label="Turbine Hub Height"
                     data-testid="turbine height"
                     value={turbineHeight}
                     onChange={(event) => {
