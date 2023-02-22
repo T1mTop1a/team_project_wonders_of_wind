@@ -30,8 +30,26 @@ const Home = () => {
         borderColor: "rgb(75, 192, 192)",
         tension: 0.1,
         data: data,
+        xAxisID: 'xAxis',
+        yAxisID: 'yAxis',
       },
     ],
+    display: {
+      scales: {
+        xAxis: {
+          text: "Date and time (UTC)",
+          display: true,
+          align: "end",
+        },
+        yAxis: {
+          text: "Power (MWe)",
+          display: true,
+          align: "end",
+          min: 0,
+          max: 10,
+        },
+      },
+    }
   });
   
   const [chartData, setChartData] = useState(createChartData([], [], []));
@@ -59,7 +77,7 @@ const Home = () => {
       createChartData(
         powerData,
         powerData.map(({ date }) => formatDateTime(date)),
-        powerData.map(({ power }) => power)
+        powerData.map(({ power }) => power/1000000)
       )
     );
   }
@@ -72,7 +90,7 @@ const Home = () => {
       createChartData(
         powerData,
         powerData.map(({ date }) => formatDateTime(date)),
-        powerData.map(({ power }) => power)
+        powerData.map(({ power }) => power/1000000)
       )
     );
   }
@@ -90,20 +108,7 @@ const Home = () => {
           <Line
             data={chartData}
             height="480px"
-            options={{ maintainAspectRatio: false,
-              scales: {
-                y: {
-                  text: "Power (MWe)",
-                  display: true,
-                  align: "end",
-                },
-                x: {
-                  text: "Date and time (UTC)",
-                  display: true,
-                  align: "end",
-                },
-              }, 
-            }}
+            options={{ maintainAspectRatio: false }}
           />
         </div>
         <div 
