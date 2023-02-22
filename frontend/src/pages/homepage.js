@@ -1,4 +1,4 @@
-import Header from "./home.js";
+import Header from "./navBar.js";
 import "./css/homepage.css"
 
 import React, { useState, useEffect } from "react";
@@ -101,7 +101,7 @@ const Home = () => {
         <div
           style={{
             float: "left",
-            width: "60%",
+            width: "100%",
             height: "480px",
           }}
         >
@@ -111,45 +111,48 @@ const Home = () => {
             options={{ maintainAspectRatio: false }}
           />
         </div>
-        <div 
-          style={{
-            float: "right",
-            width: "40%",
-            height: "480px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+        
+      </div>
+    );
+  };
+
+  const DataTable = () => {
+    return (
+      <div className="table">
+        <TableContainer
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
         >
-          <TableContainer>
-            <Table
-              sx={{ minWidth: 50 }}
-              size="small"
-              aria-label="a dense table"
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Power</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {chartData.rawData.map((row) => (
-                  <TableRow
-                    key={row.date}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {formatDateTime(row.date)}
-                    </TableCell>
-                    <TableCell>{row.power}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
+          <Table
+            sx={{ minWidth: 50 }}
+            size="small"
+            aria-label="a dense table"
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                <TableCell>Power</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+            {chartData.rawData.map((row) => (
+              <TableRow
+                key={row.date}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {formatDateTime(row.date)}
+                </TableCell>
+                <TableCell>{row.power}</TableCell>
+              </TableRow>
+            ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     );
   };
@@ -239,6 +242,9 @@ const Home = () => {
       </div>
       <div id="chartContainer">
         <LineChart />
+      </div>
+      <div>
+      <DataTable />
       </div>
     </div>
   );
