@@ -1,10 +1,33 @@
+/* .overallBox {
+  display: flex;
+  width: 500px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
+} */
+
 .inputBox {
-    width: 500px;
-    height: 50px;
-    margin-left: 64px;
+    width: 450px;
+    height: 40px;
+    /* margin-left: 64px; */
     margin-top: 3px;
     margin-bottom: 3px;
     text-indent: 10px;
+    border: 1.5px solid #202A44;
+    /* background: transparent; */
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 5px;
+}
+.inputBase2 {
+  position: relative;
+  width: 450px;
+  top: 0px;
+  left: 63px;
+  display: flex;
+}
+input[type="text"]{
+  font-size: large;
 }
 
 .searchButtonPositionLeft{
@@ -21,29 +44,32 @@
     width: 500px;
     height: 50px;
     margin-left: 70px;
-    margin-top: 130px;
+    margin-top: 115px;
     margin-bottom: 14px;
     align-content: right;
     display: flex;
   }
 
 .searchButton {
-    background: #193C0D;
-    width: 128px;
-    height: 51px;
+    background: #202A44;
+    width: 120px;
+    height: 40px;
     left: 433px;
     top: 295px;
     border: 0;
     font-family: Abril Fatface;
     font-weight: lighter;
-    font-size: 20px;
+    font-size: large;
     color: #FFFFFF;
     margin-right: 10;
-    margin-left: auto;
+    margin-bottom: 15px;
+    margin-left: 265px;
+    border-radius: 10px;
 }
 
 .searchButton:hover {
-  color: #add0a4;
+  background: transparent;
+  border: 1px solid white;
 }
 
 .inputBox::placeholder {
@@ -54,7 +80,8 @@
     line-height: 30px;
     display: flex;
     align-items: center;
-    opacity: 0.5;
+    opacity: 1;
+    color: #202A44;
   }
 
 #chartContainer {
@@ -77,26 +104,33 @@
 }
 
 .modelDropDown {
-  width: 508px;
-  height: 50px;
-  margin-left: 64px;
+  width: 455px;
+  height: 40px;
+  /* margin-left: 64px; */
   margin-top: 3px;
   margin-bottom: 3px;
   text-indent: 10px;
 }
 
 .datePicker {
-  width: 200px;
-  height: 40px;
-  margin-left: 64px;
+  width: 115px;
+  height: 35px;
+  /* margin-left: 64px; */
   margin-top: 3px;
-
+  border-radius: 5px;
+  background: transparent;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1.5px solid #202A44;
+  color:#202A44;
+  font-size: medium;
+  text-indent: 10px;
 }
 
 .searchTitle{
-  font-family: 'Arial', cursive;
-  margin-left: 70px;
-  color: #FFFFFF;
+  font-family: 'Abril Fatface', cursive;
+  font-weight: 200;
+  font-size: x-large;
+  color: #fff;
   text-align: left;
   margin-bottom: 14px;
 }
