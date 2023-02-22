@@ -26,8 +26,8 @@ const addTurbine = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await API.addTurbine(turbineName, turbineLatitude, turbineLongitude, turbineHeight, selectedTurbineModel.value);
-
+            const response = await API.addTurbine(turbineName, turbineLatitude, turbineLongitude, turbineHeight || 135, selectedTurbineModel.value);
+            
             if (!response.ok) {
                 throw new Error(response.statusText);
             }
@@ -113,17 +113,14 @@ const addTurbine = () => {
                             color: '#202A44'
                         }
                     }}
-
                     margin="dense"
                     required
                     label="Turbine Latitude"
                     data-testid="turbine latitude"
                     value={turbineLatitude}
                     onChange={(event) => {
-        
                         setTurbineLatitude(event.target.value);
                         setIsLatitudeValid(true);
-                    
                     }}
                 />
 
@@ -180,9 +177,7 @@ const addTurbine = () => {
                             color: '#202A44'
                         }
                     }}
-
                     margin="dense"
-                    required
                     label="Turbine Hub Height"
                     data-testid="turbine height"
                     value={turbineHeight}
@@ -247,7 +242,7 @@ const addTurbine = () => {
                         cursor: "pointer",
                     }}
                     
-                    type="submit" data-testid="submit button"  disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel || !turbineHeight}>Add Turbine</Button>
+                    type="submit" data-testid="submit button"  disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel}>Add Turbine</Button>
             </form>
             </div>
         </div>
