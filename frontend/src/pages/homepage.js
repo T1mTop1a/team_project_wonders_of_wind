@@ -189,7 +189,7 @@ const Home = () => {
       ...base,
       fontFamily: "Arial",
       background: "#4686AE",
-      // : "#202A44"
+      color : "#202A44"
 
     })
   };
@@ -198,7 +198,7 @@ const Home = () => {
   function showDescription() {
     return(
        <div className="description">
-          Predictions are generated based on data from NOAA.
+          Predictions are generated based on weather data from NOAA.
         </div>
     )
   }
