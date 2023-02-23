@@ -155,8 +155,6 @@ const Home = () => {
   // Turbine models 
   const [modelList, setModelList] = useState([]);
   // date Selector
-  const customStartDateState = useState(new Date());
-  const savedStartDateState = useState(new Date());
   const [allowedDateRange, setAllowedDateRange] = useState(undefined);
   // User turbine form
   const [turbineList, setTurbineList] = useState([]);
@@ -196,8 +194,8 @@ const Home = () => {
     })
   };
 
-  const MyDatePicker = (props) => {
-    const [state, setState] = props.dateState;
+  const MyDatePicker = () => {
+    const [[startDate, endDate], setState] = useState([new Date(), new Date()]);
     let minDate = undefined;
     let maxDate = undefined;
     if (allowedDateRange) {
@@ -206,10 +204,13 @@ const Home = () => {
     }
     return (
       <DatePicker name="date" className="datePicker"
-        selected={state}
+        selected={startDate}
+        startDate={startDate}
+        endDate={endDate}
         onChange={setState}
         minDate={minDate}
         maxDate={maxDate}
+        selectsRange={true}
       />)
   }
 
@@ -243,7 +244,7 @@ const Home = () => {
               },
             })}
           />
-        <MyDatePicker dateState={customStartDateState}/>
+        <MyDatePicker/>
         <div className="searchButtonPositionLeft">
           <button className="searchButton" onClick={updateDataFromCustomTurbine}>
             Search
@@ -270,7 +271,7 @@ const Home = () => {
               },
             })}
         />
-        <MyDatePicker dateState={savedStartDateState}/>
+        <MyDatePicker/>
         <div className="searchButtonPositionRight">
           <button className="searchButton" onClick={updateDataFromSavedTurbine}>
             Search
