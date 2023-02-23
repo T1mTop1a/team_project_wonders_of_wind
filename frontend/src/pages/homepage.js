@@ -1,7 +1,7 @@
 import Header from "./navBar.js";
 import "./css/homepage.css"
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
@@ -77,7 +77,7 @@ const Home = () => {
     );
   }
 
-  const LineChart = () => {
+  const lineChart = React.useMemo(() => {
     return (
       <div>
         <div
@@ -96,7 +96,7 @@ const Home = () => {
         
       </div>
     );
-  };
+  }, [chartData]);
 
   const DataTable = () => {
     return (
@@ -259,7 +259,7 @@ const Home = () => {
       </form>
       </div>
       <div id="chartContainer">
-        <LineChart />
+        {lineChart}
       </div>
       <div>
       <DataTable />
