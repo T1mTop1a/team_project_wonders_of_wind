@@ -19,7 +19,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.db.utils import IntegrityError
 import datetime
-from django.db.models import F
+from django.db.models import F, Max, Min
 
 
 # Create your views here.
@@ -191,3 +191,9 @@ def get_user_turbines(request):
 @api_view(['GET'])
 def must_be_logged_in(request):
     return HttpResponse(f'works, is logged in: {request.user.is_authenticated}')
+
+def prediction_date_range(request):
+    latest_time = WeatherData.objects.aggregate(Max('time'))["time__max"]
+    earliest_time = WeatherData.objects.aggregate(Min('time'))["time__min"]
+    return JsonResponse({"maxDate": latest_time, "minDate": earliest_time}, safe=False)
+

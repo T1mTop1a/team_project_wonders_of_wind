@@ -19,4 +19,5 @@ urlpatterns = [
     path('add_turbine_to_profile', views.add_turbine_to_profile, name='add_turbine_to_profile'),
     path('get_user_turbines', views.get_user_turbines, name='get_user_turbines'),
     path('saved_turbine_prediction', views.saved_turbine_prediction, name='saved_turbine_prediction'),
+    path('prediction_date_range', views.prediction_date_range, name='prediction_date_range'),
 ]
