@@ -160,6 +160,7 @@ const Home = () => {
   // User turbine form
   const [turbineList, setTurbineList] = useState([]);
   const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
+  const [descriptionDate, setdescriptionDate] = useState('');
 
   useEffect(() => {
     API.getTurbineModels().then(setModelList);
@@ -188,10 +189,19 @@ const Home = () => {
       ...base,
       fontFamily: "Arial",
       background: "#4686AE",
-      // : "#202A44"
+      color : "#202A44"
 
     })
   };
+
+
+  function showDescription() {
+    return(
+       <div className="description">
+          Predictions are generated based on weather data from NOAA.
+        </div>
+    )
+  }
 
   return (
     <div className="base">
@@ -258,6 +268,7 @@ const Home = () => {
         </div>
       </form>
       </div>
+      {showDescription()}
       <div id="chartContainer">
         <LineChart />
       </div>
