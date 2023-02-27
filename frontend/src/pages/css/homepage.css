@@ -84,14 +84,25 @@ input[type="text"]{
     color: #202A44;
   }
 
+ .description{
+   font-family: Arial, Helvetica;
+   color: #fff;
+   font-size: large;
+   font-weight: bold;
+   margin-top: 20px;
+   margin-left: 63px;
+
+ } 
+
 #chartContainer {
-    border-radius: 25px;
-    background: #fffff0;
-    margin-top: 350px;
-    margin-left: 63px;
-    margin-right: 63px;
-    height: 480px;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  background: #fffff0;
+  margin-top: 25px;
+  margin-left: 63px;
+  margin-right: 63px;
+  height: 480px;
+  /* box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25); */
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
   }
 
 .table{

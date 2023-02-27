@@ -34,6 +34,9 @@ const ViewTurbines = () => {
             </tr>
             <tr>Turbine Latitude:   
                 <td className="value"> {turbine.latitude} </td> 
+            </tr>    
+            <tr>Turbine Hub Height:   
+                <td className="value"> {turbine.height} </td> 
             </tr>     
         </thread>
         </table>
