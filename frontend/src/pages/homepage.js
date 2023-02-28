@@ -15,9 +15,11 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../API.js";
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 var moment = require("moment-timezone");
 Chart.defaults.font.size = 12;
+Chart.register(zoomPlugin);
 
 const Home = () => {
   const createChartData = (rawData, labels, data) => ({
@@ -98,6 +100,26 @@ const Home = () => {
                     font: {
                       size: 18,
                     },
+                },
+                zoom: {
+                  pan: {
+                    enabled: true,
+                    mode: 'x',
+                    modifierKey: 'ctrl',
+
+                  },
+                  limits: {
+                    // axis limits
+                  },
+                  zoom: {
+                    mode: 'x',
+                    pinch: {
+                      enabled: true,
+                    },
+                    wheel: {
+                      enabled: true,
+                    },
+                  },
                 },
               },
               layout: {
