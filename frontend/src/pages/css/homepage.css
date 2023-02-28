@@ -95,7 +95,8 @@ input[type="text"]{
  } 
 
 #chartContainer {
-  background: #fbfcff;
+  border-radius: 25px;
+  background: #fffff0;
   margin-top: 25px;
   margin-left: 63px;
   margin-right: 63px;
