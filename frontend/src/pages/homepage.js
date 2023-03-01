@@ -147,7 +147,6 @@ const Home = () => {
                     },
                   },
                   min: 0,
-                  max: 10,
                 },
               },
             }}
@@ -274,10 +273,10 @@ const Home = () => {
       >
         <h3 className="searchTitle">Input New turbine</h3>
         <div>
-          <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude" />
+          <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude (-90 to 89)" />
         </div>
         <div>
-          <input type="text" class="inputBox" name="lon" placeholder="Input your turbine longitude" />
+          <input type="text" class="inputBox" name="lon" placeholder="Input your turbine longitude (-180 to 179)" />
         </div>
         <Select 
             className="modelDropDown" styles ={dropdownStyles}
