@@ -233,7 +233,7 @@ const addTurbine = () => {
                 <Button 
                     className="addButton"
                     style={{
-                        fontFamily: "Abril Fatface",
+                        fontFamily: "Ubuntu",
                         color: "#202A44",
                         border: "2px solid #202A44",
                         boxShadow: "0 0 20px 2px rgba(0, 0, 0, 0.2)",

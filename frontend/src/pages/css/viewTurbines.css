@@ -1,15 +1,19 @@
 .myTurbines{
-    font-family: 'Abril Fatface', cursive;
+    margin-top: 30px;
+    font-family: 'Open Sans', sans-serif;
     text-align: center;
-    color: white;
+    color: #ffffff;
     font-weight: 400;
     font-size: 30px;
     transform: translate(0%, 5%);
 }
 
+
+
+
 .addTurbineButton{
     cursor: auto;
-    font-family: 'Abril Fatface', cursive;
+    font-family: 'Ubuntu', sans-serif;
     width: 220px;
     height: 35px;
     display: block;
@@ -32,7 +36,7 @@
 
 .turbineLabel{
     margin-left: 2rem;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;;
     font-style: normal;
     font-size: large;
     color: #202A44;
@@ -89,13 +93,13 @@
 .turbineDetails{
     margin-left: 2rem;
     margin-top: 5px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     color:  #202A44;
 }
 
 .noTurbines{
     position: relative;
-    font-family: 'Abril Fatface', cursive;
+    font-family: 'Ubuntu', sans-serif;
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -121,5 +125,5 @@
 }
 
 .turbineLabel{
-    font-family: 'Abril Fatface', cursive;
+    font-family: 'Ubuntu', sans-serif;
 }
