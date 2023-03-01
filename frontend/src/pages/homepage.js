@@ -53,7 +53,7 @@ const Home = () => {
       alert("Please enter a valid latitude");
       return;
     }
-    if (isNaN(lon) || !(lon >= -180 && lat <= 180)) {
+    if (isNaN(lon) || !(lon >= -180 && lon <= 180)) {
       alert("Please enter a valid longitude");
       return;
     }
