@@ -21,8 +21,8 @@ const ViewTurbines = () => {
 
     const turbines=turbineList.map((turbine)=>{
        return <div className="turbineBox" key={turbine}>
-        <div className="label turbineLabel">{turbine.name}
-             {/* <Button onClick={()=>this.deleteTurbine(this.props.id)} class="deleteBox">Delete</Button> */}
+        <div className="label turbineLabel">{turbine.name} 
+        
         </div>
         < table className="turbineDetails">
             <thread>
@@ -39,7 +39,13 @@ const ViewTurbines = () => {
                 <td className="value"> {turbine.height} </td> 
             </tr>     
         </thread>
+        <Button onClick={()=>this.deleteTurbine(this.props.id)} class="deleteBox">Delete</Button>
+        <Link to="/editTurbine">
+            <Button id={turbine} class="deleteBox editBox">Edit</Button>
+        </Link>
         </table>
+         
+        
         </div>
     })
 
@@ -74,7 +80,7 @@ const ViewTurbines = () => {
     //       fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines` + id, 
     //       {method: 'DELETE', mode: 'CORS'})
     //       .then(res => res)};
-
+//      }
 
     return (
         <div className="base">
