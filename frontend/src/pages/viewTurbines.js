@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 
 const ViewTurbines = () => {
 
-    const [turbineList, setTurbineList] =  useState([]);
+    const [turbineList, setTurbineList] =  useState([]);    
 
     useEffect(() => {
         API.getUserTurbines()
@@ -17,13 +17,10 @@ const ViewTurbines = () => {
                 setTurbineList(items)
             })
     } , [])
-        
 
     const turbines=turbineList.map((turbine)=>{
        return <div className="turbineBox" key={turbine}>
-        <div className="label turbineLabel">{turbine.name} 
-        
-        </div>
+        <div className="label turbineLabel">{turbine.name} </div>
         < table className="turbineDetails">
             <thread>
             <tr>Turbine Model:  
@@ -38,21 +35,18 @@ const ViewTurbines = () => {
             <tr>Turbine Hub Height:   
                 <td className="value"> {turbine.height} </td> 
             </tr>     
+        
         </thread>
-        <Button onClick={()=>this.deleteTurbine(this.props.id)} class="deleteBox">Delete</Button>
-        <Link to="/editTurbine">
-            <Button id={turbine} class="deleteBox editBox">Edit</Button>
-        </Link>
         </table>
-         
+        <Button onClick={()=>this.deleteTurbine(this.props.id)} class="deleteBox">Delete</Button>
+        <Link to={{ pathname:'/editTurbine', 
+        search: `?name=${turbine.name}&model=${turbine.model}&lat=${turbine.latitude}&long=${turbine.longitude}&h=${turbine.height}`
+         }}>
+            <Button  class="deleteBox editBox">Edit</Button>
+        </Link>
         
         </div>
     })
-
-    //code for testing without populating
-    // useEffect(() => {
-    //     setTurbineList([{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'},{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'},{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5',turbineName: 'Turbine1', turbineLongitude: '4'},{turbineName: "Turbine1",turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'}])
-    // })
 
     function emptyTurbineList() {
         if (turbineList.length === 0){
@@ -80,7 +74,7 @@ const ViewTurbines = () => {
     //       fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines` + id, 
     //       {method: 'DELETE', mode: 'CORS'})
     //       .then(res => res)};
-//      }
+    //      }
 
     return (
         <div className="base">

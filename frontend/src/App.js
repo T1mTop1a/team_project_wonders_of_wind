@@ -8,6 +8,7 @@ import SignUp from "./pages/signup";
 import LogIn from "./pages/login";
 import AddTurbine from "./pages/addTurbine";
 import ViewTurbines from "./pages/viewTurbines";
+import EditTurbine from "./pages/editTurbine";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/login" exact element={<LogIn />} />
           <Route exact path="/addTurbine" exact element={<AddTurbine />} />
           <Route exact path="/viewTurbines" exact element={<ViewTurbines />} />
+          <Route exact path="/editTurbine" exact element={<EditTurbine />} />
       </Routes>
     </Router>
   );
