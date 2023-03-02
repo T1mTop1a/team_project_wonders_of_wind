@@ -1,10 +1,11 @@
 //This is the page that allows you to add a turbine
 import React, { useState, useEffect } from 'react';
 import Header from "./navBar.js";
-import "./css/addTurbine.css";
 import { TextField, Button } from "@mui/material";
 import { default as Select } from 'react-select';
+import {Link } from 'react-router-dom';
 import API from '../API';
+import "./css/addTurbine.css";
 
 const addTurbine = () => {
     const [turbineName, setTurbineName] = useState('');//Turbine name
@@ -231,18 +232,12 @@ const addTurbine = () => {
                       })}
                 />
                 <Button 
-                    className="addButton"
-                    style={{
-                        fontFamily: "Ubuntu",
-                        color: "#202A44",
-                        border: "2px solid #202A44",
-                        boxShadow: "0 0 20px 2px rgba(0, 0, 0, 0.2)",
-                        width: "150px",
-                        marginTop: "10px",
-                        cursor: "pointer",
-                    }}
-                    
+                    class="updateCancelButtons"
                     type="submit" data-testid="submit button"  disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel}>Add Turbine</Button>
+                <Link style={{ textDecoration: "none" }} to="/viewTurbines">
+                    <Button 
+                    class="updateCancelButtons">Cancel</Button>
+                </Link>
             </form>
             </div>
         </div>
