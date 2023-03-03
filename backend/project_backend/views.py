@@ -80,8 +80,8 @@ def signup(request):
 
 def fetch_weather_data(lat, lon, date):
     [startDate, endDate] = date.split(" - ")
-    startDate = pd.to_datetime(startDate, format='%m/%d/%Y')
-    endDate = pd.to_datetime(endDate, format='%m/%d/%Y')
+    startDate = pd.to_datetime(startDate, format='%d/%m/%Y')
+    endDate = pd.to_datetime(endDate, format='%d/%m/%Y')
 
     def fetch_subdata(value_type):
         result = WeatherData.objects.filter( \

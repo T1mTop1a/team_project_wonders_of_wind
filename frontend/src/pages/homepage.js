@@ -211,8 +211,11 @@ const Home = () => {
         minDate={minDate}
         maxDate={maxDate}
         selectsRange={true}
+        dateFormat="dd/MM/yyyy"
       />)
   }
+
+  const [customTurbineDatePicker, savedTurbineDatePicker] = [MyDatePicker(), MyDatePicker()];
 
   return (
     <div className="base">
@@ -244,7 +247,7 @@ const Home = () => {
               },
             })}
           />
-        <MyDatePicker/>
+        {customTurbineDatePicker}
         <div className="searchButtonPositionLeft">
           <button className="searchButton" onClick={updateDataFromCustomTurbine}>
             Search
@@ -271,7 +274,7 @@ const Home = () => {
               },
             })}
         />
-        <MyDatePicker/>
+        {savedTurbineDatePicker}
         <div className="searchButtonPositionRight">
           <button className="searchButton" onClick={updateDataFromSavedTurbine}>
             Search
