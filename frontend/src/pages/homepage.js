@@ -161,8 +161,11 @@ const Home = () => {
   const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
 
   useEffect(() => {
-    API.getTurbineModels().then(setModelList);
-    API.predictionDateRange().then(setAllowedDateRange);
+    API.getTurbineModels()
+      .then(setModelList);
+    API.predictionDateRange()
+      .then(d => d.json())
+      .then(setAllowedDateRange);
 
     API.isLoggedIn().then(loggedIn => {
       if (loggedIn) {

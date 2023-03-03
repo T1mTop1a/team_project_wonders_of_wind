@@ -98,8 +98,7 @@ const API = {
     },
 
     predictionDateRange: async () => {
-      return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/prediction_date_range`)
-        .then(data => data.json());
+      return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/prediction_date_range`);
     },
 }
 
