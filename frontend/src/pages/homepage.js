@@ -17,6 +17,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import API from "../API.js";
 
 var moment = require("moment-timezone");
+Chart.defaults.font.size = 12;
 
 const Home = () => {
   const createChartData = (rawData, labels, data) => ({
@@ -59,7 +60,7 @@ const Home = () => {
       createChartData(
         powerData,
         powerData.map(({ date }) => formatDateTime(date)),
-        powerData.map(({ power }) => power)
+        powerData.map(({ power }) => power/1000000)
       )
     );
   }
@@ -72,7 +73,7 @@ const Home = () => {
       createChartData(
         powerData,
         powerData.map(({ date }) => formatDateTime(date)),
-        powerData.map(({ power }) => power)
+        powerData.map(({ power }) => power/1000000)
       )
     );
   }
@@ -82,15 +83,52 @@ const Home = () => {
       <div>
         <div
           style={{
-            float: "left",
-            width: "100%",
+            width: "90%",
             height: "480px",
           }}
         >
           <Line
             data={chartData}
             height="480px"
-            options={{ maintainAspectRatio: false }}
+            options={{ 
+              plugins: {
+                title: {
+                    display: true,
+                    text: 'Power Prediction',
+                    font: {
+                      size: 18,
+                    },
+                },
+              },
+              layout: {
+                padding: 20
+              },
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Date and time (UTC)',
+                    align: 'center',
+                    font: {
+                      size: 16,
+                    },
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: 'Power (MWe)',
+                    align: 'center',
+                    font: {
+                      size: 16,
+                    },
+                  },
+                  min: 0,
+                  max: 10,
+                },
+              },
+            }}
           />
         </div>
         
@@ -116,8 +154,8 @@ const Home = () => {
           >
             <TableHead>
               <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell>Power</TableCell>
+                <TableCell>Date and time (UTC)</TableCell>
+                <TableCell>Power (MWe)</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -129,7 +167,7 @@ const Home = () => {
                 <TableCell component="th" scope="row">
                   {formatDateTime(row.date)}
                 </TableCell>
-                <TableCell>{row.power}</TableCell>
+                <TableCell>{row.power/1000000}</TableCell>
               </TableRow>
             ))}
             </TableBody>
@@ -159,6 +197,7 @@ const Home = () => {
   // User turbine form
   const [turbineList, setTurbineList] = useState([]);
   const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
+  const [descriptionDate, setdescriptionDate] = useState('');
 
   useEffect(() => {
     API.getTurbineModels()
@@ -192,7 +231,7 @@ const Home = () => {
       ...base,
       fontFamily: "Arial",
       background: "#4686AE",
-      // : "#202A44"
+      color : "#202A44"
 
     })
   };
@@ -219,6 +258,14 @@ const Home = () => {
   }
 
   const [customTurbineDatePicker, savedTurbineDatePicker] = [MyDatePicker(), MyDatePicker()];
+
+  function showDescription() {
+    return(
+       <div className="description">
+          Predictions are generated based on weather data from NOAA.
+        </div>
+    )
+  }
 
   return (
     <div className="base">
@@ -285,6 +332,7 @@ const Home = () => {
         </div>
       </form>
       </div>
+      {showDescription()}
       <div id="chartContainer">
         {lineChart}
       </div>

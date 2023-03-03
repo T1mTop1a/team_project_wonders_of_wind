@@ -84,9 +84,20 @@ input[type="text"]{
     color: #202A44;
   }
 
+ .description{
+   font-family: Arial, Helvetica;
+   color: #fff;
+   font-size: large;
+   font-weight: bold;
+   margin-top: 20px;
+   margin-left: 63px;
+
+ } 
+
 #chartContainer {
-  background: #fbfcff;
-  margin-top: 100px;
+  border-radius: 25px;
+  background: #fffff0;
+  margin-top: 25px;
   margin-left: 63px;
   margin-right: 63px;
   height: 480px;
