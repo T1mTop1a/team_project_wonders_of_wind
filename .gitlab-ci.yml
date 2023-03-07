@@ -32,12 +32,16 @@ test-frontend:
 build-backend:
   stage: build
   image: docker:latest
+  services:
+    - docker:dind    
   script: docker compose build backend
 
 
 test-backend:
   stage: test
   image: backend
+  services:
+    - docker:dind    
   script:
     - docker compose build backend
     - docker compose up backend -d
