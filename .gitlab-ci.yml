@@ -3,7 +3,7 @@ image: node:latest
 
 
 stages:
- - build 
+#  - build 
  - test
 
 
@@ -29,17 +29,17 @@ test-frontend:
 
 
 
-build-backend:
-  stage: build
-  image: docker:latest
-  services:
-    - docker:dind    
-  script: docker compose build backend
+# build-backend:
+#   stage: build
+#   image: docker:latest
+#   services:
+#     - docker:dind    
+#   script: docker compose build backend
 
 
 test-backend:
   stage: test
-  image: backend
+  image: docker:latest
   services:
     - docker:dind    
   script:
