@@ -12,12 +12,12 @@ cache:
     - frontend/node_modules/
 
 
-build-frontend:
-  stage: build
-  script:
-    - cd frontend
-    - npm install
-    - npm run build
+# build-frontend:
+#   stage: build
+#   script:
+#     - cd frontend
+#     - npm install
+#     - npm run build
 
 
 test-frontend:
