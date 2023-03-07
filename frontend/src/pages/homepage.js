@@ -193,15 +193,18 @@ const Home = () => {
   // Turbine models 
   const [modelList, setModelList] = useState([]);
   // date Selector
-  const [customStartDate, setCustomStartDate] = useState(new Date());
-  const [savedStartDate, setSavedStartDate] = useState(new Date());
+  const [allowedDateRange, setAllowedDateRange] = useState(undefined);
   // User turbine form
   const [turbineList, setTurbineList] = useState([]);
   const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
   const [descriptionDate, setdescriptionDate] = useState('');
 
   useEffect(() => {
-    API.getTurbineModels().then(setModelList);
+    API.getTurbineModels()
+      .then(setModelList);
+    API.predictionDateRange()
+      .then(d => d.json())
+      .then(setAllowedDateRange);
 
     API.isLoggedIn().then(loggedIn => {
       if (loggedIn) {
@@ -212,6 +215,7 @@ const Home = () => {
         setTurbineFormVisibility("");
       }
     });
+
   }, []);
 
   const dropdownStyles = {
@@ -232,6 +236,28 @@ const Home = () => {
     })
   };
 
+  const MyDatePicker = () => {
+    const [[startDate, endDate], setState] = useState([new Date(), new Date()]);
+    let minDate = undefined;
+    let maxDate = undefined;
+    if (allowedDateRange) {
+      minDate = new Date(allowedDateRange.minDate);
+      maxDate = new Date(allowedDateRange.maxDate);
+    }
+    return (
+      <DatePicker name="date" className="datePicker"
+        selected={startDate}
+        startDate={startDate}
+        endDate={endDate}
+        onChange={setState}
+        minDate={minDate}
+        maxDate={maxDate}
+        selectsRange={true}
+        dateFormat="dd/MM/yyyy"
+      />)
+  }
+
+  const [customTurbineDatePicker, savedTurbineDatePicker] = [MyDatePicker(), MyDatePicker()];
 
   function showDescription() {
     return(
@@ -271,7 +297,7 @@ const Home = () => {
               },
             })}
           />
-        <DatePicker name="date" className="datePicker" selected={customStartDate} onChange={setCustomStartDate}/>
+        {customTurbineDatePicker}
         <div className="searchButtonPositionLeft">
           <button className="searchButton" onClick={updateDataFromCustomTurbine}>
             Search
@@ -298,7 +324,7 @@ const Home = () => {
               },
             })}
         />
-        <DatePicker name="date" className="datePicker" selected={savedStartDate} onChange={setSavedStartDate}/>
+        {savedTurbineDatePicker}
         <div className="searchButtonPositionRight">
           <button className="searchButton" onClick={updateDataFromSavedTurbine}>
             Search

@@ -96,6 +96,10 @@ const API = {
         body: JSON.stringify(Object.fromEntries(formData))
       });
     },
+
+    predictionDateRange: async () => {
+      return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/prediction_date_range`);
+    },
 }
 
 export default API;

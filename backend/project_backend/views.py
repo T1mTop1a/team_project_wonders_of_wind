@@ -19,7 +19,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.db.utils import IntegrityError
 import datetime
-from django.db.models import F
+from django.db.models import F, Max, Min
 
 
 # Create your views here.
@@ -79,10 +79,14 @@ def signup(request):
 
 
 def fetch_weather_data(lat, lon, date):
+    [startDate, endDate] = date.split(" - ")
+    startDate = pd.to_datetime(startDate, format='%d/%m/%Y')
+    endDate = pd.to_datetime(endDate, format='%d/%m/%Y')
+
     def fetch_subdata(value_type):
         result = WeatherData.objects.filter( \
-            time__gte=date, \
-            time__lte=(date + datetime.timedelta(days=1)), \
+            time__gte=startDate, \
+            time__lte=(endDate + datetime.timedelta(days=1)), \
             location_x=int(lon) + 180, \
             location_y=int(lat) + 90, \
             value_type=value_type
@@ -119,7 +123,7 @@ def predict_turbine_output(lat, lon, date, wind_turbine):
 def turbine_prediction(request):
     requestBody = json.loads(request.body)
     model = WindmillType.objects.get(modelId=int(requestBody["modelName"]))
-    date = pd.to_datetime(requestBody["date"], format='%m/%d/%Y')
+    date = requestBody["date"]
     lat = float(requestBody["lat"])
     lon = float(requestBody["lon"])
     wind_turbine = {
@@ -132,7 +136,7 @@ def turbine_prediction(request):
 @permission_classes([IsAuthenticated])
 def saved_turbine_prediction(request):
     requestBody = json.loads(request.body)
-    date = pd.to_datetime(requestBody["date"], format='%m/%d/%Y')
+    date = requestBody["date"]
     turbineId = int(requestBody["turbineId"])
     turbine = UserTurbines.objects.get(turbineId=turbineId)
     model = turbine.modelId
@@ -191,3 +195,9 @@ def get_user_turbines(request):
 @api_view(['GET'])
 def must_be_logged_in(request):
     return HttpResponse(f'works, is logged in: {request.user.is_authenticated}')
+
+def prediction_date_range(request):
+    latest_time = WeatherData.objects.aggregate(Max('time'))["time__max"]
+    earliest_time = WeatherData.objects.aggregate(Min('time'))["time__min"]
+    return JsonResponse({"maxDate": latest_time, "minDate": earliest_time}, safe=False)
+
