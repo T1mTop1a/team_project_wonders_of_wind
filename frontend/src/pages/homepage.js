@@ -117,14 +117,14 @@ const Home = () => {
     return (
       <div>
         <div className="tab">
-          <button className="tablinks" onClick={(event) => Tabs(event, 'InputNewTurbine')}>Input New Turbine</button>
-          <button className="tablinks" onClick={(event) => Tabs(event, 'SelectSavedTurbine')}>Select Saved Turbine</button>
+          <button className="tablinks" onClick={(event) => Tabs(event, 'InputNewTurbine')}>Input your Turbine details</button>
+          <button className="tablinks" onClick={(event) => Tabs(event, 'SelectSavedTurbine')} >Select one of your saved Turbine</button>
         </div>
       </div>
     );
     }
     else{
-      return(<button className="tablinks" onClick={(event) => Tabs(event, 'InputNewTurbine')}>Input New Turbine</button>);
+      return(<button className="tablinks" onClick={(event) => Tabs(event, 'InputNewTurbine')}>Input your Turbine details</button>);
     }
   }
 
@@ -288,12 +288,13 @@ const Home = () => {
     <div className="base">
       <Header />
 
-      <div>
+      <div class="inputBase2">
         < Addingtabs />
       </div>
 
-      <div id="InputNewTurbine" class="tabcontent" >
-        <h3 className="searchTitle">Input New turbine</h3>
+      <div id="InputNewTurbine" class="inputBase2 tabcontent" >
+       <form className="newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm">
+        <h3 className="searchTitle">Input turbine details to generate predictions</h3>
         <div>
           <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude" />
         </div>
@@ -320,11 +321,15 @@ const Home = () => {
             Search
           </button>
         </div>
+        </form>
       </div>
 
-      <div id="SelectSavedTurbine" className="tabcontent">
-       
-          <h3 className="searchTitle">Select saved turbine</h3>
+      <div id="SelectSavedTurbine" className="inputBase2 tabcontent" >
+        <form onSubmit={e => e.preventDefault()} id="savedTurbineForm"
+            style={{
+              visibility: turbineFormVisibility,
+            }}>
+          <h3 className="searchTitle">Select one of your saved turbines</h3>
           <Select
             className="modelDropDown" styles={dropdownStyles}
             options={turbineList}
@@ -345,6 +350,7 @@ const Home = () => {
               Search
             </button>
           </div>
+          </form>
       </div>
 
       {showDescription()}
