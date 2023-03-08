@@ -201,3 +201,10 @@ def prediction_date_range(request):
     earliest_time = WeatherData.objects.aggregate(Min('time'))["time__min"]
     return JsonResponse({"maxDate": latest_time, "minDate": earliest_time}, safe=False)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_turbine(request):
+    body = json.loads(request.body)
+    UserTurbines.objects.get(userId=request.user, turbineId=body["turbineId"]).delete()
+    return Response(status=status.HTTP_200_OK)
+

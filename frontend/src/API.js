@@ -100,6 +100,19 @@ const API = {
     predictionDateRange: async () => {
       return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/prediction_date_range`);
     },
+
+    deleteTurbine: async (turbineId) => {
+      let token = window.localStorage.getItem('accessToken');
+      return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/delete_turbine`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({"turbineId": turbineId})
+      });
+    },
 }
 
 export default API;

@@ -10,19 +10,23 @@ const ViewTurbines = () => {
 
     const [turbineList, setTurbineList] =  useState([]);
 
-    useEffect(() => {
-        API.getUserTurbines()
-            .then(data => data.json())
-            .then(items => {
-                setTurbineList(items)
-            })
-    } , [])
-        
+    const loadTurbines = () => API.getUserTurbines()
+      .then(data => data.json())
+      .then(items => {
+          setTurbineList(items)
+      })
+
+    loadTurbines();
+
+    const deleteTurbineAction = (turbineID) => function() {
+      console.log("Delete " + turbineID);
+      API.deleteTurbine(turbineID).then(i => loadTurbines());
+    }
 
     const turbines=turbineList.map((turbine)=>{
        return <div className="turbineBox" key={turbine}>
         <div className="label turbineLabel">{turbine.name}
-          <a href="#" class="close" tabindex="0" role="button">close</a>
+          <a onClick={deleteTurbineAction(turbine.turbineId)} class="close" tabindex="0" role="button">close</a>
         </div>
         < table className="turbineDetails">
             <thread>
