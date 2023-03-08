@@ -37,6 +37,16 @@ const Home = () => {
   });
 
   const [chartData, setChartData] = useState(createChartData([], [], []));
+  // Turbine models 
+  const [modelList, setModelList] = useState([]);
+  // date Selector
+  const [customStartDate, setCustomStartDate] = useState(new Date());
+  const [savedStartDate, setSavedStartDate] = useState(new Date());
+  // User turbine form
+  const [turbineList, setTurbineList] = useState([]);
+  const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
+  const [descriptionDate, setdescriptionDate] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   function formatDateTime(dateString) {
     return moment(dateString).tz("UTC").format("llll");
@@ -78,6 +88,14 @@ const Home = () => {
       )
     );
   }
+  
+  useEffect(() => {
+    API.isLoggedIn().then(loggedIn => {
+      if (loggedIn) 
+      {setLoggedIn(true)}
+    });
+  }, []);
+     
 
   //tabs
   function Tabs(evt, tabName) {
@@ -95,6 +113,7 @@ const Home = () => {
   }
   ///tabs
   function Addingtabs() {
+    if(loggedIn){
     return (
       <div>
         <div className="tab">
@@ -103,7 +122,13 @@ const Home = () => {
         </div>
       </div>
     );
+    }
+    else{
+      return(<button className="tablinks" onClick={(event) => Tabs(event, 'InputNewTurbine')}>Input New Turbine</button>);
+    }
   }
+
+     
 
   const LineChart = () => {
     return (
@@ -217,16 +242,7 @@ const Home = () => {
     );
   };
 
-  // Turbine models 
-  const [modelList, setModelList] = useState([]);
-  // date Selector
-  const [customStartDate, setCustomStartDate] = useState(new Date());
-  const [savedStartDate, setSavedStartDate] = useState(new Date());
-  // User turbine form
-  const [turbineList, setTurbineList] = useState([]);
-  const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
-  const [descriptionDate, setdescriptionDate] = useState('');
-
+  
   useEffect(() => {
     API.getTurbineModels().then(setModelList);
 
@@ -271,18 +287,12 @@ const Home = () => {
   return (
     <div className="base">
       <Header />
-      <div className="inputBase2 overallBox">
-        <form className="newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm"
-          style={{
-            float: "left",
-          }}
-        ></form></div>
 
       <div>
         < Addingtabs />
       </div>
 
-      <div id="InputNewTurbine" class="tabcontent">
+      <div id="InputNewTurbine" class="tabcontent" >
         <h3 className="searchTitle">Input New turbine</h3>
         <div>
           <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude" />
@@ -313,11 +323,7 @@ const Home = () => {
       </div>
 
       <div id="SelectSavedTurbine" className="tabcontent">
-        <div inputBase2 overallBox><form className="userTurbine" onSubmit={e => e.preventDefault()} id="savedTurbineForm"
-          style={{
-            float: "left",
-            visibility: turbineFormVisibility,
-          }}>
+       
           <h3 className="searchTitle">Select saved turbine</h3>
           <Select
             className="modelDropDown" styles={dropdownStyles}
@@ -339,7 +345,6 @@ const Home = () => {
               Search
             </button>
           </div>
-        </form></div>
       </div>
 
       {showDescription()}
