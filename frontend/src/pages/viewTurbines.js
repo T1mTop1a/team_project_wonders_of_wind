@@ -22,7 +22,7 @@ const ViewTurbines = () => {
     const turbines=turbineList.map((turbine)=>{
        return <div className="turbineBox" key={turbine}>
         <div className="label turbineLabel">{turbine.name}
-             {/* <Button onClick={()=>this.deleteTurbine(this.props.id)} class="deleteBox">Delete</Button> */}
+          <a href="#" class="close" tabindex="0" role="button">close</a>
         </div>
         < table className="turbineDetails">
             <thread>
