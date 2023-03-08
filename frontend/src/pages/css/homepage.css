@@ -30,6 +30,14 @@ input[type="text"]{
   font-size: large;
 }
 
+/* Style the tab */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
 .searchButtonPositionLeft{
     width: 500px;
     height: 50px;

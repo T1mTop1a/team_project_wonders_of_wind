@@ -19,6 +19,7 @@ import API from "../API.js";
 var moment = require("moment-timezone");
 Chart.defaults.font.size = 12;
 
+
 const Home = () => {
   const createChartData = (rawData, labels, data) => ({
     rawData: rawData,
@@ -34,7 +35,7 @@ const Home = () => {
       },
     ],
   });
-  
+
   const [chartData, setChartData] = useState(createChartData([], [], []));
 
   function formatDateTime(dateString) {
@@ -60,7 +61,7 @@ const Home = () => {
       createChartData(
         powerData,
         powerData.map(({ date }) => formatDateTime(date)),
-        powerData.map(({ power }) => power/1000000)
+        powerData.map(({ power }) => power / 1000000)
       )
     );
   }
@@ -73,8 +74,34 @@ const Home = () => {
       createChartData(
         powerData,
         powerData.map(({ date }) => formatDateTime(date)),
-        powerData.map(({ power }) => power/1000000)
+        powerData.map(({ power }) => power / 1000000)
       )
+    );
+  }
+
+  //tabs
+  function Tabs(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+  ///tabs
+  function Addingtabs() {
+    return (
+      <div>
+        <div className="tab">
+          <button className="tablinks" onClick={(event) => Tabs(event, 'InputNewTurbine')}>Input New Turbine</button>
+          <button className="tablinks" onClick={(event) => Tabs(event, 'SelectSavedTurbine')}>Select Saved Turbine</button>
+        </div>
+      </div>
     );
   }
 
@@ -90,14 +117,14 @@ const Home = () => {
           <Line
             data={chartData}
             height="480px"
-            options={{ 
+            options={{
               plugins: {
                 title: {
-                    display: true,
-                    text: 'Power Prediction',
-                    font: {
-                      size: 18,
-                    },
+                  display: true,
+                  text: 'Power Prediction',
+                  font: {
+                    size: 18,
+                  },
                 },
               },
               layout: {
@@ -131,7 +158,7 @@ const Home = () => {
             }}
           />
         </div>
-        
+
       </div>
     );
   };
@@ -140,12 +167,12 @@ const Home = () => {
     return (
       <div className="table">
         <TableContainer
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
           <Table
             sx={{ minWidth: 50 }}
@@ -159,17 +186,17 @@ const Home = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-            {chartData.rawData.map((row) => (
-              <TableRow
-                key={row.date}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {formatDateTime(row.date)}
-                </TableCell>
-                <TableCell>{row.power/1000000}</TableCell>
-              </TableRow>
-            ))}
+              {chartData.rawData.map((row) => (
+                <TableRow
+                  key={row.date}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {formatDateTime(row.date)}
+                  </TableCell>
+                  <TableCell>{row.power / 1000000}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -206,9 +233,9 @@ const Home = () => {
     API.isLoggedIn().then(loggedIn => {
       if (loggedIn) {
         API.getUserTurbines()
-        .then(data => data.json())
-        .then(items => items.map(opt => ({ label: opt.name, value: opt.turbineId })))
-        .then(setTurbineList);
+          .then(data => data.json())
+          .then(items => items.map(opt => ({ label: opt.name, value: opt.turbineId })))
+          .then(setTurbineList);
         setTurbineFormVisibility("");
       }
     });
@@ -227,17 +254,17 @@ const Home = () => {
       ...base,
       fontFamily: "Arial",
       background: "#4686AE",
-      color : "#202A44"
+      color: "#202A44"
 
     })
   };
 
 
   function showDescription() {
-    return(
-       <div className="description">
-          Predictions are generated based on weather data from NOAA.
-        </div>
+    return (
+      <div className="description">
+        Predictions are generated based on weather data from NOAA.
+      </div>
     )
   }
 
@@ -245,11 +272,17 @@ const Home = () => {
     <div className="base">
       <Header />
       <div className="inputBase2 overallBox">
-      <form className= "newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm"
-        style={{
-          float: "left",
-        }}
-      >
+        <form className="newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm"
+          style={{
+            float: "left",
+          }}
+        ></form></div>
+
+      <div>
+        < Addingtabs />
+      </div>
+
+      <div id="InputNewTurbine" class="tabcontent">
         <h3 className="searchTitle">Input New turbine</h3>
         <div>
           <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude" />
@@ -257,34 +290,36 @@ const Home = () => {
         <div>
           <input type="text" class="inputBox" name="lon" placeholder="Input your turbine longitude" />
         </div>
-        <Select 
-            className="modelDropDown" styles ={dropdownStyles}
-            options={modelList}
-            name="modelName"
-            theme={(theme) => ({
-              ...theme,
-              colors: {
-                ...theme.colors,
-                text: 'orangered',
-                primary25: '#8DB38B',
-                primary: '#8DB38B',
-              },
-            })}
-          />
-        <DatePicker name="date" className="datePicker" selected={customStartDate} onChange={setCustomStartDate}/>
+        <Select
+          className="modelDropDown" styles={dropdownStyles}
+          options={modelList}
+          name="modelName"
+          theme={(theme) => ({
+            ...theme,
+            colors: {
+              ...theme.colors,
+              text: 'orangered',
+              primary25: '#8DB38B',
+              primary: '#8DB38B',
+            },
+          })}
+        />
+        <DatePicker name="date" className="datePicker" selected={customStartDate} onChange={setCustomStartDate} />
         <div className="searchButtonPositionLeft">
           <button className="searchButton" onClick={updateDataFromCustomTurbine}>
             Search
           </button>
         </div>
-      </form>
-      <form className= "userTurbine" onSubmit={e => e.preventDefault()} id="savedTurbineForm"
-        style={{
-          float: "right",
-          visibility: turbineFormVisibility,
-        }}>
-        <h3 className="searchTitle">Select saved turbine</h3>
-        <Select
+      </div>
+
+      <div id="SelectSavedTurbine" className="tabcontent">
+        <div inputBase2 overallBox><form className="userTurbine" onSubmit={e => e.preventDefault()} id="savedTurbineForm"
+          style={{
+            float: "left",
+            visibility: turbineFormVisibility,
+          }}>
+          <h3 className="searchTitle">Select saved turbine</h3>
+          <Select
             className="modelDropDown" styles={dropdownStyles}
             options={turbineList}
             name="turbineId"
@@ -297,21 +332,22 @@ const Home = () => {
                 primary: '#8DB38B',
               },
             })}
-        />
-        <DatePicker name="date" className="datePicker" selected={savedStartDate} onChange={setSavedStartDate}/>
-        <div className="searchButtonPositionRight">
-          <button className="searchButton" onClick={updateDataFromSavedTurbine}>
-            Search
-          </button>
-        </div>
-      </form>
+          />
+          <DatePicker name="date" className="datePicker" selected={savedStartDate} onChange={setSavedStartDate} />
+          <div className="searchButtonPositionLeft">
+            <button className="searchButton" onClick={updateDataFromSavedTurbine}>
+              Search
+            </button>
+          </div>
+        </form></div>
       </div>
+
       {showDescription()}
       <div id="chartContainer">
         <LineChart />
       </div>
       <div>
-      <DataTable />
+        <DataTable />
       </div>
     </div>
   );
