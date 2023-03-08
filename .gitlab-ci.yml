@@ -61,6 +61,10 @@ test-backend:
     POSTGRES_DB: wow
     PGUSER: postgres
     DATABASE_PORT: 5432
+    DATABASE_NAME: wow
+    DATABASE_USER: postgres
+    DATABASE_PASSWORD: postgres
+    DATABASE_HOST: postgres
 
   script:
     - cd backend
