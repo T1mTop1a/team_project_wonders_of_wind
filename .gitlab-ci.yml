@@ -54,6 +54,14 @@ test-backend:
   stage: test
   services:
     - postgres:13.6
+
+  variables:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_DB: wow
+    PGUSER: postgres
+    DATABASE_PORT: 5432
+
   script:
     - cd backend
     - pip install -r requirements.txt
