@@ -37,14 +37,30 @@ test-frontend:
 #   script: docker compose build backend
 
 
+# test-backend:
+#   stage: test
+#   image: docker:latest
+#   services:
+#     - docker:dind    
+#   script:
+#     - docker compose build backend
+#     - docker compose up backend -d
+#     - docker compose exec backend bash -c "python manage.py test" 
+
+
+
 test-backend:
+  image: python:3.8
   stage: test
-  image: docker:latest
   services:
-    - docker:dind    
+    - postgres:13.6
   script:
-    - docker compose build backend
-    - docker compose up backend -d
-    - docker compose exec backend bash -c "python manage.py test" 
+    - cd backend
+    - pip install -r requirements.txt
+    - python manage.py makmigrations
+    - python manage.py migrate
+    - python population_script.py
+    - python manage.py test
+
 
 
