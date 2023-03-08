@@ -69,7 +69,7 @@ test-backend:
   script:
     - cd backend
     - pip install -r requirements.txt
-    - python manage.py makmigrations
+    - python manage.py makemigrations
     - python manage.py migrate
     - python population_script.py
     - python manage.py test
