@@ -15,6 +15,7 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../API.js";
+import Button from "@mui/material/Button";
 
 var moment = require("moment-timezone");
 Chart.defaults.font.size = 12;
@@ -266,6 +267,17 @@ const Home = () => {
         </div>
     )
   }
+  
+  function downloadCSV() {
+    var buffer = "date,power\n";
+    chartData.rawData.forEach(e => {
+      buffer += `${e.date}, ${e.power}\n`
+    });
+    const url = URL.createObjectURL(
+      new Blob([buffer], { type: "text/csv" })
+    );
+    window.location.assign(url);
+  }
 
   return (
     <div className="base">
@@ -334,6 +346,7 @@ const Home = () => {
       </div>
       {showDescription()}
       <div id="chartContainer">
+        <Button onClick={downloadCSV} class="csvButton">Download</Button>
         {lineChart}
       </div>
       <div>
