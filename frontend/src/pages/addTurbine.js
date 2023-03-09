@@ -5,21 +5,22 @@ import { TextField, Button } from "@mui/material";
 import { default as Select } from 'react-select';
 import {Link } from 'react-router-dom';
 import API from '../API';
+import { useLocation } from "react-router";
 import "./css/addTurbine.css";
 
-const addTurbine = () => {
-    const [turbineName, setTurbineName] = useState('');//Turbine name
-    const [turbineLongitude, setTurbineLongitude] = useState('');//Turbine longitude
-    const [turbineLatitude, setTurbineLatitude] = useState('');//Turbine latitude
+const addTurbine = (props) => {
+    const editedTurbine = useLocation().state;
+    const [turbineName, setTurbineName] = useState(editedTurbine ? editedTurbine.name : '');//Turbine name
+    const [turbineLongitude, setTurbineLongitude] = useState(editedTurbine ? editedTurbine.longitude : '');//Turbine longitude
+    const [turbineLatitude, setTurbineLatitude] = useState(editedTurbine ? editedTurbine.latitude : '');//Turbine latitude
     const [isLatitudeValid, setIsLatitudeValid] = useState(true);//is latitude valid
     const [isLongitudeValid, setIsLongitudeValid] = useState(true);//is longitude valid
-    const [selectedTurbineModel, setSelectedTurbineModel] = useState(null);//selected turbine model
+    const [selectedTurbineModel, setSelectedTurbineModel] = useState(editedTurbine ? {"value": editedTurbine.turbineModelId, "label": editedTurbine.turbineModel} : null);//selected turbine model
     const [defaultTurbineModels, setDefaultTurbineModels] = useState([]);//default turbine models
-    const [turbineHeight, setTurbineHeight] = useState(null);
+    const [turbineHeight, setTurbineHeight] = useState(editedTurbine ? editedTurbine.height : null);
 
     useEffect(() => {
         loadDefaultTurbineModels();
-        
     }, []);
 
     console.log(defaultTurbineModels); 
@@ -27,7 +28,7 @@ const addTurbine = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await API.addTurbine(turbineName, turbineLatitude, turbineLongitude, turbineHeight || 135, selectedTurbineModel.value);
+            const response = await API.addTurbine(editedTurbine ? editedTurbine.turbineId : undefined, turbineName, turbineLatitude, turbineLongitude, turbineHeight || 135, selectedTurbineModel.value);
             
             if (!response.ok) {
                 throw new Error(response.statusText);
@@ -58,12 +59,13 @@ const addTurbine = () => {
         }
     };
 
-
+    const pageTitle = editedTurbine ? "Edit turbine" : "Add a new Turbine";
+    const buttonName = editedTurbine ? "Update Turbine" : "Add Turbine";
 
     return (
         <div className="base">
             <Header />
-            <h2 className="myTurbines">Add a new Turbine</h2>
+            <h2 className="myTurbines">{pageTitle}</h2>
             <div className="box addTurbinebox">
             <form className ="form" onSubmit={handleSubmit}>
                 <TextField
@@ -197,7 +199,7 @@ const addTurbine = () => {
                     required
                     options={defaultTurbineModels}
                     value={selectedTurbineModel}
-                    onChange={(selectedOption) => setSelectedTurbineModel(selectedOption)}
+                    onChange={(selectedOption) => {setSelectedTurbineModel(selectedOption); console.log(selectedOption);}}
                     isSearchable
                     placeholder="Select a turbine model"
                     styles={{
@@ -233,7 +235,7 @@ const addTurbine = () => {
                 />
                 <Button 
                     class="updateCancelButtons"
-                    type="submit" data-testid="submit button"  disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel}>Add Turbine</Button>
+                    type="submit" data-testid="submit button"  disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel}>{buttonName}</Button>
                 <Link style={{ textDecoration: "none" }} to="/viewTurbines">
                     <Button 
                     class="updateCancelButtons">Cancel</Button>

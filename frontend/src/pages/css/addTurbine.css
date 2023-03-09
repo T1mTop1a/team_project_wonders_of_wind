@@ -20,3 +20,24 @@
   font-family: 'Ubuntu', sans-serif;
   margin-top: 10px;
 }
+
+.updateCancelButtons{
+    font-family: Ubuntu;
+    color: #202A44;
+    border: 1px solid #202A44;
+    background: transparent;
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.2);
+    width: 150px;
+    height: 35px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.updateCancelButtons:hover{
+    color: #fff;
+    background: #202A44;
+    border: 1px solid #202A44;
+} 
+

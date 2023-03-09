@@ -10,17 +10,23 @@ const ViewTurbines = () => {
 
     const [turbineList, setTurbineList] =  useState([]);    
 
-    useEffect(() => {
-        API.getUserTurbines()
-            .then(data => data.json())
-            .then(items => {
-                setTurbineList(items)
-            })
-    } , [])
+    const loadTurbines = () => API.getUserTurbines()
+      .then(data => data.json())
+      .then(items => {
+          setTurbineList(items)
+      })
+
+    useEffect(() => { loadTurbines() } , [])
+
+    const deleteTurbineAction = (turbineID) => function() {
+      console.log("Delete " + turbineID);
+      API.deleteTurbine(turbineID).then(i => loadTurbines());
+    }
 
     const turbines=turbineList.map((turbine)=>{
        return <div className="turbineBox" key={turbine}>
-        <div className="label turbineLabel">{turbine.name} </div>
+        <div className="label turbineLabel">{turbine.name}
+        </div>
         < table className="turbineDetails">
             <thread>
             <tr>Turbine Model:  
@@ -38,11 +44,12 @@ const ViewTurbines = () => {
         
         </thread>
         </table>
-        <Button onClick={()=>this.deleteTurbine(this.props.id)} class="deleteBox">Delete</Button>
-        <Link to={{ pathname:'/editTurbine', 
-        search: `?name=${turbine.name}&model=${turbine.model}&lat=${turbine.latitude}&long=${turbine.longitude}&h=${turbine.height}`
-         }}>
-            <Button  class="deleteBox editBox">Edit</Button>
+        <Button onClick={deleteTurbineAction(turbine.turbineId)} class="deleteBox">Delete</Button>
+        <Link state={turbine}
+          to={{
+            pathname:'/addTurbine', 
+          }}>
+            <Button class="deleteBox editBox">Edit</Button>
         </Link>
         
         </div>
