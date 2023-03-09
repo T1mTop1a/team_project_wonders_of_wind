@@ -173,10 +173,10 @@ def add_turbine_to_profile(request):
 
         except IntegrityError as ie:
             print(ie)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"error": f"{turbine.name} already exists"}, status=status.HTTP_400_BAD_REQUEST)
     except WindmillType.DoesNotExist as dne:
         print(dne)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({"error": f"Invalid windmill type"}, status=status.HTTP_400_BAD_REQUEST)
 
 
     return Response(status=status.HTTP_200_OK)

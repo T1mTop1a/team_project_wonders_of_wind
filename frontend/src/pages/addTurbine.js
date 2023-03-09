@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Header from "./navBar.js";
 import { TextField, Button } from "@mui/material";
 import { default as Select } from 'react-select';
-import {Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import API from '../API';
 import { useLocation } from "react-router";
 import "./css/addTurbine.css";
@@ -25,18 +25,21 @@ const addTurbine = (props) => {
 
     console.log(defaultTurbineModels); 
 
+    const navigate = useNavigate();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try {
-            const response = await API.addTurbine(editedTurbine ? editedTurbine.turbineId : undefined, turbineName, turbineLatitude, turbineLongitude, turbineHeight || 135, selectedTurbineModel.value);
-            
-            if (!response.ok) {
-                throw new Error(response.statusText);
-            }
-            alert('Turbine added successfully');
-        } catch (error) {
-            console.error(error);
-        }
+        API.addTurbine(editedTurbine ? editedTurbine.turbineId : undefined, turbineName, turbineLatitude, turbineLongitude, turbineHeight || 135, selectedTurbineModel.value)
+          .then(response => response.ok ? response : Promise.reject(response))
+          // .then(_ => alert(editedTurbine ? 'Turbine edited successfully' : 'Turbine added successfully'))
+          .then(_ => navigate('/viewTurbines'))
+          .catch(error => {
+              console.log(error);
+              error.json()
+                .then(err => alert(err.error))
+                .catch(_ => alert("An error occured, try again."))
+          })
+          .catch(console.log);
     };
 
     const loadDefaultTurbineModels = async () => {
