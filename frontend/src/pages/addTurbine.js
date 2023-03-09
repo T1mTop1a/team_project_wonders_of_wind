@@ -213,13 +213,13 @@ const addTurbine = (props) => {
                             fontFamily: "Arial",
                             marginTop: "10px",
                             marginBottom: "20px",
-                            fontColor: "#202A44",
+                            color: "#202A44",
                         }),
                         menu: base => ({
                             ...base,
                             fontFamily: "Arial",
                             background: "#4686AE",
-                            color: "#4686AE",
+                            color: "white",
                             
                         }),  
                     }}
@@ -228,8 +228,8 @@ const addTurbine = (props) => {
                         ...theme,
                         colors: {
                           ...theme.colors,
+                          primary: '#157263',
                           primary25: '#8DB38B',
-                          primary: '#8DB38B',
                         },
                       })}
                 />
