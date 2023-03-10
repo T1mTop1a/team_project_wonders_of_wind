@@ -16,9 +16,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../API.js";
 import Button from "@mui/material/Button";
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 var moment = require("moment-timezone");
 Chart.defaults.font.size = 12;
+Chart.register(zoomPlugin);
 
 const Home = () => {
   const createChartData = (rawData, labels, data) => ({
@@ -52,7 +54,7 @@ const Home = () => {
       alert("Please enter a valid latitude");
       return;
     }
-    if (isNaN(lon) || !(lon >= -180 && lat <= 180)) {
+    if (isNaN(lon) || !(lon >= -180 && lon <= 180)) {
       alert("Please enter a valid longitude");
       return;
     }
@@ -100,6 +102,26 @@ const Home = () => {
                       size: 18,
                     },
                 },
+                zoom: {
+                  pan: {
+                    enabled: true,
+                    mode: 'x',
+                    modifierKey: 'ctrl',
+
+                  },
+                  limits: {
+                    // axis limits
+                  },
+                  zoom: {
+                    mode: 'x',
+                    pinch: {
+                      enabled: true,
+                    },
+                    wheel: {
+                      enabled: true,
+                    },
+                  },
+                },
               },
               layout: {
                 padding: 20
@@ -126,7 +148,6 @@ const Home = () => {
                     },
                   },
                   min: 0,
-                  max: 10,
                 },
               },
             }}
@@ -290,10 +311,10 @@ const Home = () => {
       >
         <h3 className="searchTitle">Input New turbine</h3>
         <div>
-          <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude" />
+          <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude (-90 to 89)" />
         </div>
         <div>
-          <input type="text" class="inputBox" name="lon" placeholder="Input your turbine longitude" />
+          <input type="text" class="inputBox" name="lon" placeholder="Input your turbine longitude (-180 to 179)" />
         </div>
         <Select 
             className="modelDropDown" styles ={dropdownStyles}

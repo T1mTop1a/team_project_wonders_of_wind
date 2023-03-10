@@ -25,15 +25,24 @@ const addTurbine = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try {
-            const response = await API.addTurbine(turbineName, turbineLatitude, turbineLongitude, turbineHeight || 135, selectedTurbineModel.value);
-            
-            if (!response.ok) {
-                throw new Error(response.statusText);
+        if (!(turbineLatitude >= -90 && turbineLatitude <= 89)){
+            alert('Please enter valid latitude');
+        }
+        else if (!(turbineLongitude >= -180 && turbineLongitude <= 179)){
+            alert('Please enter valid longitude');
+        }
+        else{
+            try {
+                const response = await API.addTurbine(turbineName, turbineLatitude, turbineLongitude, turbineHeight || 135, selectedTurbineModel.value);
+                
+                if (!response.ok) {
+                    alert('Error in adding turbine, please check if turbine name already exists');
+                    throw new Error(response.statusText);
+                }
+                alert('Turbine added successfully');
+            } catch (error) {
+                console.error(error);
             }
-            alert('Turbine added successfully');
-        } catch (error) {
-            console.error(error);
         }
     };
 
@@ -119,6 +128,7 @@ const addTurbine = () => {
                     data-testid="turbine latitude"
                     value={turbineLatitude}
                     onChange={(event) => {
+
                         setTurbineLatitude(event.target.value);
                         setIsLatitudeValid(true);
                     }}
@@ -153,7 +163,6 @@ const addTurbine = () => {
 
                         setTurbineLongitude(event.target.value);
                         setIsLongitudeValid(true);
-      
                     }}
                 />
 
@@ -216,7 +225,7 @@ const addTurbine = () => {
                             ...base,
                             fontFamily: "Arial",
                             background: "#4686AE",
-                            color: "#4686AE",
+                            color: "#000000",
                             
                         }),  
                     }}
