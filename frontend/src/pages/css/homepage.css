@@ -151,3 +151,18 @@ input[type="text"]{
   text-align: left;
   margin-bottom: 14px;
 }
+
+.csvButton {
+  cursor: auto;
+  color: white;
+  border-radius: 15px;
+  text-align: centre;
+  font-size: medium;
+  background: #202A44;
+  right: 70px;
+  border: 1px solid white;
+  margin: 10px;
+  width: 130px;
+  position: absolute;
+}
+
