@@ -29,6 +29,13 @@ const addTurbine = (props) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!(turbineLatitude >= -90 && turbineLatitude < 90)) {
+          alert('Please enter valid latitude');
+          return;
+        } else if (!(turbineLongitude >= -180 && turbineLongitude < 180)) {
+          alert('Please enter valid longitude');
+          return;
+        }
         API.addTurbine(editedTurbine ? editedTurbine.turbineId : undefined, turbineName, turbineLatitude, turbineLongitude, turbineHeight || 135, selectedTurbineModel.value)
           .then(response => response.ok ? response : Promise.reject(response))
           // .then(_ => alert(editedTurbine ? 'Turbine edited successfully' : 'Turbine added successfully'))
@@ -125,6 +132,7 @@ const addTurbine = (props) => {
                     data-testid="turbine latitude"
                     value={turbineLatitude}
                     onChange={(event) => {
+
                         setTurbineLatitude(event.target.value);
                         setIsLatitudeValid(true);
                     }}
@@ -159,7 +167,6 @@ const addTurbine = (props) => {
 
                         setTurbineLongitude(event.target.value);
                         setIsLongitudeValid(true);
-      
                     }}
                 />
 
@@ -223,7 +230,6 @@ const addTurbine = (props) => {
                             fontFamily: "Arial",
                             background: "#4686AE",
                             color: "white",
-                            
                         }),  
                     }}
                     
