@@ -187,7 +187,7 @@ def add_turbine_to_profile(request):
 def get_user_turbines(request):
     user_turbines = list(UserTurbines.objects.filter(userId=request.user).values('turbineId', 'height', 'latitude', 'longitude', 'name').annotate(
         turbineModel=F('modelId__display_name'),
-        turbineModelId=F('modelId')
+        turbineModelId=F('modelId__modelId')
     ))
     return JsonResponse(user_turbines, safe=False)
 
