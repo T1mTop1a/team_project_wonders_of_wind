@@ -42,8 +42,7 @@ const API = {
       window.localStorage.removeItem("accessToken");
     },
 
-    addTurbine: async (turbineName, turbineLatitude, turbineLongitude, turbineHeight, turbineModel) => {
-
+    addTurbine: async (turbineId, turbineName, turbineLatitude, turbineLongitude, turbineHeight, turbineModel) => {
         let token = window.localStorage.getItem('accessToken');
         let headers = new Headers();
         let formData = new FormData();
@@ -52,12 +51,13 @@ const API = {
         formData.append('turbineLongitude', turbineLongitude);
         formData.append('turbineHeight', turbineHeight);
         formData.append('turbineModel', turbineModel);
+        if (turbineId) {
+          formData.append('turbineId', turbineId);
+        }
 
         headers.append("Authorization", `Bearer ${token}`)
         console.log(formData)
         return fetch(`${process.env.REACT_APP_BACKEND}/api/v1/add_turbine_to_profile`, {headers, method:'POST', body:formData})
-
-
     },
 
     getUserTurbines: async () => {

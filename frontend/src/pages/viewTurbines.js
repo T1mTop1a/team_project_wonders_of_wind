@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 
 const ViewTurbines = () => {
 
-    const [turbineList, setTurbineList] =  useState([]);
+    const [turbineList, setTurbineList] =  useState([]);    
 
     const loadTurbines = () => API.getUserTurbines()
       .then(data => data.json())
@@ -16,7 +16,7 @@ const ViewTurbines = () => {
           setTurbineList(items)
       })
 
-    loadTurbines();
+    useEffect(() => { loadTurbines() } , [])
 
     const deleteTurbineAction = (turbineID) => function() {
       console.log("Delete " + turbineID);
@@ -26,7 +26,6 @@ const ViewTurbines = () => {
     const turbines=turbineList.map((turbine)=>{
        return <div className="turbineBox" key={turbine}>
         <div className="label turbineLabel">{turbine.name}
-          <a onClick={deleteTurbineAction(turbine.turbineId)} class="close" tabindex="0" role="button">close</a>
         </div>
         < table className="turbineDetails">
             <thread>
@@ -42,15 +41,19 @@ const ViewTurbines = () => {
             <tr>Turbine Hub Height:   
                 <td className="value"> {turbine.height} </td> 
             </tr>     
+        
         </thread>
         </table>
+        <Button onClick={deleteTurbineAction(turbine.turbineId)} class="deleteBox">Delete</Button>
+        <Link state={turbine}
+          to={{
+            pathname:'/addTurbine', 
+          }}>
+            <Button class="deleteBox editBox">Edit</Button>
+        </Link>
+        
         </div>
     })
-
-    //code for testing without populating
-    // useEffect(() => {
-    //     setTurbineList([{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'},{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'},{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5',turbineName: 'Turbine1', turbineLongitude: '4'},{turbineName: "Turbine1",turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'}])
-    // })
 
     function emptyTurbineList() {
         if (turbineList.length === 0){
@@ -78,7 +81,7 @@ const ViewTurbines = () => {
     //       fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines` + id, 
     //       {method: 'DELETE', mode: 'CORS'})
     //       .then(res => res)};
-
+    //      }
 
     return (
         <div className="base">

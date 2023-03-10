@@ -13,7 +13,7 @@
 }
 
 .title{
-    font-family: 'Abril Fatface', cursive;
+    font-family: 'Ubuntu', sans-serif;
     margin-left: 2rem;
     color: #202A44;
     text-align: left;
@@ -52,7 +52,7 @@
 }
 
 .smallBox2{
-    font-family: 'Abril Fatface', cursive;
+    font-family: 'Ubuntu', sans-serif;
     position: relative;
     margin: auto;
     color: white;
@@ -69,24 +69,34 @@
 
 .labelLink{
     text-align: center;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .errorDisplay {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     text-align: center;
     color: #202A44;
     font-weight: 100;
     font-size: larger;
     border: 2px solid #202A44;
+    border-radius: 10px;
+    /* animation: blinker 5s linear infinite; */
 }
+/* 
+@keyframes blinker {
+    70% {
+      opacity: 0;
+    }
+} */
 
 .welcomeLogin{
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3));
+    font-family: 'Open Sans', sans-serif;
+    /* filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3)); */
     text-align: center;
-    color: white;
-    font-weight: 100;
+    color: #fff;
+    font-weight: 400;
     font-size: 30px;
+    margin-top: 40px;
     transform: translate(0%, 5%);
 }
   

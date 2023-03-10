@@ -155,29 +155,28 @@ def turbines(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_turbine_to_profile(request):
-    print(request.POST)
-
     try:
         turbineModel = WindmillType.objects.get(pk=request.POST['turbineModel'])
         print(turbineModel)
+        turbineEditId = request.POST.get("turbineId")
         try:
-            turbine = UserTurbines(
-                userId=request.user,
-                modelId=turbineModel,
-                latitude=request.POST['turbineLatitude'],
-                longitude=request.POST['turbineLongitude'],
-                height=request.POST['turbineHeight'],
-                name=request.POST['turbineName']
-            )
-
+            if turbineEditId:
+                turbine = UserTurbines.objects.get(turbineId=turbineEditId, userId=request.user)
+            else:
+                turbine = UserTurbines(userId=request.user)
+            turbine.modelId=turbineModel
+            turbine.latitude=request.POST['turbineLatitude']
+            turbine.longitude=request.POST['turbineLongitude']
+            turbine.height=request.POST['turbineHeight']
+            turbine.name=request.POST['turbineName']
             turbine.save()
 
         except IntegrityError as ie:
             print(ie)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"error": f"{turbine.name} already exists"}, status=status.HTTP_400_BAD_REQUEST)
     except WindmillType.DoesNotExist as dne:
         print(dne)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({"error": f"Invalid windmill type"}, status=status.HTTP_400_BAD_REQUEST)
 
 
     return Response(status=status.HTTP_200_OK)
@@ -187,7 +186,8 @@ def add_turbine_to_profile(request):
 @permission_classes([IsAuthenticated])
 def get_user_turbines(request):
     user_turbines = list(UserTurbines.objects.filter(userId=request.user).values('turbineId', 'height', 'latitude', 'longitude', 'name').annotate(
-        turbineModel=F('modelId__display_name')
+        turbineModel=F('modelId__display_name'),
+        turbineModelId=F('modelId')
     ))
     return JsonResponse(user_turbines, safe=False)
 

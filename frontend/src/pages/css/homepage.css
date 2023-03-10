@@ -57,7 +57,7 @@ input[type="text"]{
     left: 433px;
     top: 295px;
     border: 0;
-    font-family: Abril Fatface;
+    font-family:  'Ubuntu', sans-serif;
     font-weight: lighter;
     font-size: large;
     color: #FFFFFF;
@@ -73,7 +73,7 @@ input[type="text"]{
 }
 
 .inputBox::placeholder {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
@@ -85,7 +85,7 @@ input[type="text"]{
   }
 
  .description{
-   font-family: Arial, Helvetica;
+   font-family: 'Open Sans', sans-serif;
    color: #fff;
    font-size: large;
    font-weight: bold;
@@ -144,7 +144,7 @@ input[type="text"]{
 }
 
 .searchTitle{
-  font-family: 'Abril Fatface', cursive;
+  font-family: 'Ubuntu', sans-serif;
   font-weight: 200;
   font-size: x-large;
   color: #fff;

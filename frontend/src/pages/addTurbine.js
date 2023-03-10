@@ -1,49 +1,52 @@
 //This is the page that allows you to add a turbine
 import React, { useState, useEffect } from 'react';
 import Header from "./navBar.js";
-import "./css/addTurbine.css";
 import { TextField, Button } from "@mui/material";
 import { default as Select } from 'react-select';
+import { Link, useNavigate } from 'react-router-dom';
 import API from '../API';
+import { useLocation } from "react-router";
+import "./css/addTurbine.css";
 
-const addTurbine = () => {
-    const [turbineName, setTurbineName] = useState('');//Turbine name
-    const [turbineLongitude, setTurbineLongitude] = useState('');//Turbine longitude
-    const [turbineLatitude, setTurbineLatitude] = useState('');//Turbine latitude
+const addTurbine = (props) => {
+    const editedTurbine = useLocation().state;
+    const [turbineName, setTurbineName] = useState(editedTurbine ? editedTurbine.name : '');//Turbine name
+    const [turbineLongitude, setTurbineLongitude] = useState(editedTurbine ? editedTurbine.longitude : '');//Turbine longitude
+    const [turbineLatitude, setTurbineLatitude] = useState(editedTurbine ? editedTurbine.latitude : '');//Turbine latitude
     const [isLatitudeValid, setIsLatitudeValid] = useState(true);//is latitude valid
     const [isLongitudeValid, setIsLongitudeValid] = useState(true);//is longitude valid
-    const [selectedTurbineModel, setSelectedTurbineModel] = useState(null);//selected turbine model
+    const [selectedTurbineModel, setSelectedTurbineModel] = useState(editedTurbine ? {"value": editedTurbine.turbineModelId, "label": editedTurbine.turbineModel} : null);//selected turbine model
     const [defaultTurbineModels, setDefaultTurbineModels] = useState([]);//default turbine models
-    const [turbineHeight, setTurbineHeight] = useState(null);
+    const [turbineHeight, setTurbineHeight] = useState(editedTurbine ? editedTurbine.height : null);
 
     useEffect(() => {
         loadDefaultTurbineModels();
-        
     }, []);
 
     console.log(defaultTurbineModels); 
 
+    const navigate = useNavigate();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!(turbineLatitude >= -90 && turbineLatitude <= 89)){
-            alert('Please enter valid latitude');
+        if (!(turbineLatitude >= -90 && turbineLatitude < 90)) {
+          alert('Please enter valid latitude');
+          return;
+        } else if (!(turbineLongitude >= -180 && turbineLongitude < 180)) {
+          alert('Please enter valid longitude');
+          return;
         }
-        else if (!(turbineLongitude >= -180 && turbineLongitude <= 179)){
-            alert('Please enter valid longitude');
-        }
-        else{
-            try {
-                const response = await API.addTurbine(turbineName, turbineLatitude, turbineLongitude, turbineHeight || 135, selectedTurbineModel.value);
-                
-                if (!response.ok) {
-                    alert('Error in adding turbine, please check if turbine name already exists');
-                    throw new Error(response.statusText);
-                }
-                alert('Turbine added successfully');
-            } catch (error) {
-                console.error(error);
-            }
-        }
+        API.addTurbine(editedTurbine ? editedTurbine.turbineId : undefined, turbineName, turbineLatitude, turbineLongitude, turbineHeight || 135, selectedTurbineModel.value)
+          .then(response => response.ok ? response : Promise.reject(response))
+          // .then(_ => alert(editedTurbine ? 'Turbine edited successfully' : 'Turbine added successfully'))
+          .then(_ => navigate('/viewTurbines'))
+          .catch(error => {
+              console.log(error);
+              error.json()
+                .then(err => alert(err.error))
+                .catch(_ => alert("An error occured, try again."))
+          })
+          .catch(console.log);
     };
 
     const loadDefaultTurbineModels = async () => {
@@ -66,12 +69,13 @@ const addTurbine = () => {
         }
     };
 
-
+    const pageTitle = editedTurbine ? "Edit turbine" : "Add a new Turbine";
+    const buttonName = editedTurbine ? "Update Turbine" : "Add Turbine";
 
     return (
         <div className="base">
             <Header />
-            <h2 className="myTurbines">Add a new Turbine</h2>
+            <h2 className="myTurbines">{pageTitle}</h2>
             <div className="box addTurbinebox">
             <form className ="form" onSubmit={handleSubmit}>
                 <TextField
@@ -205,7 +209,7 @@ const addTurbine = () => {
                     required
                     options={defaultTurbineModels}
                     value={selectedTurbineModel}
-                    onChange={(selectedOption) => setSelectedTurbineModel(selectedOption)}
+                    onChange={(selectedOption) => {setSelectedTurbineModel(selectedOption); console.log(selectedOption);}}
                     isSearchable
                     placeholder="Select a turbine model"
                     styles={{
@@ -219,14 +223,13 @@ const addTurbine = () => {
                             fontFamily: "Arial",
                             marginTop: "10px",
                             marginBottom: "20px",
-                            fontColor: "#202A44",
+                            color: "#202A44",
                         }),
                         menu: base => ({
                             ...base,
                             fontFamily: "Arial",
                             background: "#4686AE",
-                            color: "#000000",
-                            
+                            color: "white",
                         }),  
                     }}
                     
@@ -234,24 +237,18 @@ const addTurbine = () => {
                         ...theme,
                         colors: {
                           ...theme.colors,
+                          primary: '#157263',
                           primary25: '#8DB38B',
-                          primary: '#8DB38B',
                         },
                       })}
                 />
                 <Button 
-                    className="addButton"
-                    style={{
-                        fontFamily: "Abril Fatface",
-                        color: "#202A44",
-                        border: "2px solid #202A44",
-                        boxShadow: "0 0 20px 2px rgba(0, 0, 0, 0.2)",
-                        width: "150px",
-                        marginTop: "10px",
-                        cursor: "pointer",
-                    }}
-                    
-                    type="submit" data-testid="submit button"  disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel}>Add Turbine</Button>
+                    class="updateCancelButtons"
+                    type="submit" data-testid="submit button"  disabled={!isLatitudeValid || !isLongitudeValid || !selectedTurbineModel}>{buttonName}</Button>
+                <Link style={{ textDecoration: "none" }} to="/viewTurbines">
+                    <Button 
+                    class="updateCancelButtons">Cancel</Button>
+                </Link>
             </form>
             </div>
         </div>
