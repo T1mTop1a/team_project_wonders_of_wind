@@ -1,7 +1,7 @@
 import Header from "./navBar.js";
 import "./css/homepage.css"
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import Chart from "chart.js/auto";
 import { Line } from "react-chartjs-2";
@@ -15,9 +15,12 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import API from "../API.js";
+import Button from "@mui/material/Button";
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 var moment = require("moment-timezone");
 Chart.defaults.font.size = 12;
+Chart.register(zoomPlugin);
 
 
 const Home = () => {
@@ -62,7 +65,7 @@ const Home = () => {
       alert("Please enter a valid latitude");
       return;
     }
-    if (isNaN(lon) || !(lon >= -180 && lat <= 180)) {
+    if (isNaN(lon) || !(lon >= -180 && lon <= 180)) {
       alert("Please enter a valid longitude");
       return;
     }
@@ -135,7 +138,7 @@ const Home = () => {
 
      
 
-  const LineChart = () => {
+  const lineChart = React.useMemo(() => {
     return (
       <div>
         <div
@@ -154,6 +157,26 @@ const Home = () => {
                   text: 'Power Prediction',
                   font: {
                     size: 18,
+                  },
+                },
+                zoom: {
+                  pan: {
+                    enabled: true,
+                    mode: 'x',
+                    modifierKey: 'ctrl',
+
+                  },
+                  limits: {
+                    // axis limits
+                  },
+                  zoom: {
+                    mode: 'x',
+                    pinch: {
+                      enabled: true,
+                    },
+                    wheel: {
+                      enabled: true,
+                    },
                   },
                 },
               },
@@ -182,7 +205,6 @@ const Home = () => {
                     },
                   },
                   min: 0,
-                  max: 10,
                 },
               },
             }}
@@ -191,7 +213,7 @@ const Home = () => {
 
       </div>
     );
-  };
+  }, [chartData]);
 
   const DataTable = () => {
     return (
@@ -247,9 +269,21 @@ const Home = () => {
     );
   };
 
-  
+  // Turbine models 
+  const [modelList, setModelList] = useState([]);
+  // date Selector
+  const [allowedDateRange, setAllowedDateRange] = useState(undefined);
+  // User turbine form
+  const [turbineList, setTurbineList] = useState([]);
+  const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
+  const [descriptionDate, setdescriptionDate] = useState('');
+
   useEffect(() => {
-    API.getTurbineModels().then(setModelList);
+    API.getTurbineModels()
+      .then(setModelList);
+    API.predictionDateRange()
+      .then(d => d.json())
+      .then(setAllowedDateRange);
 
     API.isLoggedIn().then(loggedIn => {
       if (loggedIn) {
@@ -260,6 +294,7 @@ const Home = () => {
         setTurbineFormVisibility("");
       }
     });
+
   }, []);
 
   const dropdownStyles = {
@@ -280,6 +315,28 @@ const Home = () => {
     })
   };
 
+  const MyDatePicker = () => {
+    const [[startDate, endDate], setState] = useState([new Date(), new Date()]);
+    let minDate = undefined;
+    let maxDate = undefined;
+    if (allowedDateRange) {
+      minDate = new Date(allowedDateRange.minDate);
+      maxDate = new Date(allowedDateRange.maxDate);
+    }
+    return (
+      <DatePicker name="date" className="datePicker"
+        selected={startDate}
+        startDate={startDate}
+        endDate={endDate}
+        onChange={setState}
+        minDate={minDate}
+        maxDate={maxDate}
+        selectsRange={true}
+        dateFormat="dd/MM/yyyy"
+      />)
+  }
+
+  const [customTurbineDatePicker, savedTurbineDatePicker] = [MyDatePicker(), MyDatePicker()];
 
   function showDescription() {
     return (
@@ -287,6 +344,17 @@ const Home = () => {
         Predictions are generated based on weather data from NOAA.
       </div>
     )
+  }
+  
+  function downloadCSV() {
+    var buffer = "date,power\n";
+    chartData.rawData.forEach(e => {
+      buffer += `${e.date}, ${e.power}\n`
+    });
+    const url = URL.createObjectURL(
+      new Blob([buffer], { type: "text/csv" })
+    );
+    window.location.assign(url);
   }
 
   return (
@@ -301,26 +369,26 @@ const Home = () => {
        <form className="newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm">
         <h3 className="searchTitle">Input turbine details to generate predictions</h3>
         <div>
-          <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude" />
+          <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude (-90 to 89)" />
         </div>
         <div>
-          <input type="text" class="inputBox" name="lon" placeholder="Input your turbine longitude" />
+          <input type="text" class="inputBox" name="lon" placeholder="Input your turbine longitude (-180 to 179)" />
         </div>
-        <Select
-          className="modelDropDown" styles={dropdownStyles}
-          options={modelList}
-          name="modelName"
-          theme={(theme) => ({
-            ...theme,
-            colors: {
-              ...theme.colors,
-              text: 'orangered',
-              primary25: '#8DB38B',
-              primary: '#8DB38B',
-            },
-          })}
-        />
-        <DatePicker name="date" className="datePicker" selected={customStartDate} onChange={setCustomStartDate} />
+        <Select 
+            className="modelDropDown" styles ={dropdownStyles}
+            options={modelList}
+            name="modelName"
+            theme={(theme) => ({
+              ...theme,
+              colors: {
+                ...theme.colors,
+                text: 'orangered',
+                primary25: '#8DB38B',
+                primary: '#8DB38B',
+              },
+            })}
+          />
+        {customTurbineDatePicker}
         <div className="searchButtonPositionLeft">
           <button className="searchButton" onClick={updateDataFromCustomTurbine}>
             Search
@@ -348,19 +416,20 @@ const Home = () => {
                 primary: '#8DB38B',
               },
             })}
-          />
-          <DatePicker name="date" className="datePicker" selected={savedStartDate} onChange={setSavedStartDate} />
-          <div className="searchButtonPositionLeft">
-            <button className="searchButton" onClick={updateDataFromSavedTurbine}>
-              Search
-            </button>
-          </div>
-          </form>
+        />
+        {savedTurbineDatePicker}
+        <div className="searchButtonPositionRight">
+          <button className="searchButton" onClick={updateDataFromSavedTurbine}>
+            Search
+          </button>
+        </div>
+      </form>
       </div>
 
       {showDescription()}
       <div id="chartContainer">
-        <LineChart />
+        <Button onClick={downloadCSV} class="csvButton">Download</Button>
+        {lineChart}
       </div>
       <div>
         <DataTable />

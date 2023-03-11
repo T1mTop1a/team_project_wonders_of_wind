@@ -9,7 +9,6 @@ import LogIn from "./pages/login";
 import AddTurbine from "./pages/addTurbine";
 import ViewTurbines from "./pages/viewTurbines";
 
-
 function App() {
   return (
     <Router>

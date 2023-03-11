@@ -1,15 +1,19 @@
 .myTurbines{
-    font-family: 'Abril Fatface', cursive;
+    margin-top: 30px;
+    font-family: 'Open Sans', sans-serif;
     text-align: center;
-    color: white;
+    color: #ffffff;
     font-weight: 400;
     font-size: 30px;
     transform: translate(0%, 5%);
 }
 
+
+
+
 .addTurbineButton{
     cursor: auto;
-    font-family: 'Abril Fatface', cursive;
+    font-family: 'Ubuntu', sans-serif;
     width: 220px;
     height: 35px;
     display: block;
@@ -32,7 +36,7 @@
 
 .turbineLabel{
     margin-left: 2rem;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;;
     font-style: normal;
     font-size: large;
     color: #202A44;
@@ -43,6 +47,7 @@
     height: 450px;
     width: 50%;
     overflow-y: scroll;
+
 }
 .turbinebox::-webkit-scrollbar{
     width: 12px;
@@ -60,16 +65,22 @@
 }
 
 .deleteBox {
-    position: relative;
+    position: absolute;
+    font-family: 'Open Sans', sans-serif;
     color: white;
-    right: -60%;
+    top: 0;
+    right: 5px;
     border-radius: 15px;
     text-align: centre;
     font-size: small;
     background: #202A44;
     border: 1px solid #202A44;
-    margin: 10px;
     width: 80px;
+    padding: 10;
+    margin-top: 10px;
+}
+.editBox{
+    right: 90px;
 }
 
 .turbineBox{
@@ -89,13 +100,13 @@
 .turbineDetails{
     margin-left: 2rem;
     margin-top: 5px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     color:  #202A44;
 }
 
 .noTurbines{
     position: relative;
-    font-family: 'Abril Fatface', cursive;
+    font-family: 'Ubuntu', sans-serif;
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -121,5 +132,35 @@
 }
 
 .turbineLabel{
-    font-family: 'Abril Fatface', cursive;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    width: 50px;
+    height: 50px;
+    font-size: 0;
+}
+.close:before, 
+.close:after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 20px;
+    background-color: grey;
+    transform: rotate(45deg) translate(-50%, -50%);
+    transform-origin: top left;
+    transition: all 420ms;
+    content: '';
+}
+.close:after {
+    transform: rotate(-45deg) translate(-50%, -50%);
+}
+.close:hover:before, 
+.close:hover:after {
+    background-color: grey;
 }

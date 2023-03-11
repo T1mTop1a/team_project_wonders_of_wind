@@ -19,7 +19,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.db.utils import IntegrityError
 import datetime
-from django.db.models import F
+from django.db.models import F, Max, Min
 
 
 # Create your views here.
@@ -79,10 +79,14 @@ def signup(request):
 
 
 def fetch_weather_data(lat, lon, date):
+    [startDate, endDate] = date.split(" - ")
+    startDate = pd.to_datetime(startDate, format='%d/%m/%Y')
+    endDate = pd.to_datetime(endDate, format='%d/%m/%Y')
+
     def fetch_subdata(value_type):
         result = WeatherData.objects.filter( \
-            time__gte=date, \
-            time__lte=(date + datetime.timedelta(days=1)), \
+            time__gte=startDate, \
+            time__lte=(endDate + datetime.timedelta(days=1)), \
             location_x=int(lon) + 180, \
             location_y=int(lat) + 90, \
             value_type=value_type
@@ -119,7 +123,7 @@ def predict_turbine_output(lat, lon, date, wind_turbine):
 def turbine_prediction(request):
     requestBody = json.loads(request.body)
     model = WindmillType.objects.get(modelId=int(requestBody["modelName"]))
-    date = pd.to_datetime(requestBody["date"], format='%m/%d/%Y')
+    date = requestBody["date"]
     lat = float(requestBody["lat"])
     lon = float(requestBody["lon"])
     wind_turbine = {
@@ -132,7 +136,7 @@ def turbine_prediction(request):
 @permission_classes([IsAuthenticated])
 def saved_turbine_prediction(request):
     requestBody = json.loads(request.body)
-    date = pd.to_datetime(requestBody["date"], format='%m/%d/%Y')
+    date = requestBody["date"]
     turbineId = int(requestBody["turbineId"])
     turbine = UserTurbines.objects.get(turbineId=turbineId)
     model = turbine.modelId
@@ -151,29 +155,28 @@ def turbines(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_turbine_to_profile(request):
-    print(request.POST)
-
     try:
         turbineModel = WindmillType.objects.get(pk=request.POST['turbineModel'])
         print(turbineModel)
+        turbineEditId = request.POST.get("turbineId")
         try:
-            turbine = UserTurbines(
-                userId=request.user,
-                modelId=turbineModel,
-                latitude=request.POST['turbineLatitude'],
-                longitude=request.POST['turbineLongitude'],
-                height=request.POST['turbineHeight'],
-                name=request.POST['turbineName']
-            )
-
+            if turbineEditId:
+                turbine = UserTurbines.objects.get(turbineId=turbineEditId, userId=request.user)
+            else:
+                turbine = UserTurbines(userId=request.user)
+            turbine.modelId=turbineModel
+            turbine.latitude=request.POST['turbineLatitude']
+            turbine.longitude=request.POST['turbineLongitude']
+            turbine.height=request.POST['turbineHeight']
+            turbine.name=request.POST['turbineName']
             turbine.save()
 
         except IntegrityError as ie:
             print(ie)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({"error": f"{turbine.name} already exists"}, status=status.HTTP_400_BAD_REQUEST)
     except WindmillType.DoesNotExist as dne:
         print(dne)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({"error": f"Invalid windmill type"}, status=status.HTTP_400_BAD_REQUEST)
 
 
     return Response(status=status.HTTP_200_OK)
@@ -183,7 +186,8 @@ def add_turbine_to_profile(request):
 @permission_classes([IsAuthenticated])
 def get_user_turbines(request):
     user_turbines = list(UserTurbines.objects.filter(userId=request.user).values('turbineId', 'height', 'latitude', 'longitude', 'name').annotate(
-        turbineModel=F('modelId__display_name')
+        turbineModel=F('modelId__display_name'),
+        turbineModelId=F('modelId__modelId')
     ))
     return JsonResponse(user_turbines, safe=False)
 
@@ -191,3 +195,16 @@ def get_user_turbines(request):
 @api_view(['GET'])
 def must_be_logged_in(request):
     return HttpResponse(f'works, is logged in: {request.user.is_authenticated}')
+
+def prediction_date_range(request):
+    latest_time = WeatherData.objects.aggregate(Max('time'))["time__max"]
+    earliest_time = WeatherData.objects.aggregate(Min('time'))["time__min"]
+    return JsonResponse({"maxDate": latest_time, "minDate": earliest_time}, safe=False)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_turbine(request):
+    body = json.loads(request.body)
+    UserTurbines.objects.get(userId=request.user, turbineId=body["turbineId"]).delete()
+    return Response(status=status.HTTP_200_OK)
+
