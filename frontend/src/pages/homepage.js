@@ -43,8 +43,7 @@ const Home = () => {
   // Turbine models 
   const [modelList, setModelList] = useState([]);
   // date Selector
-  const [customStartDate, setCustomStartDate] = useState(new Date());
-  const [savedStartDate, setSavedStartDate] = useState(new Date());
+  const [allowedDateRange, setAllowedDateRange] = useState(undefined);
   // User turbine form
   const [turbineList, setTurbineList] = useState([]);
   const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
@@ -268,15 +267,6 @@ const Home = () => {
       </div>
     );
   };
-
-  // Turbine models 
-  const [modelList, setModelList] = useState([]);
-  // date Selector
-  const [allowedDateRange, setAllowedDateRange] = useState(undefined);
-  // User turbine form
-  const [turbineList, setTurbineList] = useState([]);
-  const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
-  const [descriptionDate, setdescriptionDate] = useState('');
 
   useEffect(() => {
     API.getTurbineModels()
