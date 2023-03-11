@@ -6,6 +6,25 @@
   box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
 } */
 
+.tablinks{
+  cursor: auto;
+  color: white;
+  border-radius: 10px;
+  text-align: centre;
+  font-size: medium;
+  background: transparent;
+  right: 0;
+  margin-left: 63px;
+  border: 1px solid white;
+  margin: 10px;
+  width: 150px;
+  margin-top: 20px;
+}
+
+.tablinks.hidden {
+  display: none;
+}
+
 .inputBox {
     width: 450px;
     height: 40px;
@@ -19,6 +38,7 @@
     color: white;
     border-radius: 5px;
 }
+
 .inputBase2 {
   position: relative;
   width: 450px;
@@ -29,6 +49,17 @@
 input[type="text"]{
   font-size: large;
 }
+
+/* Style the tab */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: transparent;
+  border-top: none;
+
+  
+}
+
 
 .searchButtonPositionLeft{
     width: 500px;

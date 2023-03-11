@@ -22,6 +22,7 @@ var moment = require("moment-timezone");
 Chart.defaults.font.size = 12;
 Chart.register(zoomPlugin);
 
+
 const Home = () => {
   const createChartData = (rawData, labels, data) => ({
     rawData: rawData,
@@ -37,8 +38,17 @@ const Home = () => {
       },
     ],
   });
-  
+
   const [chartData, setChartData] = useState(createChartData([], [], []));
+  // Turbine models 
+  const [modelList, setModelList] = useState([]);
+  // date Selector
+  const [allowedDateRange, setAllowedDateRange] = useState(undefined);
+  // User turbine form
+  const [turbineList, setTurbineList] = useState([]);
+  const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
+  const [descriptionDate, setdescriptionDate] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   function formatDateTime(dateString) {
     return moment(dateString).tz("UTC").format("llll");
@@ -63,7 +73,7 @@ const Home = () => {
       createChartData(
         powerData,
         powerData.map(({ date }) => formatDateTime(date)),
-        powerData.map(({ power }) => power/1000000)
+        powerData.map(({ power }) => power / 1000000)
       )
     );
   }
@@ -76,10 +86,56 @@ const Home = () => {
       createChartData(
         powerData,
         powerData.map(({ date }) => formatDateTime(date)),
-        powerData.map(({ power }) => power/1000000)
+        powerData.map(({ power }) => power / 1000000)
       )
     );
   }
+  
+  useEffect(() => {
+    API.isLoggedIn().then(loggedIn => {
+      if (loggedIn) 
+      {setLoggedIn(true)}
+    });
+  }, []);
+     
+
+  //tabs
+  function Tabs(evt, tabName) {
+    if (evt.currentTarget.className.includes("active")) {
+      return;
+    }
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+      tablinks[i].className = tablinks[i].className.replace(" hidden", "");
+
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active hidden";
+  }
+  ///tabs
+  function Addingtabs() {
+    if(loggedIn){
+    return (
+      <div>
+        <div className="tab">
+          <button className="tablinks" onClick={(event) => Tabs(event, 'InputNewTurbine')}>Input your Turbine details</button>
+          <button className="tablinks" onClick={(event) => Tabs(event, 'SelectSavedTurbine')} >Select one of your saved Turbine</button>
+        </div>
+      </div>
+    );
+    }
+    else{
+      return(<button className="tablinks" onClick={(event) => Tabs(event, 'InputNewTurbine')}>Input your Turbine details</button>);
+    }
+  }
+
+     
 
   const lineChart = React.useMemo(() => {
     return (
@@ -93,14 +149,14 @@ const Home = () => {
           <Line
             data={chartData}
             height="480px"
-            options={{ 
+            options={{
               plugins: {
                 title: {
-                    display: true,
-                    text: 'Power Prediction',
-                    font: {
-                      size: 18,
-                    },
+                  display: true,
+                  text: 'Power Prediction',
+                  font: {
+                    size: 18,
+                  },
                 },
                 zoom: {
                   pan: {
@@ -153,7 +209,7 @@ const Home = () => {
             }}
           />
         </div>
-        
+
       </div>
     );
   }, [chartData]);
@@ -162,12 +218,12 @@ const Home = () => {
     return (
       <div className="table">
         <TableContainer
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
           <Table
             sx={{ minWidth: 50 }}
@@ -181,17 +237,17 @@ const Home = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-            {chartData.rawData.map((row) => (
-              <TableRow
-                key={row.date}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {formatDateTime(row.date)}
-                </TableCell>
-                <TableCell>{row.power/1000000}</TableCell>
-              </TableRow>
-            ))}
+              {chartData.rawData.map((row) => (
+                <TableRow
+                  key={row.date}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {formatDateTime(row.date)}
+                  </TableCell>
+                  <TableCell>{row.power / 1000000}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -212,15 +268,6 @@ const Home = () => {
     );
   };
 
-  // Turbine models 
-  const [modelList, setModelList] = useState([]);
-  // date Selector
-  const [allowedDateRange, setAllowedDateRange] = useState(undefined);
-  // User turbine form
-  const [turbineList, setTurbineList] = useState([]);
-  const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
-  const [descriptionDate, setdescriptionDate] = useState('');
-
   useEffect(() => {
     API.getTurbineModels()
       .then(setModelList);
@@ -231,9 +278,9 @@ const Home = () => {
     API.isLoggedIn().then(loggedIn => {
       if (loggedIn) {
         API.getUserTurbines()
-        .then(data => data.json())
-        .then(items => items.map(opt => ({ label: opt.name, value: opt.turbineId })))
-        .then(setTurbineList);
+          .then(data => data.json())
+          .then(items => items.map(opt => ({ label: opt.name, value: opt.turbineId })))
+          .then(setTurbineList);
         setTurbineFormVisibility("");
       }
     });
@@ -253,7 +300,7 @@ const Home = () => {
       ...base,
       fontFamily: "Arial",
       background: "#4686AE",
-      color : "#202A44"
+      color: "#202A44"
 
     })
   };
@@ -282,10 +329,10 @@ const Home = () => {
   const [customTurbineDatePicker, savedTurbineDatePicker] = [MyDatePicker(), MyDatePicker()];
 
   function showDescription() {
-    return(
-       <div className="description">
-          Predictions are generated based on weather data from NOAA.
-        </div>
+    return (
+      <div className="description">
+        Predictions are generated based on weather data from NOAA.
+      </div>
     )
   }
   
@@ -303,13 +350,14 @@ const Home = () => {
   return (
     <div className="base">
       <Header />
-      <div className="inputBase2 overallBox">
-      <form className= "newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm"
-        style={{
-          float: "left",
-        }}
-      >
-        <h3 className="searchTitle">Input New turbine</h3>
+
+      <div class="inputBase2">
+        < Addingtabs />
+      </div>
+
+      <div id="InputNewTurbine" class="inputBase2 tabcontent" >
+       <form className="newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm">
+        <h3 className="searchTitle">Input turbine details to generate predictions</h3>
         <div>
           <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude (-90 to 89)" />
         </div>
@@ -336,14 +384,16 @@ const Home = () => {
             Search
           </button>
         </div>
-      </form>
-      <form className= "userTurbine" onSubmit={e => e.preventDefault()} id="savedTurbineForm"
-        style={{
-          float: "right",
-          visibility: turbineFormVisibility,
-        }}>
-        <h3 className="searchTitle">Select saved turbine</h3>
-        <Select
+        </form>
+      </div>
+
+      <div id="SelectSavedTurbine" className="inputBase2 tabcontent" >
+        <form onSubmit={e => e.preventDefault()} id="savedTurbineForm"
+            style={{
+              visibility: turbineFormVisibility,
+            }}>
+          <h3 className="searchTitle">Select one of your saved turbines</h3>
+          <Select
             className="modelDropDown" styles={dropdownStyles}
             options={turbineList}
             name="turbineId"
@@ -365,13 +415,14 @@ const Home = () => {
         </div>
       </form>
       </div>
+
       {showDescription()}
       <div id="chartContainer">
         <Button onClick={downloadCSV} class="csvButton">Download</Button>
         {lineChart}
       </div>
       <div>
-      <DataTable />
+        <DataTable />
       </div>
     </div>
   );
