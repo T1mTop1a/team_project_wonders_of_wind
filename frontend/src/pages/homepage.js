@@ -99,6 +99,9 @@ const Home = () => {
 
   //tabs
   function Tabs(evt, tabName) {
+    if (evt.currentTarget.className.includes("active")) {
+      return;
+    }
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -107,9 +110,11 @@ const Home = () => {
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
       tablinks[i].className = tablinks[i].className.replace(" active", "");
+      tablinks[i].className = tablinks[i].className.replace(" hidden", "");
+
     }
     document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
+    evt.currentTarget.className += " active hidden";
   }
   ///tabs
   function Addingtabs() {

@@ -21,6 +21,10 @@
   margin-top: 20px;
 }
 
+.tablinks.hidden {
+  display: none;
+}
+
 .inputBox {
     width: 450px;
     height: 40px;
