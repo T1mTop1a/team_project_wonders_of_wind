@@ -8,21 +8,24 @@ import Button from "@mui/material/Button";
 
 const ViewTurbines = () => {
 
-    const [turbineList, setTurbineList] =  useState([]);
+    const [turbineList, setTurbineList] =  useState([]);    
 
-    useEffect(() => {
-        API.getUserTurbines()
-            .then(data => data.json())
-            .then(items => {
-                setTurbineList(items)
-            })
-    } , [])
-        
+    const loadTurbines = () => API.getUserTurbines()
+      .then(data => data.json())
+      .then(items => {
+          setTurbineList(items)
+      })
+
+    useEffect(() => { loadTurbines() } , [])
+
+    const deleteTurbineAction = (turbineID) => function() {
+      console.log("Delete " + turbineID);
+      API.deleteTurbine(turbineID).then(i => loadTurbines());
+    }
 
     const turbines=turbineList.map((turbine)=>{
        return <div className="turbineBox" key={turbine}>
         <div className="label turbineLabel">{turbine.name}
-             {/* <Button onClick={()=>this.deleteTurbine(this.props.id)} class="deleteBox">Delete</Button> */}
         </div>
         < table className="turbineDetails">
             <thread>
@@ -38,15 +41,19 @@ const ViewTurbines = () => {
             <tr>Turbine Hub Height:   
                 <td className="value"> {turbine.height} </td> 
             </tr>     
+        
         </thread>
         </table>
+        <Button onClick={deleteTurbineAction(turbine.turbineId)} class="deleteBox">Delete</Button>
+        <Link state={turbine}
+          to={{
+            pathname:'/addTurbine', 
+          }}>
+            <Button class="deleteBox editBox">Edit</Button>
+        </Link>
+        
         </div>
     })
-
-    //code for testing without populating
-    // useEffect(() => {
-    //     setTurbineList([{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'},{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'},{turbineName: 'Turbine1',turbineModel : 'm', turbineLatitude : '5',turbineName: 'Turbine1', turbineLongitude: '4'},{turbineName: "Turbine1",turbineModel : 'm', turbineLatitude : '5', turbineLongitude: '4'}])
-    // })
 
     function emptyTurbineList() {
         if (turbineList.length === 0){
@@ -74,7 +81,7 @@ const ViewTurbines = () => {
     //       fetch(`${process.env.REACT_APP_BACKEND}/api/v1/turbines` + id, 
     //       {method: 'DELETE', mode: 'CORS'})
     //       .then(res => res)};
-
+    //      }
 
     return (
         <div className="base">

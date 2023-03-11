@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap");
+
 body {
   background-image: linear-gradient(.25turn, #4686AE, #8DB38B);
 }
@@ -22,11 +24,13 @@ body {
   /* background: #202A44; */
   /* background-color: rgba(0, 0, 0, 0.29); */
   float: top;
+  margin-bottom: 20px;
   
 }
 
 .link {
-  font-family: monospace;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 32px;
   color: #fff;
   text-decoration: "none";
   cursor: auto;
@@ -38,12 +42,13 @@ body {
 }
 
 .linkBoxes {
+  font-family: 'Open Sans', sans-serif;
   cursor: auto;
   color: white;
   border-radius: 15px;
   text-align: centre;
   font-size: medium;
-  background: #202A44;
+  background: transparent;
   right: 0;
   border: 1px solid white;
   margin: 10px;
@@ -51,5 +56,5 @@ body {
 }
 
 .linkBoxes:hover{
-  background: transparent;
+  background: #202A44;
 }

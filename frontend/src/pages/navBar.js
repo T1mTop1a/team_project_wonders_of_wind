@@ -52,11 +52,12 @@ const Header = () => {
         <Toolbar>
           <Link style={{ textDecoration: "none" }} to="/" className="link">
             <Button
+              class = "link"
               data-testid="home button"
               variant="h6"
               align="left"
               component="div"
-              sx={{fontFamily: 'Abril Fatface', fontSize: '32px',textTransform: 'none', mr: 2, flexGrow: 1 }}
+              // sx={{fontFamily: 'Jost, sans-serif', fontSize: '32px',textTransform: 'none', mr: 2, flexGrow: 1 }}
             >
               {appName}
             </Button>
