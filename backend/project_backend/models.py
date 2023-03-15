@@ -20,6 +20,9 @@ class WeatherData(models.Model):
         unique_together = ('value_type', 'time', 'source', 'location_x', 'location_y')
 
 
+    def __str__(self):
+        return f'WeatherData {self.weatherId}'
+
 class WindmillType(models.Model):
     modelId = models.AutoField(primary_key=True)
     manufacturer = models.TextField()
@@ -27,6 +30,9 @@ class WindmillType(models.Model):
     display_name = models.TextField()
     power_curve_input = models.JSONField()
     power_curve_output = models.JSONField()
+
+    def __str__(self):
+        return f'WindmillType {self.modelId}'
 
 
 class UserTurbines(models.Model):
@@ -40,3 +46,6 @@ class UserTurbines(models.Model):
 
     class Meta:
         unique_together = ('userId', 'name')
+
+    def __str__(self):
+        return f'UserTurbines turbine={self.turbineId} user={self.userId}'
