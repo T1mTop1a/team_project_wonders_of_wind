@@ -8,6 +8,7 @@ django.setup()
 from project_backend.models import WindmillType
 
 import requests
+from windpowerlib.data import store_turbine_data_from_oedb
 
 
 def get_turbines():
@@ -17,12 +18,13 @@ def get_turbines():
     return turbines
 
 
-def save_turbines(turbines):
+def save_turbines(turbines, printing=True):
     WindmillType.objects.all().delete()
     for turbine in turbines:
 
-        if turbine['has_power_curve']:
-            print(turbine)
+        if turbine['has_power_curve'] and turbine['has_cp_curve']:
+            if printing:
+                print(turbine)
             WindmillType.objects.update_or_create(
                 modelId=turbine['turbine_id'],
                 manufacturer=turbine['manufacturer'],
