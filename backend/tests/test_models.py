@@ -9,10 +9,11 @@ import json
 class WeatherDataTestCase(TestCase):
     def setUp(self):
         # create a weather data instance
+        self.testTime = datetime.now()
         self.weather_data = WeatherData.objects.create(
             height=100.0,
             value_type="test type",
-            time= datetime.now(),
+            time= self.testTime,
             source="test source",
             unit_of_measurement="test measurement",
             location_x=0,
@@ -26,7 +27,7 @@ class WeatherDataTestCase(TestCase):
 
     def test_weather_data_str(self):
         # check the string representation of the weather data
-        self.assertEqual(str(self.weather_data), "WeatherData 1")
+        self.assertEqual(str(self.weather_data), f"WeatherData {self.weather_data.weatherId}")
 
 
     def test_unique_together(self):
@@ -35,7 +36,7 @@ class WeatherDataTestCase(TestCase):
             WeatherData.objects.create(
                 height=100.0,
                 value_type="test type",
-                time= datetime.now(),
+                time= self.testTime,
                 source="test source",
                 unit_of_measurement="test measurement",
                 location_x=0,
@@ -47,27 +48,31 @@ class WeatherDataTestCase(TestCase):
 
 class WindmillTypeTestCase(TestCase):
     def setUp(self):
-        WindmillType.objects.create(
-            model_name = "test name",
+        self.windmill = WindmillType.objects.create(
+            model_name = "test_name",
             power_curve_input = json.dumps({"input_1" : 1, "input_2" : 10}),
             power_curve_output = json.dumps({"output_1" : 2, "output_2" : 20})
         )
 
     def test_model_created(self):
-        self.windmill_type = WindmillType.objects.get(model_name="test_name")
-        self.assertEqual(self.windmill_type.model_name, "test_name")
-        self.assertEqual(self.windmill_type.power_curve_input, {"input_1": 1, "input_2": 10})
-        self.assertEqual(self.windmill_type.power_curve_output, {"output_1": 2, "output_2": 20})
+        windmill_type = WindmillType.objects.get(model_name="test_name")
+        self.assertEqual(windmill_type.model_name, "test_name")
+        pci = json.loads(windmill_type.power_curve_input)
+
+        self.assertEqual(pci['input_1'], 1)
+        self.assertEqual(pci['input_2'], 10)
+
+        pco = json.loads(windmill_type.power_curve_output)
+
+        self.assertEqual(pco['output_1'], 2)
+        self.assertEqual(pco['output_2'], 20)
+
+
 
     def test_windmill_type_str(self):
         # check the string representation of the windmill type
-        self.assertEqual(str(self.windmill_type), "WindmillType 1")
-
-    def test_windmill_type_fields(self):
-        # check if the fields of the windmill type were set correctly
-        self.assertEqual(self.windmill_type.model_name, "test name")
-        self.assertEqual(self.windmill_type.power_curve_input, {"input_1": 1, "input_2": 10})
-        self.assertEqual(self.windmill_type.power_curve_output, {"output_1": 2, "output_2": 20})
+        windmill_type = WindmillType.objects.get(model_name="test_name")
+        self.assertEqual(str(windmill_type), f"WindmillType {self.windmill.modelId}")
 
 
 class UserTurbinesTestCase(TestCase):
@@ -100,7 +105,7 @@ class UserTurbinesTestCase(TestCase):
 
     def test_user_turbine_str(self):
         # check the string representation of the user turbine
-        self.assertEqual(str(self.user_turbine), "UserTurbine 1")
+        self.assertEqual(str(self.user_turbine), f"UserTurbines turbine={self.user_turbine.turbineId} user={self.user_turbine.userId}")
 
     def test_user_turbine_fields(self):
         # check if the fields of the user turbine were set correctly

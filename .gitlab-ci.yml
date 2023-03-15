@@ -1,10 +1,23 @@
 
 image: node:latest
 
+
+stages:
+#  - build 
+ - test
+
+
 cache:
   paths:
     - frontend/node_modules/
 
+
+# build-frontend:
+#   stage: build
+#   script:
+#     - cd frontend
+#     - npm install
+#     - npm run build
 
 
 test-frontend:
@@ -13,4 +26,53 @@ test-frontend:
     - cd frontend
     - npm install
     - npm test -- --coverage
+
+
+
+# build-backend:
+#   stage: build
+#   image: docker:latest
+#   services:
+#     - docker:dind    
+#   script: docker compose build backend
+
+
+# test-backend:
+#   stage: test
+#   image: docker:latest
+#   services:
+#     - docker:dind    
+#   script:
+#     - docker compose build backend
+#     - docker compose up backend -d
+#     - docker compose exec backend bash -c "python manage.py test" 
+
+
+
+test-backend:
+  image: python:3.8
+  stage: test
+  services:
+    - postgres:13.6
+
+  variables:
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_DB: wow
+    PGUSER: postgres
+    DATABASE_PORT: 5432
+    DATABASE_NAME: wow
+    DATABASE_USER: postgres
+    DATABASE_PASSWORD: postgres
+    DATABASE_HOST: postgres
+
+  script:
+    - cd backend
+    - pip install -r requirements.txt
+    - python manage.py makemigrations
+    - python manage.py migrate
+    - python population_script.py
+    - python manage.py test
+
+
 
