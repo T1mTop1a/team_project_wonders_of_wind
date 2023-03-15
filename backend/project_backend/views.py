@@ -37,7 +37,6 @@ def login(request):
             'error': 'NOT_AUTHORISED'
         }, status=status.HTTP_401_UNAUTHORIZED)
 
-    print('trying to log in for user with', request)
     form = forms.LoginForm(request.POST)
     if not form.is_valid():
         return unauthorised()
@@ -193,6 +192,7 @@ def get_user_turbines(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def must_be_logged_in(request):
     return HttpResponse(f'works, is logged in: {request.user.is_authenticated}')
 
