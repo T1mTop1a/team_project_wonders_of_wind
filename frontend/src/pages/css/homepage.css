@@ -52,7 +52,6 @@ input[type="text"]{
 
 /* Style the tab */
 .tabcontent {
-  display: none;
   padding: 6px 12px;
   border: transparent;
   border-top: none;
