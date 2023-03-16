@@ -46,7 +46,7 @@ const Home = () => {
   const [allowedDateRange, setAllowedDateRange] = useState(undefined);
   // User turbine form
   const [turbineList, setTurbineList] = useState([]);
-  const [turbineFormVisibility, setTurbineFormVisibility] = useState("hidden");
+  const [turbineFormVisibility, setTurbineFormVisibility] = useState(false);
   const [descriptionDate, setdescriptionDate] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -90,52 +90,6 @@ const Home = () => {
       )
     );
   }
-  
-  useEffect(() => {
-    API.isLoggedIn().then(loggedIn => {
-      if (loggedIn) 
-      {setLoggedIn(true)}
-    });
-  }, []);
-     
-
-  //tabs
-  function Tabs(evt, tabName) {
-    if (evt.currentTarget.className.includes("active")) {
-      return;
-    }
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-      tablinks[i].className = tablinks[i].className.replace(" hidden", "");
-
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active hidden";
-  }
-  ///tabs
-  function Addingtabs() {
-    if(loggedIn){
-    return (
-      <div>
-        <div className="tab">
-          <button className="tablinks" onClick={(event) => Tabs(event, 'InputNewTurbine')}>Input your Turbine details</button>
-          <button className="tablinks" onClick={(event) => Tabs(event, 'SelectSavedTurbine')} >Select one of your saved Turbine</button>
-        </div>
-      </div>
-    );
-    }
-    else{
-      return(<button className="tablinks" onClick={(event) => Tabs(event, 'InputNewTurbine')}>Input your Turbine details</button>);
-    }
-  }
-
-     
 
   const lineChart = React.useMemo(() => {
     return (
@@ -283,6 +237,7 @@ const Home = () => {
           .then(setTurbineList);
         setTurbineFormVisibility("");
       }
+      setLoggedIn(loggedIn);
     });
 
   }, []);
@@ -347,16 +302,39 @@ const Home = () => {
     window.location.assign(url);
   }
 
+  function toggleForm() {
+    setTurbineFormVisibility(e => !e);
+  }
+
   return (
     <div className="base">
       <Header />
 
-      <div class="inputBase2">
-        < Addingtabs />
+      <div class="inputBase2"
+        style={{
+          display: loggedIn ? "block" : "none",
+        }}>
+        <div className="tab">
+          <button className="tablinks" onClick={(event) => toggleForm()}
+            style={{
+              display: turbineFormVisibility ? "block" : "none",
+            }}>
+            Input your Turbine details
+          </button>
+          <button className="tablinks" onClick={(event) => toggleForm()} 
+            style={{
+              display: !turbineFormVisibility ? "block" : "none",
+            }}>
+            Select one of your saved Turbine
+          </button>
+        </div>
       </div>
 
       <div id="InputNewTurbine" class="inputBase2 tabcontent" >
-       <form className="newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm">
+       <form className="newTurbine" onSubmit={e => e.preventDefault()} id="turbineModelForm"
+            style={{
+              display: !turbineFormVisibility ? "block" : "none",
+            }}>
         <h3 className="searchTitle">Input turbine details to generate predictions</h3>
         <div>
           <input type="text" class="inputBox" name="lat" placeholder="Input your turbine latitude (-90 to 89)" />
@@ -390,7 +368,7 @@ const Home = () => {
       <div id="SelectSavedTurbine" className="inputBase2 tabcontent" >
         <form onSubmit={e => e.preventDefault()} id="savedTurbineForm"
             style={{
-              visibility: turbineFormVisibility,
+              display: turbineFormVisibility ? "block" : "none",
             }}>
           <h3 className="searchTitle">Select one of your saved turbines</h3>
           <Select
