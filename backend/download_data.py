@@ -80,7 +80,7 @@ def download(start, start_hours, end_hours, bulk, chunks):
                     insert_chunks = [inserts[i::chunks] for i in range(chunks)]
 
                     for chunk in insert_chunks:
-                        saved = WeatherData.objects.bulk_create(chunk)
+                        saved = WeatherData.objects.bulk_create(chunk, update_conflicts=True, update_fields=['value'], unique_fields= ['value_type', 'time', 'source', 'location_x', 'location_y'])
 
             # for key, value in downloaded_data.items():
             #     rows, cols = value.shape
